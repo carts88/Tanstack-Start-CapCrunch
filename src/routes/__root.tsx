@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-
+import { ThemeProvider } from '@/components/navbar/global-context-controls/theme/theme-provider'
 
 import ClerkProvider from '../integrations/clerk/provider'
 
@@ -49,10 +49,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <ThemeProvider
+      defaultTheme='system' storageKey='vite-ui-theme'
+      >
+        
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className='bg-background'>
         <ClerkProvider>
           <TopNavigationLevel />
           <SiteBanner />
@@ -72,6 +76,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         </ClerkProvider>
         <Scripts />
       </body>
+            </ThemeProvider>
+
     </html>
   )
 }

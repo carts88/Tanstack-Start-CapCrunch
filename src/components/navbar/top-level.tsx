@@ -1,4 +1,4 @@
-// import { ThemeToggle } from '@/components/navbar/global-context-controls/theme/theme-toggle';
+import { ThemeToggle } from '@/components/navbar/global-context-controls/theme/theme-toggle';
 import SearchBar from './search-bar/search-bar';
 import SiteLogo from './site-logo';
 import { Link } from '@tanstack/react-router';
@@ -25,7 +25,7 @@ export default function TopNavigationLevel() {
           </div>
           <div className='flex gap-x-2'>
             <SearchBar />
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
           </div>
           </div>
       </header>

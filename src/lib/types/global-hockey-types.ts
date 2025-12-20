@@ -1,0 +1,9 @@
+export type PositionTypes = 'C' | 'LW' | 'RW' | 'RD' | 'LD' | 'G';
+export type PlayerStatusTypes = 'NHL' | 'AHL' | 'IR' | 'LTIR' | 'WAIVERS' | 'JUNIOR' | 'SOIR' | 'EUROPE';
+export type AcquisitionMethodTypes = 'TRADE' | 'DRAFTED' | 'SIGNED' | 'EXPANSION' | 'CLAIMED'
+export type CaptaincyRoles = 'CAPTAIN' | 'ALTERNATE'
+export type CoachRoles = 'Head' | 'Assistant' | 'Associate' | 'Strength' | 'Goalie' | 'Video'
+export type FrontOfficeRoles = 'GM' | 'AGM' | 'SpecialAGM' | 'POHO' | 'POBO' | 'OWNER'
+export type ContractTypes = "SPC-FA" | "SPC-EXT" | "SPC" |"ELC" | "ELC-FA" | "35Plus" | "35Plus-EXT" | "35Plus-FA"
+export type ClauseTypes = "NMC" | "NTC" | "M-NTC" | "M-NMC" | "NMC*" | "NTC*" | "M-NTC*" | "M-NMC*" 
+export type VariabilityStructure = "FRONT-LOADED" | "BACK-LOADED"

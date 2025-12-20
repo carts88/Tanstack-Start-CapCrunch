@@ -68,7 +68,11 @@ const MenuSection = ({ section }: MenuSectionProps) => {
             {title}
           </h3>
         )}
-        <div className={`grid grid-cols-${columns ?? 3} gap-4`}>
+        <div
+        style={{
+        gridTemplateColumns: layout === 'grid' ? `repeat(${columns}, minmax(0, 1fr))` : undefined,
+      }}
+        className={`grid grid-cols-${columns ?? 3} gap-4`}>
           {columnItems.map((column, index) => (
             <TeamColumn key={index} items={column} />
           ))}
@@ -121,7 +125,7 @@ const TestNavigation = ({ menuItems }: TestNavigationProps) => {
             <NavigationMenuContent
               className="data-[motion=from-end]:slide-in-from-right-16! data-[motion=from-start]:slide-in-from-left-16! data-[motion=to-end]:slide-out-to-right-16! data-[motion=to-start]:slide-out-to-left-16! z-50"
             >
-              <div className={`p-2 ${menuItem.width || 'w-[500px]'}`}>
+              <div className={`p-2 ${menuItem.width || 'w-500px'}`}>
                 {addUUIDtoArray(menuItem.sections).map((section) => (
                   <React.Fragment key={section.uuid}>
                     <MenuSection section={section} />

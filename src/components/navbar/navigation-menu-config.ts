@@ -255,7 +255,7 @@ export const navigationConfig = [
             {
               name: "Contract Variability Calculator",
               description: "Analyze contract variance and performance bonuses",
-              href: "/calculators/variability",
+              href: "/calculators/contract-variability",
               type: "description"
             },
             // {
@@ -278,7 +278,7 @@ export const navigationConfig = [
               buttons: [
                 {
                   label: "Custom",
-                  href: "/buyout-calculator/custom",
+                  href: "/calculators/buyout/custom",
                   icon: Settings
                 }
               ]

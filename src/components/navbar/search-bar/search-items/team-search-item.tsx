@@ -18,7 +18,7 @@ export function TeamSearchItem (team: ISearchTeam) {
       >
         <div className="shrink-0">
           <img 
-            src={`/logos/${league}/${teamSlug}.svg`}
+            src={`/logos/${league.toLowerCase}/${teamSlug}.svg`}
             alt={teamSlug}
             width={32}
             height={32}

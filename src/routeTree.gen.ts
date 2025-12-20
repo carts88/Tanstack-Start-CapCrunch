@@ -14,6 +14,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as TeamsTeamSlugRouteImport } from './routes/teams/$teamSlug'
 import { Route as StaffStaffSlugRouteImport } from './routes/staff/$staffSlug'
 import { Route as PlayersPlayerSlugRouteImport } from './routes/players/$playerSlug'
+import { Route as CalculatorsContractVariabilityRouteImport } from './routes/calculators/contract-variability'
 import { Route as TeamsTeamSlugDepthChartRouteImport } from './routes/teams/$teamSlug.depth-chart'
 import { Route as TeamsTeamSlugDailyCapRouteImport } from './routes/teams/$teamSlug.daily-cap'
 import { Route as CalculatorsBuyoutCustomRouteImport } from './routes/calculators/buyout.custom'
@@ -43,6 +44,12 @@ const PlayersPlayerSlugRoute = PlayersPlayerSlugRouteImport.update({
   path: '/players/$playerSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CalculatorsContractVariabilityRoute =
+  CalculatorsContractVariabilityRouteImport.update({
+    id: '/calculators/contract-variability',
+    path: '/calculators/contract-variability',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TeamsTeamSlugDepthChartRoute = TeamsTeamSlugDepthChartRouteImport.update({
   id: '/depth-chart',
   path: '/depth-chart',
@@ -62,6 +69,7 @@ const CalculatorsBuyoutCustomRoute = CalculatorsBuyoutCustomRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculators/contract-variability': typeof CalculatorsContractVariabilityRoute
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
@@ -72,6 +80,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculators/contract-variability': typeof CalculatorsContractVariabilityRoute
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
@@ -83,6 +92,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/calculators/contract-variability': typeof CalculatorsContractVariabilityRoute
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
@@ -95,6 +105,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/calculators/contract-variability'
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
     | '/teams/$teamSlug'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/calculators/contract-variability'
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
     | '/teams/$teamSlug'
@@ -115,6 +127,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/calculators/contract-variability'
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
     | '/teams/$teamSlug'
@@ -126,6 +139,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CalculatorsContractVariabilityRoute: typeof CalculatorsContractVariabilityRoute
   PlayersPlayerSlugRoute: typeof PlayersPlayerSlugRoute
   StaffStaffSlugRoute: typeof StaffStaffSlugRoute
   TeamsTeamSlugRoute: typeof TeamsTeamSlugRouteWithChildren
@@ -169,6 +183,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayersPlayerSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/calculators/contract-variability': {
+      id: '/calculators/contract-variability'
+      path: '/calculators/contract-variability'
+      fullPath: '/calculators/contract-variability'
+      preLoaderRoute: typeof CalculatorsContractVariabilityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/teams/$teamSlug/depth-chart': {
       id: '/teams/$teamSlug/depth-chart'
       path: '/depth-chart'
@@ -210,6 +231,7 @@ const TeamsTeamSlugRouteWithChildren = TeamsTeamSlugRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CalculatorsContractVariabilityRoute: CalculatorsContractVariabilityRoute,
   PlayersPlayerSlugRoute: PlayersPlayerSlugRoute,
   StaffStaffSlugRoute: StaffStaffSlugRoute,
   TeamsTeamSlugRoute: TeamsTeamSlugRouteWithChildren,

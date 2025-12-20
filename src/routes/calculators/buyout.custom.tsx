@@ -1,3 +1,4 @@
+import CustomBuyout from '@/components/buyout-calculator/custom-buyout/custom-buyout'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/calculators/buyout/custom')({
@@ -6,8 +7,5 @@ export const Route = createFileRoute('/calculators/buyout/custom')({
 
 function RouteComponent() {
   return (
-  <div>
-    
-    
-  </div>
+  <CustomBuyout />
 )}

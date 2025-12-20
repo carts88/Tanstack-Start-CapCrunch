@@ -32,6 +32,11 @@ export default function SearchBar() {
     return () => document.removeEventListener("keydown", down)
   }, [])
 
+    const handleItemClick = () => {
+      setOpen(false)
+    }
+
+
   const players = searchData.players
   const staff = searchData.staff
   const teams = searchData.teams
@@ -107,9 +112,9 @@ export default function SearchBar() {
                   category={item.category}
                   url={item.url}
                   description={item.description}
+
                 />
               ))}
-              
           </CommandGroup>
         </CommandList>
       </CommandDialog>
