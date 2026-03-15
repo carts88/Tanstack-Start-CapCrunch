@@ -1,25 +1,15 @@
 import { Container, ContainerHeader, ContainerTitle, ContainerDescription, ContainerContent } from "@/components/ui/container";
 import { Button } from '@/components/ui/button';
 import { useAppForm } from '@/components/form';
-import { baseContractYear, contractBuilderFormOpts, contractDefaultValues } from './manage-contract-schema';
+import { baseContractYear, contractBuilderFormOpts, contractDefaultValues, defaultSubmitMeta, ManageContractInfoSchema } from './manage-contract-schema';
 import { ManageContractInfoFields } from './manage-contract-info';
 import { ManageContractYearsFields } from './manage-contract-years';
-import { validateContract } from './variability-calculations';
 import { ManageContractModes } from "./manage-contract.types";
-import { buildContract } from "./manage-contract-utils";
-import { getClauseEligibilty } from "@/lib/utils/player.utils";
-import { useFormStepper } from "@/hooks/use-form-stepper";
-import { getMaxAllowedTerm } from "./yearly-validations";
+import { getContractCalculations, validateBackLoadedContract, validateContract, validateFrontLoadedContract } from './variability-calculations';
 import type { ClauseTypes, ContractTypes } from '@/lib/types/global-hockey-types';
-import { useStore } from "@tanstack/react-form";
+import { revalidateLogic, useStore } from "@tanstack/react-form";
+import { useState } from "react";
 
-type FormMeta = {
-  submitAction: 'continue' | 'backToMenu' | null
-}
-
-const defaultMeta: FormMeta = {
-  submitAction: null,
-}
 interface ManageContractType {
     mode: ManageContractModes;
     age: number;
@@ -33,36 +23,44 @@ interface ManageContractType {
     }[]
 }
 
+
 const ManageContract = ({ mode, age, prevContractYears }: ManageContractType) => {
-/**
-  const {
-      currentValidator,
-      step,
-      currentStep,
-      isFirstStep,
-      handleCancelOrBack,
-      handleNextStepOrSubmit,
-    } = useFormStepper(ManageContractFormSteps);
- */
-
+  console.log(mode, age, prevContractYears)
   const form = useAppForm({
-  onSubmitMeta: defaultMeta,
-  defaultValues: {
-    ...contractDefaultValues,
-    contractYears: baseContractYear,
-  },
-  onSubmit: async ({ value, meta }) => {
-    // Do something with the values passed via handleSubmit
-    console.log(`Selected action - ${meta.submitAction}`, value)
-  },
-});
+    defaultValues: {
+      ...contractDefaultValues,
+      contractYears: baseContractYear,
+    },
+    validationLogic: revalidateLogic(),
+    onSubmitMeta: defaultSubmitMeta,
+    onSubmit: async ({ value, meta }) => {
+      // Do something with the values passed via handleSubmit
+      console.log(`Selected action - ${meta.submitAction}`, value)
+    },
+      validators: {
+        
+        // onDynamic: 
+        onChange({ value }) {
+          let errors = [];
+          const { contractYears, ...contractInfo } = value;
+          console.log("validating contract", value)
+          const { totalSigningBonus, maxAllowedSigningBonus, contractLoad } = getContractCalculations(contractYears);
+
+          if (totalSigningBonus > maxAllowedSigningBonus) {
+            errors.push("Total signing bonus exceeds maximum allowed signing bonus based on CBA rules.")
+          }
+
+          if (!errors) return null
+        return errors
+        },
+      },
+    })
+  
+  
+    const errors = useStore(form.store, (state) => state.errors)
 
 
-  const { values} = form.state
-  console.log(values)
-  const { contractType } = values
-
-  return (
+    return (
     <Container className="mx-auto max-w-6xl py-8">
       <ContainerHeader>
         <ContainerTitle>Build Contract</ContainerTitle>
@@ -72,33 +70,34 @@ const ManageContract = ({ mode, age, prevContractYears }: ManageContractType) =>
       </ContainerHeader>
       <ContainerContent>
         <form onSubmit={(e) => {
-        e.preventDefault()
-        e.stopPropagation()
-      }}
-      className="space-y-4"
-      >
+          e.preventDefault()
+          e.stopPropagation()
+        }}
+        className="space-y-4"
+        >
           <ManageContractInfoFields 
-              form={form}
-              fields={{
-                contractType: "contractType",
-                signingDate: "signingDate",
-                signingTeam: "signingTeam",
-                startYear: "startYear",
-                contractLength: "contractLength"
-              }}
-            />
-
-         
-              <ManageContractYearsFields 
-              form={form}
-              fields={{contractYears: "contractYears"}}
-              />
+            form={form}
             
-            <Button  
-              type="submit"> 
-                Submit
-            </Button>
-            </form>
+          />
+
+          <ManageContractYearsFields 
+            form={form}
+          />
+
+          {errors.map((error, idx) => (
+            <li 
+              key={idx}
+              className="flex items-start gap-2 text-sm text-destructive"
+            >
+              <span className="mt-0.5 text-destructive">•</span>
+              <span>{error}</span>
+            </li>
+          ))}
+          <Button
+            type="submit"> 
+              Submit
+          </Button>
+          </form>
       </ContainerContent>
     </Container>
   );

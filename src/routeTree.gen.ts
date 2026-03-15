@@ -11,13 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlayersIndexRouteImport } from './routes/players/index'
+import { Route as CbaIndexRouteImport } from './routes/cba/index'
 import { Route as TeamsTeamSlugRouteImport } from './routes/teams/$teamSlug'
 import { Route as StaffStaffSlugRouteImport } from './routes/staff/$staffSlug'
 import { Route as PlayersPlayerSlugRouteImport } from './routes/players/$playerSlug'
 import { Route as CalculatorsContractVariabilityRouteImport } from './routes/calculators/contract-variability'
+import { Route as ApiV1IndexRouteImport } from './routes/api.v1/index'
 import { Route as TeamsTeamSlugDepthChartRouteImport } from './routes/teams/$teamSlug.depth-chart'
 import { Route as TeamsTeamSlugDailyCapRouteImport } from './routes/teams/$teamSlug.daily-cap'
 import { Route as CalculatorsBuyoutCustomRouteImport } from './routes/calculators/buyout.custom'
+import { Route as ApiV1StaffIndexRouteImport } from './routes/api.v1/staff/index'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -27,6 +31,16 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlayersIndexRoute = PlayersIndexRouteImport.update({
+  id: '/players/',
+  path: '/players/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CbaIndexRoute = CbaIndexRouteImport.update({
+  id: '/cba/',
+  path: '/cba/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TeamsTeamSlugRoute = TeamsTeamSlugRouteImport.update({
@@ -50,6 +64,11 @@ const CalculatorsContractVariabilityRoute =
     path: '/calculators/contract-variability',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiV1IndexRoute = ApiV1IndexRouteImport.update({
+  id: '/api/v1/',
+  path: '/api/v1/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TeamsTeamSlugDepthChartRoute = TeamsTeamSlugDepthChartRouteImport.update({
   id: '/depth-chart',
   path: '/depth-chart',
@@ -65,6 +84,11 @@ const CalculatorsBuyoutCustomRoute = CalculatorsBuyoutCustomRouteImport.update({
   path: '/calculators/buyout/custom',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiV1StaffIndexRoute = ApiV1StaffIndexRouteImport.update({
+  id: '/api/v1/staff/',
+  path: '/api/v1/staff/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,9 +97,13 @@ export interface FileRoutesByFullPath {
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
+  '/cba': typeof CbaIndexRoute
+  '/players': typeof PlayersIndexRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
+  '/api/v1': typeof ApiV1IndexRoute
+  '/api/v1/staff': typeof ApiV1StaffIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,9 +112,13 @@ export interface FileRoutesByTo {
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
+  '/cba': typeof CbaIndexRoute
+  '/players': typeof PlayersIndexRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
+  '/api/v1': typeof ApiV1IndexRoute
+  '/api/v1/staff': typeof ApiV1StaffIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,9 +128,13 @@ export interface FileRoutesById {
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
+  '/cba/': typeof CbaIndexRoute
+  '/players/': typeof PlayersIndexRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
+  '/api/v1/': typeof ApiV1IndexRoute
+  '/api/v1/staff/': typeof ApiV1StaffIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -109,9 +145,13 @@ export interface FileRouteTypes {
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
     | '/teams/$teamSlug'
+    | '/cba'
+    | '/players'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
+    | '/api/v1'
+    | '/api/v1/staff'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -120,9 +160,13 @@ export interface FileRouteTypes {
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
     | '/teams/$teamSlug'
+    | '/cba'
+    | '/players'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
+    | '/api/v1'
+    | '/api/v1/staff'
   id:
     | '__root__'
     | '/'
@@ -131,9 +175,13 @@ export interface FileRouteTypes {
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
     | '/teams/$teamSlug'
+    | '/cba/'
+    | '/players/'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
+    | '/api/v1/'
+    | '/api/v1/staff/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,7 +191,11 @@ export interface RootRouteChildren {
   PlayersPlayerSlugRoute: typeof PlayersPlayerSlugRoute
   StaffStaffSlugRoute: typeof StaffStaffSlugRoute
   TeamsTeamSlugRoute: typeof TeamsTeamSlugRouteWithChildren
+  CbaIndexRoute: typeof CbaIndexRoute
+  PlayersIndexRoute: typeof PlayersIndexRoute
   CalculatorsBuyoutCustomRoute: typeof CalculatorsBuyoutCustomRoute
+  ApiV1IndexRoute: typeof ApiV1IndexRoute
+  ApiV1StaffIndexRoute: typeof ApiV1StaffIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -160,6 +212,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/players/': {
+      id: '/players/'
+      path: '/players'
+      fullPath: '/players'
+      preLoaderRoute: typeof PlayersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cba/': {
+      id: '/cba/'
+      path: '/cba'
+      fullPath: '/cba'
+      preLoaderRoute: typeof CbaIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/teams/$teamSlug': {
@@ -190,6 +256,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CalculatorsContractVariabilityRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/v1/': {
+      id: '/api/v1/'
+      path: '/api/v1'
+      fullPath: '/api/v1'
+      preLoaderRoute: typeof ApiV1IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/teams/$teamSlug/depth-chart': {
       id: '/teams/$teamSlug/depth-chart'
       path: '/depth-chart'
@@ -209,6 +282,13 @@ declare module '@tanstack/react-router' {
       path: '/calculators/buyout/custom'
       fullPath: '/calculators/buyout/custom'
       preLoaderRoute: typeof CalculatorsBuyoutCustomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/staff/': {
+      id: '/api/v1/staff/'
+      path: '/api/v1/staff'
+      fullPath: '/api/v1/staff'
+      preLoaderRoute: typeof ApiV1StaffIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -235,7 +315,11 @@ const rootRouteChildren: RootRouteChildren = {
   PlayersPlayerSlugRoute: PlayersPlayerSlugRoute,
   StaffStaffSlugRoute: StaffStaffSlugRoute,
   TeamsTeamSlugRoute: TeamsTeamSlugRouteWithChildren,
+  CbaIndexRoute: CbaIndexRoute,
+  PlayersIndexRoute: PlayersIndexRoute,
   CalculatorsBuyoutCustomRoute: CalculatorsBuyoutCustomRoute,
+  ApiV1IndexRoute: ApiV1IndexRoute,
+  ApiV1StaffIndexRoute: ApiV1StaffIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

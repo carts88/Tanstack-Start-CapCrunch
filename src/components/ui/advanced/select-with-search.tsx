@@ -25,7 +25,7 @@ export interface SelectItemWithImage<T>{
 }
 
 // Props for the component
-interface SelectWithSearchProps {
+interface SelectWithSearchProps{
   id: string
   subject: string
   items: SelectItemWithImage<string>[]

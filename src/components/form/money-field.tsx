@@ -8,7 +8,7 @@ import {
 } from "../ui/field";
 import { useState, useEffect } from "react";
 
-type NumberFieldProps = {
+interface NumberFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   label?: string;
   description?: string;

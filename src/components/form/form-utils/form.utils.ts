@@ -1,0 +1,1 @@
+export const errorMessage = (literalString: string) =>  {return { message: literalString }}

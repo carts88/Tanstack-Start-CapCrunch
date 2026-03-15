@@ -1,3 +1,4 @@
+import { PlayerAnalyticCard } from '@/components/players/player-analytic-card/player-analytic-card'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/staff/$staffSlug')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/staff/$staffSlug')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/staff/$staffSlug"!</div>
+  return <PlayerAnalyticCard />
 }

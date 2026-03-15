@@ -121,3 +121,40 @@ export function getMaxAllowedTerm(
             return getTermForSPCor35Plus(contractType)
     }
 }
+
+
+export const getMaxELCBonus = (draftYear: number) => {
+  if(draftYear >= 2023)
+    return 3_500_000;
+    else return 3_000_000
+}
+
+
+
+interface IGetMaxAllowedPerformanceBonus {
+    draftYear: number;
+    contractType: ContractTypes;
+    contractLength: number;
+    upperLimit: number;
+}
+
+export const getMaxAllowedPerformanceBonus = ({
+  draftYear,
+  contractType,
+  contractLength,
+  upperLimit,
+}: IGetMaxAllowedPerformanceBonus) => {
+  // Rule 1: If it's NOT an Entry-Level Contract (ELC) AND the contract is longer than 1 year,
+  // performance bonuses are not allowed
+  if (contractType !== 'ELC' && contractLength > 1) {
+    return 0;
+  }
+
+  // Rule 2: If it IS an Entry-Level Contract, use the specific ELC bonus rules
+  if (contractType === 'ELC') {
+    return getMaxELCBonus(draftYear);
+  }
+
+  // Rule 3: Otherwise (non-ELC, but 1-year contract), max bonus is 7.5% of the upper limit
+  return upperLimit * 0.075;
+};

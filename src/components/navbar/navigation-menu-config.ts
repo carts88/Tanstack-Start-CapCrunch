@@ -14,7 +14,7 @@ export const navigationConfig = [
             {
               name: "Team Dashboard",
               description: "Comprehensive team comparison table",
-              href: "/teams/dashboard",
+              href: "/teams",
               type: "featured"
             },
             {
@@ -229,7 +229,7 @@ export const navigationConfig = [
             {
               name: "Player Dashboard",
               description: "Comprehensive player stats and management",
-              href: "/players/dashboard",
+              href: "/players",
               type: "featured"
             },
             

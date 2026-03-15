@@ -3,9 +3,64 @@ import { CURRENT_SEASON, LEAGUE_MAX_SALARY, LEAGUE_MIN_SALARY } from "@/lib/cons
 import { ClauseTypes, ContractTypes } from "@/lib/types/global-hockey-types";
 import { formOptions } from "@tanstack/react-form";
 import z from "zod";
-import { getMaxAllowedTerm } from "./yearly-validations";
+import { getMaxAllowedPerformanceBonus, getMaxAllowedTerm } from "./yearly-validations";
 import { getClauseEligibilty } from "@/lib/utils/player.utils";
 
+
+
+interface IManageContractDefaultValues {
+    startYear: string;
+    signingDate: Date;
+    signingTeam: string;
+    contractType: ContractTypes;
+    contractLength: number;
+    contractYears: {
+        season: number;  // <-- Add this (or whatever type CURRENT_SEASON is)
+        baseSalary: number;
+        signingBonus: number;
+        performanceBonus: number;
+        minorsSalary: number;
+        clause: ClauseTypes | '';
+        clauseInfo: string | '';
+    }[]
+}
+
+export const baseContractYear: IManageContractDefaultValues["contractYears"] = [
+    {
+        season: CURRENT_SEASON,
+        baseSalary: LEAGUE_MIN_SALARY,
+        signingBonus: 0,
+        performanceBonus: 0,
+        minorsSalary: 0,
+        clause: '' ,
+        clauseInfo: ''  ,
+    },
+]
+
+
+
+export const contractDefaultValues: IManageContractDefaultValues = {
+    startYear: String(CURRENT_SEASON),
+    signingDate: new Date(),
+    signingTeam: "ANA",
+    contractType: "SPC",
+    contractLength: 1,
+    contractYears: baseContractYear
+} ;
+
+//=====================================
+// Form metadata for submission
+//=====================================
+type FormMeta = {
+  submitAction: 'continue' | 'backToMenu' | null
+}
+
+export const defaultSubmitMeta: FormMeta = {
+  submitAction: null,
+}
+//=====================================
+// Zod SCHEMA DEFINITIONS
+//=====================================
 
 export const ManageContractInfoSchema = z.object({
     startYear: z
@@ -22,104 +77,10 @@ export const ManageContractInfoSchema = z.object({
         .number()
 });
 
-
-// export const ManageContractFormSteps = [
-//     ManageContractInfoSchema.pick({
-//         startYear: true,
-//         signingTeam: true,
-//         signingDate: true,
-//         contractType: true,
-//     }),
-//     ManageContractSchema.pick({
-//         contractYears: true,
-//     })
-// ]
-
-
-
-interface IManageContractDefaultValues {
-    startYear: string;
-    signingDate: Date;
-    signingTeam: string;
-    contractType: ContractTypes;
-    contractLength: number;
-    contractYears: {
-        baseSalary: number;
-        signingBonus: number;
-        performanceBonus: number;
-        minorsSalary: number;
-        clause:  ClauseTypes | null;
-        clauseInfo:   string | null;
-    }[]
-}
-export const baseContractYear = [
-    {
-        baseSalary: LEAGUE_MIN_SALARY,
-        signingBonus: 0,
-        performanceBonus: 0,
-        minorsSalary: 0,
-        clause: null ,
-        clauseInfo:   null,
-    },
-]
-
-
-
-export const contractDefaultValues: IManageContractDefaultValues = {
-    startYear: String(CURRENT_SEASON),
-    signingDate: new Date(),
-    signingTeam: "ANA",
-    contractType: "SPC",
-    contractLength: 1,
-    contractYears: baseContractYear
-} ;
-
-export const contractBuilderFormOpts = formOptions({
-});
-
-
 /**
  * MUST BE 18 on Sept 15th, of their DraftYear
  * THEREFORE - 2026 DY Must be born before or on September 15th, 2008
  */
-
-export const getMaxELCBonus = (draftYear: number) => {
-  if(draftYear >= 2023)
-    return 3_500_000;
-    else return 3_000_000
-}
-
-
-
-interface IGetMaxAllowedPerformanceBonus {
-    draftYear: number;
-    contractType: ContractTypes;
-    contractLength: number;
-    upperLimit: number;
-}
-
-export const getMaxAllowedPerformanceBonus = ({
-  draftYear,
-  contractType,
-  contractLength,
-  upperLimit,
-}: IGetMaxAllowedPerformanceBonus) => {
-  // Rule 1: If it's NOT an Entry-Level Contract (ELC) AND the contract is longer than 1 year,
-  // performance bonuses are not allowed
-  if (contractType !== 'ELC' && contractLength > 1) {
-    return 0;
-  }
-
-  // Rule 2: If it IS an Entry-Level Contract, use the specific ELC bonus rules
-  if (contractType === 'ELC') {
-    return getMaxELCBonus(draftYear);
-  }
-
-  // Rule 3: Otherwise (non-ELC, but 1-year contract), max bonus is 7.5% of the upper limit
-  return upperLimit * 0.075;
-};
-
-
 
 interface IBuildContractYearSchema {
     contractType: ContractTypes;
@@ -128,7 +89,6 @@ interface IBuildContractYearSchema {
     contractLength: number
     upperLimit: number
 }
-
 
 export const buildContractYearSchema = ({ contractType, age, draftYear, contractLength, upperLimit }: IBuildContractYearSchema) => {
     const isContractAnELC = contractType === "ELC-FA" || contractType === "ELC";
@@ -146,6 +106,8 @@ export const buildContractYearSchema = ({ contractType, age, draftYear, contract
         : z.null("Player is ineligible for a clause").optional(); // forces null or omitted (undefined)
 
     const zodContractYear = z.object({
+        season: z
+            .number(),
         baseSalary: z
             .number()
             .min(LEAGUE_MIN_SALARY, `Base salary must be >= ${LEAGUE_MIN_SALARY.toLocaleString()}`)
@@ -173,3 +135,6 @@ export const buildContractYearSchema = ({ contractType, age, draftYear, contract
 
 });
 }
+
+export const contractBuilderFormOpts = formOptions({
+});

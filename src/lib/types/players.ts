@@ -1,8 +1,58 @@
-export type ContractTypes = "SPC-FA" | "SPC-EXT" | "SPC" |"ELC" | "ELC-FA" | "35Plus" | "35Plus-EXT" | "35Plus-FA"
-export type ClauseTypes = "NMC" | "NTC" | "M-NTC" | "M-NMC" | "NMC*" | "NTC*" | "M-NTC*" | "M-NMC*" 
-export type VariabilityStructure = "FRONT-LOADED" | "BACK-LOADED"
+import type { ContractTypes, VariabilityStructure, ClauseTypes, PositionTypes, PlayerStatusTypes, ShootsCatchesType, AcquisitionMethodTypes} from "./global-hockey-types";
+
+// StaffId
+export type SeasonId = number;
+export type ContractId = `${number}-${number}`;
+export type ContractYearId = `${ContractId}-${number}`;
+export type PlayerId = number;
+export type DraftPickId = number;
+export type StaffId = `STA${number}`;
+export type StaffTenureId = `${StaffId}-${number}`;
+export type TradeId = `${number}`;
+
+
+// Player Based iNFO
+export interface IPlayerBios {
+    playerId: PlayerId;
+    firstName: string;
+    lastName: string;
+    fullName: string;
+    position: PositionTypes;
+    age: number;
+}
+
+export interface IPlayerMisc {
+    status: PlayerStatusTypes;
+    acquisitionMethod: AcquisitionMethodTypes;
+}
+
+export interface IPlayerVitals {
+    birthDate: string;
+    height: number;
+    weight: number;
+    shootsCatches: ShootsCatchesType;
+
+}
+
+export interface IPlayerDraftInfo {
+    draftPickId: DraftPickId;
+    draftYear: number;
+    draftTeam: string;
+    draftRound: number;
+    draftOverall: number;
+    draftOverallInRound: number;
+}
+
+export interface IPlayerBirthplace {
+    city: string;
+    state: string;
+    country: string;
+}
+
+// Player Contract Information
 
 export interface IContract {
+    contractId: ContractId;
     signingDate: string;
     signingTeam: string;
     signingGM: string;
@@ -11,7 +61,9 @@ export interface IContract {
     contractYears: IContractYear[];
 }
 
+
 export interface IContractYear {
+    contractYearId: ContractYearId;
     season: number;
     caphit: number;
     baseSalary: number;
@@ -28,3 +80,4 @@ export interface IRetention {
     team: string;
     retainedAmount: number
 }
+

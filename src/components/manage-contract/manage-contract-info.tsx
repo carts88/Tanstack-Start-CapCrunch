@@ -1,20 +1,25 @@
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { withFieldGroup } from '@/components/form';
+import { withForm } from '@/components/form';
 import { seasons, nhlTeams, contractTypes } from '@/lib/constants/metadata';
-import { getMaxAllowedTerm } from './yearly-validations';
 import { ContractTypes } from '@/lib/types/global-hockey-types';
+import { errorMessage } from '../form/form-utils/form.utils';
+import { Button } from '@/components/ui/button';
+import { createInitialContractYears } from './manage-contract-utils';
 
-
-export const errorMessage = (literalString: string) =>  {return { message: literalString }}
 export function getMaxTerm (contractType: ContractTypes) {
   if(contractType == "ELC" || contractType == "ELC-FA" )
     return 3
   else return 7
 }
 
-export const ManageContractInfoFields = withFieldGroup({
-  render: function ManageContractInfoFieldRender({group}) {
+export const ManageContractInfoFields = withForm({
+  render: function ManageContractInfoFieldRender({form}) {
+    const submitStepOne = () => {
+       const contractLength = form.getFieldValue('contractLength') as number
+       const startYear = form.getFieldValue('startYear') as number
+      form.setFieldValue("contractYears", createInitialContractYears(contractLength, startYear));
+    };
+    console.log("errors", form.state.errors)
       return (
         <Card className="border-border bg-card">
         <CardHeader >
@@ -26,7 +31,7 @@ export const ManageContractInfoFields = withFieldGroup({
           </CardDescription>
         </CardHeader>
         <CardContent className="flex gap-x-2 py-1 items-center">
-              <group.AppField
+              <form.AppField
                 name="signingDate"
                 >
                   {(field) => {
@@ -37,11 +42,11 @@ export const ManageContractInfoFields = withFieldGroup({
                       />
                     )
                   }}
-              </group.AppField>
+              </form.AppField>
 
            
 
-            <group.AppField
+            <form.AppField
               name="signingTeam"
               >
                 {(field) => {
@@ -55,10 +60,10 @@ export const ManageContractInfoFields = withFieldGroup({
                     />
                   )
                 }}
-            </group.AppField>
+            </form.AppField>
             
 
-            <group.AppField
+            <form.AppField
               name="startYear"
               >
                 {(field) => {
@@ -72,9 +77,9 @@ export const ManageContractInfoFields = withFieldGroup({
                     />
                   )
                 }}
-            </group.AppField>
+            </form.AppField>
 
-            <group.AppField
+            <form.AppField
               name="contractType"
               >
                 {(field) => {
@@ -89,26 +94,20 @@ export const ManageContractInfoFields = withFieldGroup({
                     />
                   )
                 }}
-            </group.AppField>
+            </form.AppField>
             
-            <group.AppField
+            <form.AppField
                 name="contractLength"
                 validators={{
                   onBlurListenTo: ['contractType'],
-                  onBlur: ({value, fieldApi}) => {
-                    
+                  onChange: ({value, fieldApi}) => {
                     const maxTerm = getMaxTerm(fieldApi.form.getFieldValue('contractType') as ContractTypes)
-                    console.log(
-                      "value", value
-                    )
-                     console.log(
-                      "maxTerm", maxTerm
-                    )
-                    if(value > maxTerm) {
+                    if(Number(value) > maxTerm) {
                       return errorMessage(`Contract length cannot be greater than ${maxTerm}`);
                     }
                     return undefined
                   }
+                  
                 }}
                 >
                   {(field) => {
@@ -119,12 +118,17 @@ export const ManageContractInfoFields = withFieldGroup({
                       />
                     )
                   }}
-              </group.AppField>
-
+              </form.AppField>
 
         </CardContent>
-        <CardFooter className='flex justify-end'>
-          
+        <CardFooter
+        
+        className='flex justify-end'>
+          <Button
+          onClick={submitStepOne}
+          >
+            Submit Contract Info
+          </Button>
 
         </CardFooter>
       </Card>

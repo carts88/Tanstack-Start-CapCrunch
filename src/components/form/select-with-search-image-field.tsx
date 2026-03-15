@@ -7,7 +7,7 @@ interface SelectWithSearchImageFieldProps {
     label?: string;
     placeholder:string
     subject: string
-    items: SelectItemWithImage
+    items: SelectItemWithImage<any>[]
 }
 
 export const SelectWithSearchImageField = ({
@@ -15,7 +15,8 @@ export const SelectWithSearchImageField = ({
     label,
     placeholder,
     subject,
-    items
+    items,
+    ...props
     
 }: SelectWithSearchImageFieldProps) => {
   const field = useFieldContext<string>()
@@ -34,6 +35,7 @@ export const SelectWithSearchImageField = ({
             subject={subject}
             placeholder={placeholder}
             items={items}
+            {...props}
           />
         </FieldContent>
     </Field>

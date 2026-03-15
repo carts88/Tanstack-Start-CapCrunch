@@ -16,6 +16,7 @@ import appCss from '../styles.css?url'
 import type { QueryClient } from '@tanstack/react-query'
 import TopNavigationLevel from '@/components/navbar/top-level'
 import { SiteBanner } from '@/components/navbar/site-banner'
+import { NotFound } from '@/components/ui/not-found'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -42,7 +43,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       },
     ],
   }),
-  notFoundComponent: () => <div>NOT FOUND DUMMY COMPONENT</div>,
+  notFoundComponent: () => <NotFound />,
   shellComponent: RootDocument,
 })
 

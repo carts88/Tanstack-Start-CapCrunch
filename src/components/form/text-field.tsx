@@ -7,14 +7,13 @@ import {
     FieldLabel,
  } from "../ui/field";
 
-type TextFieldProps = {
+interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
     id: string;
     label?: string;
     description?: string;
-
 }
 
-export const TextField = ({id, label, description}: TextFieldProps) => {
+export const TextField = ({id, label, description, ...props}: TextFieldProps) => {
     const field = useFieldContext<string>();
 
     return (
@@ -27,6 +26,7 @@ export const TextField = ({id, label, description}: TextFieldProps) => {
             value={field.state.value}
             onBlur={field.handleBlur}
             onChange={(e) => field.handleChange(e.target.value)}
+            {...props}
             />
             {description && <FieldDescription>{description}</FieldDescription>}
             {!field.state.meta.isValid && (

@@ -2,12 +2,12 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { X, Plus } from 'lucide-react';
-import { LEAGUE_MIN_SALARY } from '@/lib/constants/hockey';
-import { withFieldGroup } from '@/components/form';
+import { X } from 'lucide-react';
+import { useAppForm, withFieldform, withForm } from '@/components/form';
 import { baseContractYear, contractBuilderFormOpts } from './manage-contract-schema';
 import { validateBaseSalaryForYear, validatePerformanceBonusForYear, validateSigningBonusForYear } from './yearly-validations';
 import { clauseOptions } from '@/lib/constants/hockey';
+import { useFieldContext, useFormContext } from '../form/form-context';
 
 const contractYearLabels = [
   "Season",
@@ -21,15 +21,15 @@ const contractYearLabels = [
 ];
 
 
-export const ManageContractYearsFields = withFieldGroup({
+export const ManageContractYearsFields = withForm({
   defaultValues: {
     contractYears: baseContractYear
   },
+
     props: {
-      maxAllowedTerm: 7,
       isClauseEligible: false,
     },
-  render: function ManageContractYearFieldsRender ({group, maxAllowedTerm, isClauseEligible}) {
+  render: function ManageContractYearFieldsRender ({ form }) {
     return (
       <Card className="border-border bg-card shadow-sm">
         <CardHeader>
@@ -42,7 +42,7 @@ export const ManageContractYearsFields = withFieldGroup({
         </CardHeader>
         
         <CardContent className="space-y-4">
-          <group.AppField name="contractYears" mode="array">
+          <form.AppField name="contractYears" mode="array">
             {(field) => {
               return (
                 <div className="space-y-4">
@@ -61,7 +61,7 @@ export const ManageContractYearsFields = withFieldGroup({
 
                       {/* Contract Year Rows */}
                       <div className="space-y-1">
-                        {group.state.values.contractYears.map((_, i) => {
+                        {field.state.value.map((_, i) => {
                           return (
                             <div 
                               key={i} 
@@ -73,7 +73,7 @@ export const ManageContractYearsFields = withFieldGroup({
                                 </p>
                               </div>
 
-                              <group.AppField 
+                              <form.AppField 
                               name={`contractYears[${i}].baseSalary`}
                               validators={{
                                 onBlur: ({ value }) => validateBaseSalaryForYear(value),
@@ -89,9 +89,9 @@ export const ManageContractYearsFields = withFieldGroup({
                                     />
                                   )
                                 }}
-                              </group.AppField>
+                              </form.AppField>
 
-                              <group.AppField 
+                              <form.AppField 
                               validators={{
                                 onBlur: ({ value }) => validateSigningBonusForYear(value),
                               }}
@@ -103,9 +103,9 @@ export const ManageContractYearsFields = withFieldGroup({
                                     />
                                   )
                                 }}
-                              </group.AppField>
+                              </form.AppField>
 
-                              <group.AppField 
+                              <form.AppField 
                              
                               name={`contractYears[${i}].performanceBonus`}>
                                 {(subField) => {
@@ -115,9 +115,9 @@ export const ManageContractYearsFields = withFieldGroup({
                                     />
                                   )
                                 }}
-                              </group.AppField>
+                              </form.AppField>
 
-                              <group.AppField name={`contractYears[${i}].minorsSalary`}>
+                              <form.AppField name={`contractYears[${i}].minorsSalary`}>
                                 {(subField) => {
                                   return (
                                     <subField.MoneyField
@@ -125,35 +125,33 @@ export const ManageContractYearsFields = withFieldGroup({
                                     />
                                   )
                                 }}
-                              </group.AppField>
+                              </form.AppField>
 
-                              {isClauseEligible && 
-                                <group.AppField
+                               <form.AppField
                                 name={`contractYears[${i}].clause`}>
-                                  {(subField) => {
-                                    return (
+                                  {(subField) => 
                                       <subField.SelectWithSearchImageField
                                         id={`contractYears[${i}].clause`}
                                         placeholder=''
                                         subject='clauses'
                                         items={clauseOptions}
                                       />
-                                    )
-                                  }}
-                                </group.AppField>
-                              }
+                                  }
+                                </form.AppField>
 
-                              {isClauseEligible && 
-                                <group.AppField name="clauseInfo">
+                                <form.AppField
+                                name={`contractYears[${i}].clauseInfo`}
+                                >
                                   {(subField) => {
                                     return (
                                       <subField.TextField
-                                        id={`contractYears[${i}].clauseinfo`}
+                                        id={`contractYears[${i}].clauseInfo`}
                                       />
                                     )
                                   }}
-                                </group.AppField>
-                              }                              
+                                </form.AppField>
+
+
                               <div className="flex items-center justify-center">
                                 {i >= 1 &&
                                   <Button
@@ -174,25 +172,11 @@ export const ManageContractYearsFields = withFieldGroup({
                     </div>
                     <ScrollBar orientation="horizontal" />
                   </ScrollArea>
-                  
-                  {/* Add Season Button */}
-                  {field.state.value.length <= maxAllowedTerm &&
-                    <Button
-                    onClick={() => field.pushValue(baseContractYear)
-                    }
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-dashed hover:border-solid hover:bg-muted/50 transition-all"
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Season
-                  </Button>
-                  }
+                 
                 </div>
               )
             }}
-          </group.AppField>
+          </form.AppField>
           
         </CardContent>
         

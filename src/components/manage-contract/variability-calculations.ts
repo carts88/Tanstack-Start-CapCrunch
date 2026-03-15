@@ -1,5 +1,5 @@
 import { sumArrayProperty } from "@/lib/utils/array.utils";
-import { ContractYears } from "./manage-contract-utils";
+
 
 export function determineSalaryLoad(contract: ContractYears[]): string {
     const contractLength = contract.length;
@@ -59,17 +59,14 @@ export function getContractCalculations(contractYears: any[]) {
 }
 
 
-export function validateContract(contract: any) {
-  let errors = [];
-  try {
-    const { contractYears } = contract;
+export function validateContract(contractYears: any) {
+    let errors = [];
     if (!Array.isArray(contractYears) || contractYears.length === 0) {
       errors.push({ message: "Contract must have at least one year." });
       return { isValid: false, errors };
     }
 
-    const calcs = getContractCalculations(contractYears);
-    const { totalSigningBonus, maxAllowedSigningBonus, contractLoad } = calcs;
+    const { totalSigningBonus, maxAllowedSigningBonus, contractLoad } = getContractCalculations(contractYears);;
 
     // 1. Signing bonus ≤ 60% of total salary
     if (totalSigningBonus > maxAllowedSigningBonus + 1) {
@@ -84,13 +81,8 @@ export function validateContract(contract: any) {
     } else if (contractLoad === "back-loaded") {
       errors.push(...validateBackLoadedContract(contractYears));
     }
-    // "even" contracts have no additional restrictions
 
-  } catch (err: any) {
-    errors.push({ message: err.message || "Unknown validation error" });
-  }
-
-  return errors
+    return errors
 }
 
 // =============== FRONT-LOADED CONTRACT RULES ===============
@@ -111,26 +103,26 @@ export function validateFrontLoadedContract(contractYears: ContractYears[]) {
 
     // Rule 1: No year can be < 71% of the highest year
     if (current < minAllowedSalary - 1) { // +1 for floating point
-      errors.push({
-        message: `Year ${i + 1}: $${current.toLocaleString()} is below 71% of highest year ($${highestSalary.toLocaleString()}), minimum allowed: $${minAllowedSalary.toFixed(0)}.`,
-      });
+      errors.push(
+    `Year ${i + 1}: $${current.toLocaleString()} is below 71% of highest year ($${highestSalary.toLocaleString()}), minimum allowed: $${minAllowedSalary.toFixed(0)}.`,
+      );
     }
 
     // Rule 2: Difference between any two consecutive years ≤ 20% of Year 1
     if (prev !== null) {
       const diff = Math.abs(current - prev);
       if (diff > maxAllowedDiff + 1) {
-        errors.push({
-          message: `Year ${i} to Year ${i + 1}: Salary changes by $${diff.toFixed(0).toLocaleString()} — exceeds 20% of Year 1 salary (max diff: $${maxAllowedDiff.toFixed(0).toLocaleString()}).`,
-        });
+        errors.push(
+        `Year ${i} to Year ${i + 1}: Salary changes by $${diff.toFixed(0).toLocaleString()} — exceeds 20% of Year 1 salary (max diff: $${maxAllowedDiff.toFixed(0).toLocaleString()}).`,
+        );
       }
     }
     if (next !== null) {
       const diff = Math.abs(next - current);
       if (diff > maxAllowedDiff + 1) {
-        errors.push({
-          message: `Year ${i + 1} to Year ${i + 2}: Salary changes by $${diff.toFixed(0).toLocaleString()} — exceeds 20% of Year 1 salary (max diff: $${maxAllowedDiff.toFixed(0).toLocaleString()}).`,
-        });
+        errors.push(
+        `Year ${i + 1} to Year ${i + 2}: Salary changes by $${diff.toFixed(0).toLocaleString()} — exceeds 20% of Year 1 salary (max diff: $${maxAllowedDiff.toFixed(0).toLocaleString()}).`,
+        );
       }
     }
   }
@@ -140,7 +132,7 @@ export function validateFrontLoadedContract(contractYears: ContractYears[]) {
 
 // =============== BACK-LOADED CONTRACT RULES ===============
 export function validateBackLoadedContract(contractYears: ContractYears[]) {
-  const errors: any[] = [];
+  const errors: string[] = [];
 
   if (contractYears.length < 2) return errors;
 
@@ -151,9 +143,9 @@ export function validateBackLoadedContract(contractYears: ContractYears[]) {
 
   // Rule 1: Year 2 cannot be more than double the lower of Y1/Y2
   if (diffOfY1Y2 > lowerOfY1Y2 + 1) {
-    errors.push({
-      message: `Year 1 ($${y1Salary.toLocaleString()}) and Year 2 ($${y2Salary.toLocaleString()}): Difference exceeds the lower year. Year 2 cannot exceed double Year 1 if Year 1 is lower.`,
-    });
+    errors.push(
+      `Year 1 ($${y1Salary.toLocaleString()}) and Year 2 ($${y2Salary.toLocaleString()}): Difference exceeds the lower year. Year 2 cannot exceed double Year 1 if Year 1 is lower.`,
+    );
   }
 
   const maxDecrease = lowerOfY1Y2 * 0.5;
@@ -166,16 +158,16 @@ export function validateBackLoadedContract(contractYears: ContractYears[]) {
     if (currSalary > prevSalary) {
       // Increase
       if (diff > lowerOfY1Y2) {
-        errors.push({
-          message: `Year ${i + 1}: Increase of $${diff.toFixed(0).toLocaleString()} from prior year exceeds max allowed ($${lowerOfY1Y2.toLocaleString()}), based on lower of Year 1 & 2.`,
-        });
+        errors.push(
+          `Year ${i + 1}: Increase of $${diff.toFixed(0).toLocaleString()} from prior year exceeds max allowed ($${lowerOfY1Y2.toLocaleString()}), based on lower of Year 1 & 2.`,
+        );
       }
     } else if (currSalary < prevSalary) {
       // Decrease
       if (diff > maxDecrease) {
-        errors.push({
-          message: `Year ${i + 1}: Decrease of $${diff.toFixed(0).toLocaleString()} from prior year exceeds 50% of lower Year 1/2 salary (max decrease: $${maxDecrease.toFixed(0).toLocaleString()}).`,
-        });
+        errors.push(
+     `Year ${i + 1}: Decrease of $${diff.toFixed(0).toLocaleString()} from prior year exceeds 50% of lower Year 1/2 salary (max decrease: $${maxDecrease.toFixed(0).toLocaleString()}).`,
+        );
       }
     }
   }

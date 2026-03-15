@@ -2,7 +2,7 @@
 export default function SiteLogo() {
   return (
       <img
-        src="/cap-crunch.svg"
+        src="/capcrunch.svg"
         alt="cap-crunch logo"
         width={200}
         height={100}
