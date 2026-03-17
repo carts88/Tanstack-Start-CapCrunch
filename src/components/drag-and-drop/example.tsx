@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { BucketDef, BucketGroup, DraggableItem, SwapMode } from "./types";
 import { Draggable } from "./default-draggable-card";
 import { BucketGrid, BucketRenderProps } from "./bucket-grid";
@@ -66,8 +67,15 @@ function buildNhlBuckets(): BucketDef[] {
   for (let row = 0; row < 2; row++) {
     buckets.push({ id: `g-col0-row${row}`, col: 0, row, groupId: "g" });
   }
-  for (let row = 0; row < 4; row++) {
+  for (let row = 0; row < 2; row++) {
     buckets.push({ id: `scratch-col0-row${row}`, col: 0, row, groupId: "scratch" });
+  }
+
+  for (let row = 0; row < 2; row++) {
+    buckets.push({ id: `ir-col0-row${row}`, col: 0, row, groupId: "ir" });
+  }
+  for (let row = 0; row < 2; row++) {
+    buckets.push({ id: `ltir-col0-row${row}`, col: 0, row, groupId: "ltir" });
   }
   return buckets;
 }
@@ -177,7 +185,7 @@ function PlayerCard({ item }: { item: DraggableItem }) {
     ) : p.ntc ? (
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
         <circle cx="8" cy="8" r="6"
-          fill="rgba(192,132,252,0.2)" stroke="#c084fc" strokeWidth="1.2"/>f
+          fill="rgba(192,132,252,0.2)" stroke="#c084fc" strokeWidth="1.2"/>
         <path d="M5 8h4.5M7.5 5.5L10 8l-2.5 2.5"
           stroke="#c084fc" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
         <path d="M5 8V5.5"
@@ -191,7 +199,7 @@ function PlayerCard({ item }: { item: DraggableItem }) {
   {/* Contract info — centered, aligned under name */}
   <div className="flex-1 flex flex-col items-center gap-px">
     <p className="text-[9.5px] font-mono font-bold tabular-nums text-foreground/90 tracking-tight leading-tight">
-      {p.years}  × {formatCap(p.capHit)}
+      {p.years} x {formatCap(p.capHit)}
     </p>
   </div>
 
@@ -208,7 +216,12 @@ function PlayerCard({ item }: { item: DraggableItem }) {
 // ─────────────────────────────────────────────
 // Player Bucket
 // ─────────────────────────────────────────────
-function PlayerBucket({ item, isOver, isDraggingSource }: BucketRenderProps) {
+function PlayerBucket({
+  item,
+  isOver,
+  isDraggingSource,
+  emptyState,
+}: BucketRenderProps & { emptyState?: ReactNode }) {
   return (
     <div
       className={`
@@ -223,8 +236,8 @@ function PlayerBucket({ item, isOver, isDraggingSource }: BucketRenderProps) {
       {item ? (
         <PlayerCard item={item} />
       ) : (
-        <div className="flex-1 flex items-center justify-center text-[9px] tracking-widest uppercase text-border/70 font-medium">
-          LW4
+        <div className="w-full h-full flex items-center justify-center text-[9px] uppercase tracking-widest text-muted-foreground/50 select-none">
+          {emptyState ?? "Drop"}
         </div>
       )}
     </div>
@@ -271,7 +284,7 @@ function CapTracker({ capUsed }: { capUsed: number }) {
       <div className="flex-1 min-w-0">
         <div className="flex justify-between items-baseline mb-1.5">
           <div className="flex items-baseline gap-2">
-            <span className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">2024–25 Cap</span>
+            <span className="text-[10px] font-bold tracking-widest uppercase text-muted-foreground">2024-25 Cap</span>
             <span className="text-[12px] font-bold tabular-nums text-card-foreground">{formatCap(capUsed)}</span>
             <span className="text-[10px] text-muted-foreground">/ {formatCap(CAP_CEILING)}</span>
           </div>
@@ -353,7 +366,7 @@ export default function DndExample() {
             Edmonton Oilers
           </div>
           <div className="text-[10px] text-muted-foreground tracking-widest uppercase mt-0.5">
-            2024–25 · Armchair GM
+            2024-25 - Armchair GM
           </div>
         </div>
 
@@ -393,20 +406,12 @@ export default function DndExample() {
           {/* Forwards */}
           <div className="flex-1 min-w-full">
             <SectionHeader label="Forwards" />
-            <div className="flex gap-[6px] mb-1 pl-[38px]">
-              {["LW","C","RW"].map((l) => (
-                <div key={l} className="flex-1 min-w-[165px]">
-                  <ColLabel label={l} />
-                </div>
-              ))}
-            </div>
             <BucketGrid
               groupId="fwd"
               gap={6}
               colLabels={["LW","C","RW"]}
               rowLabels={["L1","L2","L3","L4"]}
-              renderBucket={(props) => <PlayerBucket {...props} />}
-              rowPrefix="L"
+              renderBucket={(props) => <PlayerBucket {...props} emptyState="Empty" />}
             />
           </div>
 
@@ -418,8 +423,7 @@ export default function DndExample() {
               gap={6}
               colLabels={["LD","RD"]}
               rowLabels={["P1","P2","P3"]}
-              renderBucket={(props) => <PlayerBucket {...props} />}
-              rowPrefix="P"
+              renderBucket={(props) => <PlayerBucket {...props} emptyState="Empty" />}
             />
             </div>
             <div className="w-120">
@@ -427,15 +431,39 @@ export default function DndExample() {
               <BucketGrid
                 groupId="g"
                 gap={6}
-                colLabels={['G']}
-                rowPrefix="G"
+                colLabels={["G"]}
                 rowLabels={["#1","#2"]}
-                renderBucket={(props) => <PlayerBucket {...props} />}
+                renderBucket={(props) => <PlayerBucket {...props} emptyState="" />}
               />
             </div>
           </div>
 
-         
+          <div className="w-full gap-5 flex">
+            <div className="w-full">
+              <SectionHeader label="Scratches" />
+              <BucketGrid
+                groupId="scratch"
+                gap={4}
+                renderBucket={(props) => <PlayerBucket {...props} emptyState="Empty" />}
+              />
+            </div>
+            <div className="w-full">
+              <SectionHeader label="Injured Reserve" />
+              <BucketGrid
+                groupId="ir"
+                gap={4}
+                renderBucket={(props) => <PlayerBucket {...props} emptyState="Empty" />}
+              />
+            </div>
+            <div className="w-full">
+              <SectionHeader label="Long Term IR" />
+              <BucketGrid
+                groupId="ltir"
+                gap={4}
+                renderBucket={(props) => <PlayerBucket {...props} emptyState="Empty" />}
+              />
+            </div>
+          </div>
         </div>
 
         <Legend />

@@ -10,15 +10,23 @@ interface DraggableProps {
 }
 
 export function Draggable({ itemId, children, className, style, disabled }: DraggableProps) {
-  const { setDraggingId, draggingId } = useDnd();
+  const { setDraggingId, setOverBucketId, draggingId } = useDnd();
   const isDragging = draggingId === itemId;
 
   return (
     <div
       draggable={!disabled}
       className={className}
-      onDragStart={() => setDraggingId(itemId)}
-      onDragEnd={() => setDraggingId(null)}
+      onDragStart={(e) => {
+        if (disabled) return;
+        e.dataTransfer.setData("text/plain", itemId);
+        e.dataTransfer.effectAllowed = "move";
+        setDraggingId(itemId);
+      }}
+      onDragEnd={() => {
+        setDraggingId(null);
+        setOverBucketId(null);
+      }}
       style={{
         cursor: disabled ? "default" : "grab",
         opacity: isDragging ? 0.5 : 1,

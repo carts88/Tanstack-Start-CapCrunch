@@ -38,7 +38,7 @@ export function BucketGrid({
   renderItem,
   emptyState,
 }: BucketGridProps) {
-  const { buckets, overBucketId, draggingId, setOverBucketId, dropOnBucket, getItemInBucket, items } = useDnd();
+  const { buckets, overBucketId, draggingId, setOverBucketId, dropOnBucket, getItemInBucket } = useDnd();
 
   const groupBuckets = buckets.filter((b) => b.groupId === groupId);
   const maxCol = Math.max(...groupBuckets.map((b) => b.col), 0);
@@ -47,6 +47,7 @@ export function BucketGrid({
   const cols = maxCol + 1;
   const rows = maxRow + 1;
 
+  
   return (
     <div
       className={className}
@@ -98,7 +99,7 @@ export function BucketGrid({
               color: "var(--bucket-label-color, #888)",
             }}
           >
-            {rowPrefix ? `${rowPrefix}${ri + 1}` : `R${ri+1}`}
+            {rowLabels[ri] ?? (rowPrefix ? `${rowPrefix}${ri + 1}` : `R${ri + 1}`)}
           </div>
         ))}
 
@@ -115,12 +116,23 @@ export function BucketGrid({
           <div
             key={bucket.id}
             style={{ gridColumn: gridCol, gridRow: gridRow }}
-            onDragOver={(e) => {
-              e.preventDefault();
+            onDragEnter={() => {
+              if (!draggingId) return;
               setOverBucketId(bucket.id);
             }}
-            onDragLeave={() => setOverBucketId(null)}
+            onDragOver={(e) => {
+              if (!draggingId) return;
+              e.preventDefault();
+              e.dataTransfer.dropEffect = "move";
+              setOverBucketId(bucket.id);
+            }}
+            onDragLeave={(e) => {
+              const nextTarget = e.relatedTarget as Node | null;
+              if (nextTarget && e.currentTarget.contains(nextTarget)) return;
+              setOverBucketId(null);
+            }}
             onDrop={(e) => {
+              if (!draggingId) return;
               e.preventDefault();
               dropOnBucket(bucket.id);
             }}

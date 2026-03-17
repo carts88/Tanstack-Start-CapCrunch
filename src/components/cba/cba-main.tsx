@@ -1,18 +1,23 @@
-import { LineGrid } from "../test/line-builder/line-grid";
 import DndExample from "../drag-and-drop/example";
-const forwardPositions = ["LW", "C", "RW"] as const;
-const forwardLines = [1, 2, 3, 4] as const;
-
-const defensePositions = ["LD", "RD", "G"] as const;
-const defensePairs = [1, 2, 3] as const;
-
-const reserveTypes = ["HS", "IR", "LTIR", "SEIR"] as const;
-const reserveRows = [1, 2] as const;
+import { CollapsibleSection } from "./reusable/collapsible-section";
+import { contractVariability, contractTypes } from "./config";
 
 const CbaMain = () => {
   return (
-    <div className="p-4 max-w-4xl mx-auto space-y-10">
-      <DndExample />
+    <div className="p-4 max-w-4xl h-screen mx-auto space-y-10">
+      {/* <DndExample /> */}
+      <CollapsibleSection 
+        title={contractVariability.title}
+        description={contractVariability.description}
+        subSections={contractVariability.subSections}
+      />
+
+      <CollapsibleSection 
+        title={contractTypes.title}
+        description={contractTypes.description}
+        subSections={contractTypes.subSections}
+
+      />
 {/* 
       <LineGrid
         title="Forwards"
