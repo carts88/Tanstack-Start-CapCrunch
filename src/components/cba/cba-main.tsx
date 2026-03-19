@@ -1,45 +1,77 @@
-import DndExample from "../drag-and-drop/example";
-import { CollapsibleSection } from "./reusable/collapsible-section";
-import { contractVariability, contractTypes } from "./config";
+import { contractVariability, contractTypes, entryDraft, freeAgency, expirationStatus } from "./config";
+import { ISection } from "./types";
+import { CBANavigator } from "./reusable/cba-navigator";
+
+interface ICBASection {
+  trigger: string;
+  sections: ISection[];
+}
+
+export const CBA_SECTIONS: ICBASection[] = [
+  {
+    trigger: "Contracts",
+    sections: [
+      contractVariability,
+      contractTypes
+      /**
+       * 
+       */
+    ]
+  },
+  {
+    trigger: "Players",
+    sections: [
+      expirationStatus
+      /**
+       * Trade Clauses - types, eligibility
+       * define accruedSeason, proSeason, etc
+       * Expiration Status
+       * arbitration
+       * Player Representation
+       * tryouts pto/ato
+       * */
+    ],
+  },
+  
+  {
+    trigger: "Entry Draft",
+    sections: [
+      entryDraft
+    ]
+  },
+  
+  {
+    trigger: "Roster Moves / Transactions",
+    sections: [
+      /**
+       * buyouts, contract terminations
+       * roster designations -- minors, nhl, ir, ltir, seir, soir, buried,
+       * what is a reserve list
+       * waivers
+       * post trade deadline rules
+       */
+    ]
+  },
+  {
+    trigger: "Roster Accounting / Salary Cap",
+    sections: [
+      /***
+       * upper & lower limit, retained Salary limit, 
+       * playoff salary cap,
+       * long term injured reserve cap implications
+       * bonuses / overages
+       * how is the salary cap calculated
+       * unique caphit calculations
+       */
+    ]
+  }
+]
 
 const CbaMain = () => {
   return (
-    <div className="p-4 max-w-4xl h-screen mx-auto space-y-10">
-      {/* <DndExample /> */}
-      <CollapsibleSection 
-        title={contractVariability.title}
-        description={contractVariability.description}
-        subSections={contractVariability.subSections}
-      />
-
-      <CollapsibleSection 
-        title={contractTypes.title}
-        description={contractTypes.description}
-        subSections={contractTypes.subSections}
-
-      />
-{/* 
-      <LineGrid
-        title="Forwards"
-        columns={forwardPositions}
-        rows={forwardLines}
-      />
-
-      <LineGrid
-        title="Defense / Goalies"
-        columns={defensePositions}
-        rows={defensePairs}
-      />
-
-     
-
-      <LineGrid
-        title="Scratches / IR"
-        columns={reserveTypes}
-        rows={reserveRows}
-      />
- */}
-
+    <div className="p-4 max-w-6xl h-screen mx-auto space-y-10">
+      
+      <CBANavigator sections={CBA_SECTIONS}/>
     </div>
   );
 };

@@ -1,6 +1,11 @@
 import { SectionCard } from "./section-card";
 
-export const DescriptionBlock = ({ title, description }: any) => {
+interface DescriptionBlockProps {
+  title: string;
+  description: string;
+}
+
+export const DescriptionBlock = ({ title, description }: DescriptionBlockProps) => {
   return (
     <SectionCard>
       <div className="space-y-1.5">

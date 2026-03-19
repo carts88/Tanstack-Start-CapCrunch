@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TestIndexRouteImport } from './routes/test/index'
 import { Route as PlayersIndexRouteImport } from './routes/players/index'
 import { Route as CbaIndexRouteImport } from './routes/cba/index'
 import { Route as TeamsTeamSlugRouteImport } from './routes/teams/$teamSlug'
@@ -31,6 +32,11 @@ const AboutRoute = AboutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TestIndexRoute = TestIndexRouteImport.update({
+  id: '/test/',
+  path: '/test/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlayersIndexRoute = PlayersIndexRouteImport.update({
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
   '/cba': typeof CbaIndexRoute
   '/players': typeof PlayersIndexRoute
+  '/test': typeof TestIndexRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
   '/cba': typeof CbaIndexRoute
   '/players': typeof PlayersIndexRoute
+  '/test': typeof TestIndexRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
   '/cba/': typeof CbaIndexRoute
   '/players/': typeof PlayersIndexRoute
+  '/test/': typeof TestIndexRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
@@ -147,6 +156,7 @@ export interface FileRouteTypes {
     | '/teams/$teamSlug'
     | '/cba'
     | '/players'
+    | '/test'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
@@ -162,6 +172,7 @@ export interface FileRouteTypes {
     | '/teams/$teamSlug'
     | '/cba'
     | '/players'
+    | '/test'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
@@ -177,6 +188,7 @@ export interface FileRouteTypes {
     | '/teams/$teamSlug'
     | '/cba/'
     | '/players/'
+    | '/test/'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
@@ -193,6 +205,7 @@ export interface RootRouteChildren {
   TeamsTeamSlugRoute: typeof TeamsTeamSlugRouteWithChildren
   CbaIndexRoute: typeof CbaIndexRoute
   PlayersIndexRoute: typeof PlayersIndexRoute
+  TestIndexRoute: typeof TestIndexRoute
   CalculatorsBuyoutCustomRoute: typeof CalculatorsBuyoutCustomRoute
   ApiV1IndexRoute: typeof ApiV1IndexRoute
   ApiV1StaffIndexRoute: typeof ApiV1StaffIndexRoute
@@ -212,6 +225,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/test/': {
+      id: '/test/'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/players/': {
@@ -317,6 +337,7 @@ const rootRouteChildren: RootRouteChildren = {
   TeamsTeamSlugRoute: TeamsTeamSlugRouteWithChildren,
   CbaIndexRoute: CbaIndexRoute,
   PlayersIndexRoute: PlayersIndexRoute,
+  TestIndexRoute: TestIndexRoute,
   CalculatorsBuyoutCustomRoute: CalculatorsBuyoutCustomRoute,
   ApiV1IndexRoute: ApiV1IndexRoute,
   ApiV1StaffIndexRoute: ApiV1StaffIndexRoute,

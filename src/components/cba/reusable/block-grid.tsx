@@ -5,18 +5,25 @@ const COL_MAP: Record<number, string> = {
   4: "md:grid-cols-4",
 };
 
-export const BlockGrid = ({ cols = 2, blocks }: any) => {
+interface Block {
+  title: string;
+  description: string;
+}
+
+interface BlockGridProps {
+  cols?: number;
+  blocks: Block[];
+}
+
+export const BlockGrid = ({ cols = 2, blocks }: BlockGridProps) => {
   return (
-    <div
-      style={{ gridColumn: "span 3" }}
-      className={`grid grid-cols-1 ${COL_MAP[cols] || "md:grid-cols-2"} gap-3`}
-    >
-      {blocks.map((block: any, idx: number) => (
+    <div className={`grid grid-cols-1 ${COL_MAP[cols] ?? "md:grid-cols-2"} gap-3`}>
+      {blocks.map((block, idx) => (
         <div
           key={idx}
-          className="group relative bg-card border border-border/60 rounded-xl p-5 space-y-2 "
+          className="group relative bg-card border border-border/60 rounded-xl p-5 space-y-2 transition-all duration-200 border-t-primary border-t-4 rounded-t-none"
         >
-          <div className="absolute inset-0 rounded-xl bg-muted/0 transition-colors duration-200 pointer-events-none" />
+
           <h4 className="font-medium text-sm text-foreground tracking-tight">
             {block.title}
           </h4>
