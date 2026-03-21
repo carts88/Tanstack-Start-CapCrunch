@@ -352,22 +352,22 @@ export const expirationStatus: ISection = {
         },
         {
             type: "definition",
-            title: "Definitions",
+            title: "Expiration Status Terms",
             items: [
-                {   
-                    question: "What is an Accrued Season?",
-                    answer: "Skaters - 40 + games played, Goalies 35+ Games played",
-                    note: ""
+                {
+                    question: "Accrued Season",
+                    answer: "Skaters must be on the active for 40 regular season games, Goalies must be on the roster for 30 regular season games. Games missed due to hockey related injury count toward the required threshold."
                 },
-                {   
-                    question: "What is an Pro Experience?",
-                    answer: "Skaters - 40 + games played, Goalies 35+ Games played",
-                    note: ""
+                {
+                    question: "Professional Seasons",
+                    answer: "18 & 19 year olds accrue a pro season if they play in at least 11 games in any pro league. 20 year olds and above, only have to play 1 game. The player must also be under an NHL contract.",
+                    note: "Pro Leagues: NHL, AHL, ECHL, European Pro leagues"
+
                 },
-                {   
-                    question: "What is a Pro Season?",
-                    answer: "Skaters - 40 + games played, Goalies 35+ Games played",
-                    note: ""
+                {
+                    question: "Professional Experience",
+                    answer: "For players over the age of 20, 10or more games played in any professional league.",
+                    note: "Pro Leagues: NHL, AHL, ECHL, European Pro leagues"
                 }
             ]
         },
@@ -422,5 +422,139 @@ export const postTDLRules: ISection ={
             title: "Max Allowed Recalls post Trade Deadline",
             description: "Teams have 5 total recalls after the trade deadline, only 4 of these players can be on the clubs Active Roster at once. "
         }
+    ]
+}
+
+export const buyoutCba: ISection = {
+    title:"Contract Buyouts",
+    description: "Buyouts allow a team to end a contract to a player on their team, for a cap penalty.",
+    subSections: [
+        {
+            type: "rich-list",
+            title: "When can you buyout a player? Buyout Windows",
+            items: [
+                {
+                    label: "There are 2 chances for teams to buyout players",
+                    subList: [
+                        {
+                            label: "Later of June 15th or 48 hours after last Stanley Cup Final Game.",
+                            description: "This buyout window applies to every team, and any player is eligible. "
+                        },
+                        {
+                            label: "An additional buyouts window opens if the following apply:",
+                            description: "1.) A player on the team file for arbitration, and it is settled. 2.) The player being bought out has a $4,000,000 caphit or higher. 3.) The player being bought was on the team he's being bought out during the previous trade deadline."
+                            
+                        }
+                    ]    
+                }
+            ]
+        },
+        {
+            type: "grid-section",
+            title: "Buyout Terms",
+            description: "The terminology associated with buyouts!",
+            cols: 1,
+            subSection: [
+                {
+                    type: "block-grid",
+                    cols: 2,
+                    title: "Buyout Ratio",
+                    description: "The ratio required in order to calculate the buyout cost. The ratio based on the players age on the day of the buyout.",
+                    blocks: [
+                        {title: "Younger than 26 years old", description: "1/3 buyout ratio",},
+                        {title: "Older than 26 years old", description: "2/3 buyout ratio"}
+
+                    ]
+                },
+                {
+                    type: "definition",
+                    items: [
+                        {
+                            question: "Buyout Length",
+                            answer: "The total term remaining in the contract multiplied by 2."
+                        },
+                        {
+                            question: "Total Buyout Cost",
+                            answer: "This is the total dead salary team will pay over the course of the buyout. It calculated by: Multiplying the total base salary remaining within the deal with the buyout ratio."
+                        },
+                        {
+                            question: "Annual Buyout Cost",
+                            answer: "This is calculated by dividing the Total Buyout Cost by the buyout length."
+                        },
+                        {
+                            question: "Cap Savings",
+                            answer: "This is the money on the salary cap being saved by buying out the player."
+                        },
+                        {
+                            question: "Cap Penalty",
+                            answer: "This is the dead cap hit that will replace the original caphit of the player. It cannot be traded to another team, the team is stuck with it."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            type: "list",
+            title: "How to calculate a buyout?",
+            items: [
+                "Once you have the variables from above calculated...",
+                "To calculate Cap Savings of a specific season, take the Annual Buyout Cost (calculated above), and subtract it by the player salary in that season.",
+                "To calculate the Cap Penalty of a specific season, take Cap Savings that you just calculated, and subtract it from the Total Average Annual value (base salary + bonuse)",
+                "Please note, that buyout penalties and savings are calculated year to year."
+            ]
+        },
+        {
+            type: "grid-section",
+            title: "Buyout Calulation Example",
+            cols: 1,
+            subSection: [
+                {
+                    type: "stat-callout",
+                    cols: 3,
+                    stats: [
+                        {
+                            label: "Buyout Length",
+                            value: "2 x 2 = 4"
+                        },
+                        {
+                            label: "Buyout Cost",
+                            value: "$6M * 1/3"
+                        },
+                        {
+                            label: "Annual Buyout Cost",
+                            value: "$2M/4 = $500,000"
+                        },
+
+                    ]
+                },
+                {
+                    type: "table",
+                    headers: [
+                        "Season", "Caphit", "Base Salary", "Signing Bonus", "Cap Savings", "Cap Penalty"
+                    ],
+                    tableData: [
+                        ["25-26", "$5,000,000 ", "$3,000,000", "$1,000,000", "$2,500,000", "$2,500,000"],
+                        ["26-27", "$5,000,000", "$3,000,000", "$0", "$2,500,000", "$2,500,000"],
+                        ["27-28", "-","-","-","-$500,000", "$500,000"],
+                        ["28-29","-","-","-","-$500,000", "$500,000"],
+                    ],
+                    footers: [
+                        "TOTALS", "$10,000,000", "$6,000,000", "$1,000,000","$4,000,000","$6,000,000", 
+                    ]
+                },
+                {
+                    type: "description",
+                    title: "How does contract structure effect buyouts?",
+                    description: "Signing bonuses in a contract are fully guaranteed money. Meaning the player recieves that money even if they're bought out. Contracts that are signing bonus heavy tend to be 'buyout proof', in other words the team buying out the player recieves very little cap savings. In the 2026 CBA world, where there is a signing bonus cap on contracts at 60%, teams will likely try to front load that signing bonus so buying out the contract becomes easier toward the end of the deal."
+                }
+            ]
+        },
+        {
+            type: "link-to-tool",
+            name: "Buyout Calculator",
+            description: "This allows you to calculate for any NHL player in the league, aswell as a custom contract inputted by the user.",
+            link: "calculators/buyout"
+        }
+
     ]
 }

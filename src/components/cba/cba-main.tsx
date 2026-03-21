@@ -1,4 +1,4 @@
-import { contractVariability, contractTypes, entryDraft, freeAgency, expirationStatus } from "./config";
+import { contractVariability, contractTypes, entryDraft, freeAgency, expirationStatus, buyoutCba } from "./config";
 import { ISection } from "./types";
 import { CBANavigator } from "./reusable/cba-navigator";
 
@@ -43,6 +43,7 @@ export const CBA_SECTIONS: ICBASection[] = [
   {
     trigger: "Roster Moves / Transactions",
     sections: [
+      buyoutCba
       /**
        * buyouts, contract terminations
        * roster designations -- minors, nhl, ir, ltir, seir, soir, buried,

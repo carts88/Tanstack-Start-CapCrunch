@@ -3,8 +3,8 @@ import { RenderSubSection } from "../render-subsection";
 import { COL_MAP } from "./utils";
 
 interface IGridSection {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
     cols: number;
     subSections: SubSection[];
 }
@@ -14,7 +14,7 @@ export const GridSection = ({ title, description, cols =3, subSections }: IGridS
         <section className="w-full py-4 px-1">
 
             {/* Section Header */}
-            <div className="mb-2 max-w-2xl">
+            {title&&<div className="mb-2 max-w-2xl">
                 <h2 className="text-2xl font-semibold tracking-tight text-foreground mb-3">
                     {title}
                 </h2>
@@ -23,7 +23,7 @@ export const GridSection = ({ title, description, cols =3, subSections }: IGridS
                         {description}
                     </p>
                 )}
-            </div>
+            </div>}
 
             {/* Divider */}
             <div className="w-full h-px bg-gray-200 dark:bg-gray-700 mb-4" />

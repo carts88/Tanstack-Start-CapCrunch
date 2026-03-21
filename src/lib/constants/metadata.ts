@@ -24,168 +24,378 @@ export const seasons = [
 ];
 
 
-export const nhlTeams = [
+export interface NHLTeamMetaData {
+  label: string;
+  value: string;
+  division: string;
+  teamSlug: string;
+  primaryColor: string;
+  secondColor: string;
+  established?: number;
+  thirdColor?: string | null 
+  basecolor?: string | null 
+  affiliates?: { 
+      league: string;
+      team: string;
+      slug: string;
+    }[]
+}
+
+
+export const nhlTeams: NHLTeamMetaData[] = [
   {
-    value: "ANA",
     label: "Anaheim Ducks",
-    imagePath: "/logos/nhl/anaheim-ducks.svg"
+    value: "ANA",
+    division: "Pacific",
+    teamSlug: "anaheim-ducks",
+    primaryColor: "#CF4520",
+    secondColor: "#010101",
+    thirdColor: "#89734C",
+    affiliates: [],
   },
   {
-    value: "BOS",
     label: "Boston Bruins",
-    imagePath: "/logos/nhl/boston-bruins.svg"
+    value: "BOS",
+    division: "Atlantic",
+    teamSlug: "boston-bruins",
+    primaryColor: "#010101",
+    secondColor: "#FFB81C",
+    thirdColor: null,
+    affiliates: [],
+
   },
   {
-    value: "BUF",
     label: "Buffalo Sabres",
-    imagePath: "/logos/nhl/buffalo-sabres.svg"
+    value: "BUF",
+    division: "Atlantic",
+    teamSlug: "buffalo-sabres",
+    primaryColor: "#003087",
+    secondColor: "#FFB81C",
+    thirdColor: "#C8102E",
+    affiliates: [],
   },
   {
-    value: "CGY",
     label: "Calgary Flames",
-    imagePath: "/logos/nhl/calgary-flames.svg"
+    value: "CGY",
+    division: "Pacific",
+    teamSlug: "calgary-flames",
+    primaryColor: "#C8102E",
+    secondColor: "#F1BE48",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "CAR",
     label: "Carolina Hurricanes",
-    imagePath: "/logos/nhl/carolina-hurricanes.svg"
+    value: "CAR",
+    division: "Metropolitan",
+    teamSlug: "carolina-hurricanes",
+    primaryColor: "#C8102E",
+    secondColor: "#333F48",
+    thirdColor: "#010101",
+    affiliates: [],
   },
   {
-    value: "CHI",
     label: "Chicago Blackhawks",
-    imagePath: "/logos/nhl/chicago-blackhawks.svg"
+    value: "CHI",
+    division: "Central",
+    teamSlug: "chicago-blackhawks",
+    primaryColor: "#C8102E",
+    secondColor: "#010101",
+    thirdColor: "#CC8A00",
+    affiliates: [],
   },
   {
-    value: "COL",
     label: "Colorado Avalanche",
-    imagePath: "/logos/nhl/colorado-avalanche.svg"
+    value: "COL",
+    division: "Central",
+    teamSlug: "colorado-avalanche",
+    primaryColor: "#6F263D",
+    secondColor: "#236192",
+    thirdColor: "#A2AAAD",
+    affiliates: [],
   },
   {
-    value: "CBJ",
     label: "Columbus Blue Jackets",
-    imagePath: "/logos/nhl/columbus-blue-jackets.svg"
+    value: "CBJ",
+    division: "Metropolitan",
+    teamSlug: "columbus-blue-jackets",
+    primaryColor: "#041E42",
+    secondColor: "#C8102E",
+    thirdColor: "#A2AAAD",
+    affiliates: [],
   },
   {
-    value: "DAL",
     label: "Dallas Stars",
-    imagePath: "/logos/nhl/dallas-stars.svg"
+    value: "DAL",
+    division: "Central",
+    teamSlug: "dallas-stars",
+    primaryColor: "#00843D",
+    secondColor: "#010101",
+    thirdColor: "#A2AAAD",
+    affiliates: [],
   },
   {
-    value: "DET",
     label: "Detroit Red Wings",
-    imagePath: "/logos/nhl/detroit-red-wings.svg"
+    value: "DET",
+    division: "Atlantic",
+    teamSlug: "detroit-red-wings",
+    primaryColor: "#C8102E",
+    secondColor: "#FFFFFF",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "EDM",
     label: "Edmonton Oilers",
-    imagePath: "/logos/nhl/edmonton-oilers.svg"
+    value: "EDM",
+    division: "Pacific",
+    teamSlug: "edmonton-oilers",
+    primaryColor: "#00205B",
+    secondColor: "#CF4520",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "FLA",
     label: "Florida Panthers",
-    imagePath: "/logos/nhl/florida-panthers.svg"
+    value: "FLA",
+    division: "Atlantic",
+    teamSlug: "florida-panthers",
+    primaryColor: "#C8102E",
+    secondColor: "#041E42",
+    thirdColor: "#B9975B",
+    basecolor: "#041E42",
+    affiliates: [],
   },
   {
-    value: "LAK",
     label: "Los Angeles Kings",
-    imagePath: "/logos/nhl/los-angeles-kings.svg"
+    value: "LAK",
+    division: "Pacific",
+    teamSlug: "los-angeles-kings",
+    primaryColor: "#010101",
+    secondColor: "#A2AAAD",
+    thirdColor: "#868787",
+    basecolor: "#868787",
+    affiliates: [],
   },
   {
-    value: "MIN",
     label: "Minnesota Wild",
-    imagePath: "/logos/nhl/minnesota-wild.svg"
+    value: "MIN",
+    division: "Central",
+    teamSlug: "minnesota-wild",
+    primaryColor: "#154734",
+    secondColor: "#A6192E",
+    thirdColor: "#EAAA00",
+    affiliates: [],
   },
   {
+    label: "Montreal Canadiens",
     value: "MTL",
-    label: "Montréal Canadiens",
-    imagePath: "/logos/nhl/montreal-canadiens.svg"
+    division: "Atlantic",
+    teamSlug: "montreal-canadiens",
+    primaryColor: "#A6192E",
+    secondColor: "#001E62",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "NSH",
     label: "Nashville Predators",
-    imagePath: "/logos/nhl/nashville-predators.svg"
+    value: "NSH",
+    division: "Central",
+    teamSlug: "nashville-predators",
+    primaryColor: "#FFB81C",
+    secondColor: "#041E42",
+    basecolor: "#041E42",
+    thirdColor: "#FFFFFF",
+    affiliates: [],
   },
   {
-    value: "NJD",
     label: "New Jersey Devils",
-    imagePath: "/logos/nhl/new-jersey-devils.svg"
+    value: "NJD",
+    division: "Metropolitan",
+    teamSlug: "new-jersey-devils",
+    primaryColor: "#C8102E",
+    secondColor: "#010101",
+    thirdColor: "#046A38",
+    affiliates: [],
   },
   {
-    value: "NYI",
     label: "New York Islanders",
-    imagePath: "/logos/nhl/new-york-islanders.svg"
+    value: "NYI",
+    division: "Metropolitan",
+    teamSlug: "new-york-islanders",
+    primaryColor: "#003087",
+    secondColor: "#FC4C02",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "NYR",
     label: "New York Rangers",
-    imagePath: "/logos/nhl/new-york-rangers.svg"
+    value: "NYR",
+    division: "Metropolitan",
+    teamSlug: "new-york-rangers",
+    primaryColor: "#0032A0",
+    secondColor: "#C8102E",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "OTT",
     label: "Ottawa Senators",
-    imagePath: "/logos/nhl/ottawa-senators.svg"
+    value: "OTT",
+    division: "Atlantic",
+    teamSlug: "ottawa-senators",
+    primaryColor: "#010101",
+    secondColor: "#C8102E",
+    basecolor: "#010101",
+    thirdColor: "#B9975B",
+    affiliates: [],
   },
   {
-    value: "PHI",
-    label: "Philadelphia Flyers",
-    imagePath: "/logos/nhl/philadelphia-flyers.svg"
-  },
+  label: "Philadelphia Flyers",
+  value: "PHI",
+  division: "Metropolitan",
+  teamSlug: "philadelphia-flyers",
+  established: 1967,
+  primaryColor: "#CF4520",
+  secondColor: "#010101",
+  thirdColor: "#ffffff",
+  basecolor: "#000000",
+  affiliates: [
+    { 
+      league: 'AHL',
+      team: 'LHV',
+      slug: 'lehigh-valley-phantoms'
+    },
+    { 
+      league: 'ECHL',
+      team: 'REA',
+      slug: 'reading-royals'
+    },
+  ]
+},
   {
-    value: "PIT",
     label: "Pittsburgh Penguins",
-    imagePath: "/logos/nhl/pittsburgh-penguins.svg"
+    value: "PIT",
+    division: "Metropolitan",
+    teamSlug: "pittsburgh-penguins",
+    primaryColor: "#FCB514",
+    secondColor: "#FFB81C",
+    thirdColor: "#FCB514",
+    affiliates: [],
   },
   {
-    value: "SJS",
     label: "San Jose Sharks",
-    imagePath: "/logos/nhl/san-jose-sharks.svg"
+    value: "SJS",
+    division: "Pacific",
+    teamSlug: "san-jose-sharks",
+    primaryColor: "#006271",
+    secondColor: "#010101",
+    thirdColor: "#B2B4B2",
+    affiliates: [],
   },
   {
-    value: "SEA",
     label: "Seattle Kraken",
-    imagePath: "/logos/nhl/seattle-kraken.svg"
+    value: "SEA",
+    division: "Pacific",
+    teamSlug: "seattle-kraken",
+    primaryColor: "#9CDBD9",
+    secondColor: "#051C2C",
+    thirdColor: "#C8102E",
+    basecolor: "#355464",
+    affiliates: [],
   },
   {
-    value: "STL",
     label: "St. Louis Blues",
-    imagePath: "/logos/nhl/st-louis-blues.svg"
+    value: "STL",
+    division: "Central",
+    teamSlug: "st-louis-blues",
+    primaryColor: "#003087",
+    secondColor: "#FFB81C",
+    thirdColor: "#041E42",
+    affiliates: [],
   },
   {
-    value: "TBL",
     label: "Tampa Bay Lightning",
-    imagePath: "/logos/nhl/tampa-bay-lightning.svg"
+    value: "TBL",
+    division: "Atlantic",
+    teamSlug: "tampa-bay-lightning",
+    primaryColor: "#00205B",
+    secondColor: "#FFFFFF",
+    thirdColor: "#010101",
+    affiliates: [],
   },
   {
-    value: "TOR",
     label: "Toronto Maple Leafs",
-    imagePath: "/logos/nhl/toronto-maple-leafs.svg"
+    value: "TOR",
+    division: "Atlantic",
+    teamSlug: "toronto-maple-leafs",
+    primaryColor: "#00205B",
+    secondColor: "#FFFFFF",
+    thirdColor: null,
+    affiliates: [],
   },
   {
-    value: "UTA",
     label: "Utah Mammoth",
-    imagePath: "/logos/nhl/utah-mammoth.svg"
+    value: "UTA",
+    division: "Central",
+    teamSlug: "utah-mammoth",
+    primaryColor: "#69B3E7",
+    secondColor: "#010101",
+    thirdColor: "#FFFFFF",
+    affiliates: [],
   },
   {
-    value: "VAN",
     label: "Vancouver Canucks",
-    imagePath: "/logos/nhl/vancouver-canucks.svg"
+    value: "VAN",
+    division: "Pacific",
+    teamSlug: "vancouver-canucks",
+    primaryColor: "#00205B",
+    secondColor: "#00843D",
+    thirdColor: "#051C2C",
+    affiliates: [],
   },
   {
-    value: "VGK",
     label: "Vegas Golden Knights",
-    imagePath: "/logos/nhl/vegas-golden-knights.svg"
+    value: "VGK",
+    division: "Pacific",
+    teamSlug: "vegas-golden-knights",
+    primaryColor: "#B9975B",
+    secondColor: "#333F48",
+    thirdColor: "#C8102E",
+    affiliates: [],
   },
   {
-    value: "WSH",
     label: "Washington Capitals",
-    imagePath: "/logos/nhl/washington-capitals.svg"
+    value: "WSH",
+    division: "Metropolitan",
+    teamSlug: "washington-capitals",
+    primaryColor: "#C8102E",
+    secondColor: "#041E42",
+    basecolor: "#041E42",
+    thirdColor: "#FFFFFF",
+    affiliates: [],
   },
   {
-    value: "WPG",
     label: "Winnipeg Jets",
-    imagePath: "/logos/nhl/winnipeg-jets.svg"
+    value: "WPG",
+    division: "Central",
+    teamSlug: "winnipeg-jets",
+    primaryColor: "#041E42",
+    secondColor: "#53565A",
+    thirdColor: "#004C97",
+    affiliates: [],
+  },
+  {
+    label: "Atlanta Thrashers",
+    value: "ATL",
+    division: "Southeast", // Former division before relocation
+    teamSlug: "atlanta-thrashers",
+    primaryColor: "#041E42",
+    secondColor: "#53565A",
+    thirdColor: "#004C97",
+    affiliates: [],
   }
 ];
+
+
 
 export  const contractTypes = [
   {

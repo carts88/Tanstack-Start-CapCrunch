@@ -15,7 +15,10 @@ import type { SubSection } from "./types";
 export const RenderSubSection = ({ section }: { section: SubSection }) => {
   switch (section.type) {
     case "block-grid":
-      return <BlockGrid cols={section.cols} blocks={section.blocks} />;
+      return <BlockGrid 
+      title={section.title}
+      description={section.description}
+      cols={section.cols} blocks={section.blocks} />;
 
     case "list":
       return <ListSection title={section.title} items={section.items} />;

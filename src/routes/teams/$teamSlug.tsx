@@ -1,4 +1,5 @@
- import { createFileRoute } from '@tanstack/react-router'
+ import TeamMain from '@/components/team/team-main'
+import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/teams/$teamSlug')({
   component: RouteComponent,
@@ -6,5 +7,5 @@ export const Route = createFileRoute('/teams/$teamSlug')({
 
 function RouteComponent() {
   const {teamSlug} = Route.useParams()
-  return <div>Hello "/teams/$teamSlug"! {teamSlug} </div>
+  return <TeamMain />
 }

@@ -1,3 +1,4 @@
+import PlayerMain from '@/components/players/player-main'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/players/$playerSlug')({
@@ -5,5 +6,5 @@ export const Route = createFileRoute('/players/$playerSlug')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/players/$playerSlug"!</div>
+  return <div><PlayerMain /></div>
 }

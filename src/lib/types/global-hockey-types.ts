@@ -8,3 +8,4 @@ export type ContractTypes = "SPC-FA" | "SPC-EXT" | "SPC" |"ELC" | "ELC-FA" | "35
 export type ClauseTypes = "NMC" | "NTC" | "M-NTC" | "M-NMC" | "NMC*" | "NTC*" | "M-NTC*" | "M-NMC*" 
 export type VariabilityStructure = "FRONT-LOADED" | "BACK-LOADED"
 export type ShootsCatchesType = "L" | "R";
+export type ExpiryStatus = "UFA" | "UFA G6" | "RFA" | "RFA" | "10.2(c)" | "ARB" | "UFA NO QO"

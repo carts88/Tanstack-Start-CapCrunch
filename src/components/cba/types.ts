@@ -11,7 +11,7 @@ interface BaseBlock {
 
 // ── Block Grid ────────────────────────────────────────────────────────────────
 
-export interface BlockGridSection {
+export interface BlockGridSection extends BaseBlock {
   type: "block-grid";
   cols?: number;
   blocks: { title: string; description: string }[];
@@ -35,16 +35,15 @@ export interface DescriptionSubSection {
 
 // ── Link to Tool ──────────────────────────────────────────────────────────────
 
-export interface LinkToToolSubSection {
+export interface LinkToToolSubSection extends BaseBlock{
   type: "link-to-tool";
   name: string;
   link: string;
-  description?: string;
 }
 
 // ── Table ─────────────────────────────────────────────────────────────────────
 
-export interface TableSubSection {
+export interface TableSubSection extends BaseBlock{
   type: "table";
   headers: string[];
   tableData: (string | { value: string; badge?: BadgeVariant })[][];
@@ -54,10 +53,8 @@ export interface TableSubSection {
 
 // ── Grid Section ──────────────────────────────────────────────────────────────
 
-export interface GridSubSection {
+export interface GridSubSection extends BaseBlock{
   type: "grid-section";
-  title: string;
-  description: string;
   cols: number;
   subSection: SubSection[];
 }
