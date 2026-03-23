@@ -21,7 +21,8 @@ export const CBA_SECTIONS: ICBASection[] = [
   {
     trigger: "Players",
     sections: [
-      expirationStatus
+      expirationStatus,
+      freeAgency
       /**
        * Trade Clauses - types, eligibility
        * define accruedSeason, proSeason, etc

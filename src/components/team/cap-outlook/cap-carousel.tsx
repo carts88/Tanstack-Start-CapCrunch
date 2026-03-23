@@ -3,6 +3,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 
 // components
 import { ExpirationBreakdownRow } from './expiration-breakdown-row';
+import { formatCurrency } from '@/lib/utils/formatters';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -69,7 +70,7 @@ const GROUP_CONFIG: Record<string, { label: string; color: string; bg: string }>
   longTermIR:     { label: 'LTIR',       color: '#A32D2D', bg: 'rgba(163,45,45,0.12)' },
 };
 
-const RETENTION_COLORS = ['#185FA5', '#0F6E56', '#534AB7'];
+const RETENTION_COLORS = ['bg-primary/70', 'bg-primary/50', 'bg-primary/30'];
 
 const DEAD_CAP_BADGE: Record<string, { label: string; className: string }> = {
   RS:             { label: 'RS',     className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300' },
@@ -91,22 +92,66 @@ const fmtDollar = (v: number) => `$${Math.round(v).toLocaleString()}`;
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
-function MetricCard({ label, value, variant = 'default' }: { label: string; value: string; variant?: 'default' | 'danger' | 'success' }) {
+function MetricCard({ label, value, 
+    lowThreshold,
+    highThreshold,
+    isMoney,
+    variant = 'default' }: { 
+        label: string; 
+        value: string | number;
+        lowThreshold?: number;
+        highThreshold?: number;
+        isMoney?: boolean
+        variant?: 'default' | 'danger' | 'success' },
+      ) {
+
+  const isANumber = typeof value === "number";
+
+  const numericVariant = isANumber && lowThreshold !== undefined && highThreshold !== undefined
+    ? value > highThreshold ? 'danger'
+    : value < lowThreshold ? 'success'
+    : 'default'
+    : variant;
+
   const valueColor =
-    variant === 'danger'  ? 'text-red-500 dark:text-red-400' :
-    variant === 'success' ? 'text-emerald-600 dark:text-emerald-400' :
+    numericVariant === 'danger'  ? 'text-red-500 dark:text-red-400' :
+    numericVariant === 'success' ? 'text-emerald-600 dark:text-emerald-400' :
     'text-foreground';
+
+  const bgStyle =
+    numericVariant === 'danger'  ? 'bg-destructive/40 border border-destructive' :
+    numericVariant === 'success' ? 'bg-emerald-500/20 border border-emerald-500' :
+    'bg-muted/50';
+
   return (
-    <div className="bg-muted/50 rounded-lg px-2.5 py-1.5">
+    <div className={`rounded-lg px-2.5 py-1.5 ${bgStyle}`}>
       <p className="text-[11px] text-muted-foreground mb-0.5">{label}</p>
-      <p className={`text-[15px] font-medium leading-tight ${valueColor}`}>{value}</p>
+      <p className={`text-[15px] font-medium leading-tight ${valueColor}`}>{isMoney ?  formatCurrency(isANumber ? value : 0) : value}</p>
     </div>
   );
 }
 
-function CapUsageBar({ caphit, upperLimit, lowerLimit }: { caphit: number; upperLimit: number; lowerLimit: number }) {
+const SEGMENT_STYLES = [
+  { bg: 'bg-primary',           text: 'text-primary-foreground',      muted: 'text-primary-foreground/70' },
+  { bg: 'bg-primary/75',        text: 'text-primary-foreground',      muted: 'text-primary-foreground/70' },
+  { bg: 'bg-primary/55',        text: 'text-primary-foreground',      muted: 'text-primary-foreground/70' },
+  { bg: 'bg-primary/40',        text: 'text-primary',                 muted: 'text-primary/70'            },
+  { bg: 'bg-primary/28',        text: 'text-primary',                 muted: 'text-primary/70'            },
+];
+const SEGMENT_OPACITIES = [1, 0.75, 0.55, 0.4, 0.28];
+
+function CapUsageBar({ caphit, upperLimit, lowerLimit, yearlyOutlook }: { caphit: number; upperLimit: number; lowerLimit: number; yearlyOutlook: GroupOutlook[] }) {
   const pct = Math.min((caphit / upperLimit) * 100, 100);
   const space = upperLimit - caphit;
+  const active = yearlyOutlook.filter(g => g.total > 0);
+
+  const MIN_PCT = 10;
+  const rawPcts = active.map(g => (g.caphit / upperLimit) * 100);
+  const clampedPcts = rawPcts.map(p => Math.max(p, MIN_PCT));
+  const totalClamped = clampedPcts.reduce((a, b) => a + b, 0);
+  const scale = totalClamped > pct ? pct / totalClamped : 1;
+  const finalPcts = clampedPcts.map(p => p * scale);
+
   return (
     <div className="space-y-1.5">
       <div className="flex justify-between items-center">
@@ -114,56 +159,29 @@ function CapUsageBar({ caphit, upperLimit, lowerLimit }: { caphit: number; upper
         <span className="text-[11px] text-muted-foreground">{pct.toFixed(1)}% of {fmtM(upperLimit)}</span>
       </div>
       <div className="w-full h-7 rounded-md overflow-hidden border border-border flex">
-        <div
-          className="flex items-center justify-end pr-2.5 transition-all duration-500"
-          style={{ width: `${pct}%`, background: '#185FA5' }}
-        >
-          <span className="text-[11px] font-medium text-white whitespace-nowrap">{fmtM(caphit)}</span>
-        </div>
-        <div className="flex items-center pl-2.5 flex-1 bg-muted/30">
-          <span className="text-[11px] text-muted-foreground whitespace-nowrap">{fmtM(space)} left</span>
-        </div>
-      </div>
-      <div className="flex justify-between text-[10px] text-muted-foreground">
-        <span>Floor {fmtM(lowerLimit)}</span>
-        <span>Ceiling {fmtM(upperLimit)}</span>
-      </div>
-    </div>
-  );
-}
-
-function GroupBreakdownBars({ yearlyOutlook }: { yearlyOutlook: GroupOutlook[] }) {
-  const active = yearlyOutlook.filter(g => g.total > 0);
-  return (
-    <div className="space-y-1.5">
-      <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Group breakdown</span>
-      <div className="space-y-1.5 mt-1">
-        {active.map(g => {
-          const cfg = GROUP_CONFIG[g.group];
-          const pct = Math.round(g.capPercentage);
+        {active.map((g, i) => {
+          const style = SEGMENT_STYLES[i] ?? SEGMENT_STYLES[SEGMENT_STYLES.length - 1];
+          const opacity = SEGMENT_OPACITIES[i] ?? 0.2;
+          const isDark = opacity > 0.5;
           return (
             <HoverCard key={g.group} openDelay={200} closeDelay={100}>
               <HoverCardTrigger asChild>
-                <div className="flex items-center gap-2 cursor-pointer group">
-                  <span className="text-[11px] text-muted-foreground w-[68px] shrink-0 truncate">
-                    {cfg.label} ({g.total})
-                  </span>
-                  <div className="flex-1 h-[18px] bg-muted/40 rounded-[3px] overflow-hidden">
-                    <div
-                      className="h-full rounded-[3px] flex items-center pl-2 transition-all duration-500 group-hover:opacity-80"
-                      style={{ width: `${pct}%`, background: cfg.color }}
-                    >
-                      <span className="text-[10px] font-medium text-white whitespace-nowrap">{fmtM(g.caphit)}</span>
-                    </div>
+                <div
+                    className={`h-full flex items-center gap-1 px-2 transition-all duration-500 cursor-pointer hover:brightness-110 overflow-hidden shrink-0 ${style.bg}`}
+                    style={{ width: `${finalPcts[i]}%` }}
+                  >
+                    <span className={`text-[10px] font-semibold whitespace-nowrap ${style.text}`}>{GROUP_CONFIG[g.group].label}</span>
+                    <span className={`text-[10px] whitespace-nowrap ${style.muted}`}>·</span>
+                    <span className={`text-[10px] whitespace-nowrap ${style.text}`}>{fmtM(g.caphit)}</span>
+                    <span className={`text-[10px] whitespace-nowrap ${style.muted}`}>·</span>
+                    <span className={`text-[10px] whitespace-nowrap ${style.muted}`}>{g.total}</span>
                   </div>
-                  <span className="text-[11px] text-muted-foreground w-8 text-right shrink-0">{pct}%</span>
-                </div>
               </HoverCardTrigger>
               <HoverCardContent side="top" align="start" className="w-52 p-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: cfg.color }} />
-                    <span className="font-medium text-sm">{cfg.label}</span>
+                    <div className="w-2.5 h-2.5 rounded-sm shrink-0" style={{ background: `hsl(var(--primary) / ${opacity})` }} />
+                    <span className="font-medium text-sm">{GROUP_CONFIG[g.group].label}</span>
                   </div>
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs">
@@ -175,8 +193,8 @@ function GroupBreakdownBars({ yearlyOutlook }: { yearlyOutlook: GroupOutlook[] }
                       <span className="font-medium">{fmtDollar(g.caphit)}</span>
                     </div>
                     <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">% of total</span>
-                      <span>{pct}%</span>
+                      <span className="text-muted-foreground">% of cap</span>
+                      <span>{((g.caphit / upperLimit) * 100).toFixed(1)}%</span>
                     </div>
                   </div>
                 </div>
@@ -184,11 +202,17 @@ function GroupBreakdownBars({ yearlyOutlook }: { yearlyOutlook: GroupOutlook[] }
             </HoverCard>
           );
         })}
+        <div className="flex items-center pl-2.5 flex-1 bg-muted/30">
+          <span className="text-[11px] text-muted-foreground whitespace-nowrap">{fmtM(space)} left</span>
+        </div>
+      </div>
+      <div className="flex justify-between text-[10px] text-muted-foreground">
+        <span>Floor {fmtM(lowerLimit)}</span>
+        <span>Ceiling {fmtM(upperLimit)}</span>
       </div>
     </div>
   );
 }
-
 function RetentionBar({ deadcap, upperLimit }: { deadcap: DeadCapEntry[]; upperLimit: number }) {
   const maxSlots = 3;
   const retLimit = upperLimit * 0.15;
@@ -210,8 +234,8 @@ function RetentionBar({ deadcap, upperLimit }: { deadcap: DeadCapEntry[]; upperL
           <HoverCard key={p.fullName} openDelay={200} closeDelay={100}>
             <HoverCardTrigger asChild>
               <div
-                className="flex flex-col items-center justify-center px-2 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden border-r border-white/20 last:border-r-0"
-                style={{ width: `${100 / maxSlots}%`, background: RETENTION_COLORS[i % 3] }}
+                className={`flex flex-col items-center justify-center px-2 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden border-r border-white/20 last:border-r-0 ${RETENTION_COLORS[i % 3]}`}
+                style={{ width: `${100 / maxSlots}%` }}
               >
                 <span
                   className="font-medium text-white leading-tight truncate w-full text-center"
@@ -283,35 +307,33 @@ function DeadCapList({ deadcap }: { deadcap: DeadCapEntry[] }) {
       <div className="flex justify-between items-center">
         <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Dead cap</span>
         {total > 0 && (
-          <span className="text-[11px] font-medium text-red-500 dark:text-red-400">{fmtM(total)} total</span>
+          <span className="text-[11px] font-medium text-destructive">{fmtM(total)}</span>
         )}
       </div>
       {all.length === 0 ? (
-        <p className="text-[12px] text-muted-foreground py-0.5">None</p>
+        <p className="text-[11px] text-muted-foreground">None</p>
       ) : (
-        <div className="divide-y divide-border rounded-md border border-border overflow-hidden">
+        <div className="rounded-md border border-border overflow-hidden">
           {all.map((p, i) => {
             const badge = DEAD_CAP_BADGE[p.type];
             return (
               <HoverCard key={i} openDelay={200} closeDelay={100}>
                 <HoverCardTrigger asChild>
-                  <div className="flex items-center justify-between px-2 py-1 bg-background hover:bg-muted/40 transition-colors cursor-pointer">
-                    <div className="min-w-0">
-                      <p className="text-[12px] font-medium text-foreground truncate">{p.fullName}</p>
-                      <p className="text-[10px] text-muted-foreground">
-                        {p.termRemaining !== undefined ? `${p.termRemaining} yr left` : 'overage'}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 shrink-0 ml-3">
-                      <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${badge.className}`}>
+                  <div className={`flex items-center justify-between px-2 py-[5px] bg-background hover:bg-muted/40 transition-colors cursor-pointer ${i > 0 ? 'border-t border-border' : ''}`}>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className={`text-[10px] font-medium px-1 py-px rounded shrink-0 ${badge.className}`}>
                         {badge.label}
                       </span>
-                      <span className="text-[12px] font-medium text-red-500 dark:text-red-400">{fmtM(p.caphit)}</span>
+                      <span className="text-[11px] font-medium text-foreground truncate">{p.fullName}</span>
+                      {p.termRemaining !== undefined && (
+                        <span className="text-[10px] text-muted-foreground shrink-0">{p.termRemaining}yr</span>
+                      )}
                     </div>
+                    <span className="text-[11px] font-medium text-destructive shrink-0 ml-2">{fmtM(p.caphit)}</span>
                   </div>
                 </HoverCardTrigger>
                 {p.note && (
-                  <HoverCardContent side="top" align="end" className="w-72 p-3">
+                  <HoverCardContent side="top" align="end" className="w-64 p-3">
                     <p className="text-xs text-muted-foreground leading-relaxed">{p.note}</p>
                   </HoverCardContent>
                 )}
@@ -324,10 +346,6 @@ function DeadCapList({ deadcap }: { deadcap: DeadCapEntry[] }) {
   );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
-
-
-
 // ─── Main Component ─────────────────────────────────────────────────────────────
 
 export  function CapOutlookCarousel({ capOutlook }: CapOutlookCarouselProps) {
@@ -336,13 +354,6 @@ export  function CapOutlookCarousel({ capOutlook }: CapOutlookCarouselProps) {
 
   const capSpace = s.upperLimit - s.caphit;
   const spaceVariant = capSpace < 5_000_000 ? 'danger' : 'success';
-
-  const heightStr = s.avgHeight.length === 2
-    ? `${s.avgHeight[0]} / ${(s.avgHeight[1] as number).toFixed(0)} cm`
-    : '—';
-  const weightStr = s.avgWeight.length === 2
-    ? `${s.avgWeight[0]} lbs / ${(s.avgWeight[1] as number).toFixed(1)} kg`
-    : '—';
 
   return (
     <div className="w-full space-y-3 font-sans">
@@ -368,25 +379,33 @@ export  function CapOutlookCarousel({ capOutlook }: CapOutlookCarouselProps) {
             </div>
 
         {/* Metric rows */}
-        <div className="grid grid-cols-6 gap-2">
-          <MetricCard label="Cap hit"         value={fmtM(s.caphit)} />
-          <MetricCard label="Cap space"       value={fmtM(capSpace)} variant={spaceVariant} />
-          <MetricCard label="Avg age"         value={String(s.avgAge)} />
-          <MetricCard label="Roster 23·50·90" value={`${s.roster23}·${s.roster50}·${s.roster90}`} />
-          <MetricCard label="Avg height" value={heightStr} />
-          <MetricCard label="Avg weight" value={weightStr} />
-
+        <div className="grid grid-cols-7 gap-2">
+          <MetricCard label="Cap hit"    value={s.caphit}   lowThreshold={s.lowerLimit} highThreshold={s.upperLimit} isMoney/>
+          <MetricCard label="Cap space"  value={capSpace}   variant={spaceVariant} isMoney/>
+          <MetricCard label="Active"  value={s.roster23} highThreshold={23} lowThreshold={20}/>
+          <MetricCard label="Contracts"  value={s.roster50}  highThreshold={50} lowThreshold={26}/>
+          <MetricCard label="In System"  value={s.roster90} highThreshold={90} />
+          <MetricCard label="Playoff Cap"  value={s.projPlayoffCaphit} highThreshold={s.upperLimit} lowThreshold={s.lowerLimit} isMoney />
+          <MetricCard label="Daily Caphit"  value={s.dailyCaphit}  isMoney/>
         </div>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="flex items-center justify-between text-[13px] text-muted-foreground px-0.5">
+          <div className="flex items-center gap-4">
+            <span>Waiver exempt <span className="text-foreground font-medium">7</span></span>
+            <span>Contract exempt <span className="text-foreground font-medium">3</span></span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span><span className="text-foreground font-medium">6'2"</span> ht</span>
+            <span><span className="text-foreground font-medium">200</span> lbs</span>
+            <span><span className="text-foreground font-medium">26.6</span> yrs</span>
+          </div>
         </div>
-
         {/* Cap bar */}
-        <CapUsageBar caphit={s.caphit} upperLimit={s.upperLimit} lowerLimit={s.lowerLimit} />
+        <CapUsageBar caphit={s.caphit} upperLimit={s.upperLimit} lowerLimit={s.lowerLimit} yearlyOutlook={s.yearlyOutlook} />
 
         {/* Two-column: groups + retention/deadcap */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-4">
-            <GroupBreakdownBars yearlyOutlook={s.yearlyOutlook} />
+            {/* <GroupBreakdownBars yearlyOutlook={s.yearlyOutlook} /> */}
             {s.expirationBreakdown && s.expirationBreakdown.length > 0 && (
               <ExpirationBreakdownRow expirationBreakdown={s.expirationBreakdown} />
             )}

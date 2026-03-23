@@ -14,7 +14,7 @@ export interface TeamCardProps {
 // ─── Constants ────────────────────────────────────────────────────────────────
 
 const ROLE_META: Record<StaffRole, { label: string; section: 'frontOffice' | 'coaching' }> = {
-  poho:      { label: 'President',     section: 'frontOffice', dateStarted: ""},
+  poho:      { label: 'President',     section: 'frontOffice'},
   gm:        { label: 'General Manager',       section: 'frontOffice' },
   agm:       { label: 'Asst. General Manager', section: 'frontOffice' },
   hc:        { label: 'Head Coach',            section: 'coaching' },

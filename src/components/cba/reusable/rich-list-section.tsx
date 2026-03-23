@@ -47,10 +47,11 @@ export const RichListSection = ({ title, items }: RichListSectionProps) => {
   return (
     <SectionCard>
       {title && (
-        <h3 className="font-medium text-sm text-foreground tracking-tight mb-3">
-          {title}
-        </h3>
-      )}
+  <h3 className="font-medium text-xl text-foreground ">
+    {title}
+  </h3>
+    )}
+    <div className="w-full h-px bg-muted mb-3 mt-1.5" />
 
       <ul className="flex flex-col divide-y divide-border/50">
         {items.map((item, idx) => (

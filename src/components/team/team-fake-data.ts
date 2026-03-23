@@ -4862,340 +4862,54 @@ export const teamData = {
       "lastCapSpace": 6185239,
       "deadlineCapSpace": 26768168.1866667
     },
-    "draftPicks": [
-      {
-        "year": "2026",
-        "round": 1,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2026",
-        "round": 2,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2026",
-        "round": 3,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2026",
-        "round": 4,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": true,
-        "tradedDate": "Jun. 23 2025",
-        "tradeDetails": "The Philadelphia Flyers have acquired forward Trevor Zegras from the Anaheim Ducks in exchange for forward Ryan Poehling, Columbus’ 2025 second-round pick, and Philadelphia’s 2026 fourth-round pick.",
-        "tradeId": "2025-06-23-PHI-ANA"
-      },
-      {
-        "year": "2026",
-        "round": 5,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": true,
-        "tradedDate": "Mar. 6, 2024",
-        "tradeId": "2024-03-06-PHI-COL",
-        "tradeDetails": "Traded to Colorado Avalanche Mar. 6, 2024"
-      },
-      {
-        "year": "2026",
-        "round": 6,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": true,
-        "tradedDate": "Oct. 05 2025",
-        "tradeDetails": "San Jose Sharks acquire Ryan Ellis and a 2026 sixth-round pick from the Philadelphia Flyers in exchange for Carl Grundstrom and Artem Guryev.",
-        "tradeId": "2025-10-05-SJS-PHI"
-      },
-      {
-        "year": "2026",
-        "round": 7,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 1,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 2,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 3,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 4,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 5,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 6,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": true,
-        "tradedDate": "Mar. 07 2025",
-        "tradeId": "2025-03-07-TOR-PHI",
-        "tradeDetails": "The Toronto Maple Leafs have acquired forward Scott Laughton (50% salary retained), along with a 2025 fourth-round and sixth-round pick from the Philadelphia Flyers, in exchange for prospect Nikita Grebenkin and a 2025 first-round pick."
-      },
-      {
-        "year": "2027",
-        "round": 7,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 1,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 2,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 3,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 4,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 5,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 6,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 7,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2028",
-        "round": 7,
-        "team": "Calgary Flames",
-        "conditions": [],
-        "tradedDate": "Jan. 30 2025",
-        "tradeId": "2025-01-30-PHI-CGY",
-        "tradeDetails": "The Philadelphia Flyers have acquired forwards Andrei Kuzmenko and Jakob Pelletier, along with a 2025 second-round pick and a 2025 seventh-round pick, from the Calgary Flames in exchange for forwards Joel Farabee and Morgan Frost."
-      },
-      {
-        "year": "2027",
-        "round": 3,
-        "team": "Los Angeles Kings",
-        "tradedDate": "Mar. 07 2025",
-        "tradeId": "2025-03-07-LAK-PHI",
-        "tradeDetails": "The Los Angeles Kings have acquired forward Andrei Kuzmenko (50% salary retained) from the Philadelphia Flyers in exchange for a 2027 third-round draft pick."
-      },
-      {
-        "year": "2027",
-        "round": 1,
-        "team": "Toronto Maple Leafs",
-        "conditions": "Top-10 protected",
-        "tradedDate": "Mar. 07 2025",
-        "tradeId": "2025-03-07-TOR-PHI",
-        "tradeDetails": "The Toronto Maple Leafs have acquired forward Scott Laughton (50% salary retained), along with a 2025 fourth-round and sixth-round pick from the Philadelphia Flyers, in exchange for prospect Nikita Grebenkin and a 2025 first-round pick."
-      },
-      {
-        "year": "2029",
-        "round": 1,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2029",
-        "round": 2,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2029",
-        "round": 3,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2029",
-        "round": 4,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2029",
-        "round": 5,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2029",
-        "round": 6,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2029",
-        "round": 7,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2026",
-        "round": 6,
-        "team": "Columbus Blue Jackets",
-        "conditions": null,
-        "tradedDate": "Sep. 15 2025",
-        "tradeId": "2025-09-15-PHI-CBJ",
-        "tradeDetails": "Philadelphia Flyers acquire a 2026 sixth-round draft pick (originally Columbus) from the Columbus Blue Jackets in exchange for Ivan Fedotov."
-      },
-      {
-        "year": "2030",
-        "round": 1,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2030",
-        "round": 2,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2030",
-        "round": 3,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2030",
-        "round": 4,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2030",
-        "round": 5,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2030",
-        "round": 6,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2030",
-        "round": 7,
-        "team": "Philadelphia Flyers",
-        "conditions": [],
-        "isTradedAway": false,
-        "tradedDate": null
-      },
-      {
-        "year": "2027",
-        "round": 7,
-        "team": "Carolina Hurricanes",
-        "conditions": "conditional 7th-round pick in the 2027 NHL Draft",
-        "tradedDate": "Mar. 06 2026",
-        "tradeId": "2026-03-06-PHI-CAR",
-        "tradeDetails": "Philadelphia Flyers acquire a 2027 7th-round pick (CAR) from the Carolina Hurricanes; Carolina Hurricanes acquire Nicolas Deslauriers from the Philadelphia Flyers."
-      }
-    ],
+
+  "draftPicks": [
+  {
+    "year": 2026,
+    "rounds": {
+      "1": [{ "pickId": "PHI-2026-R1", "round": 1, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] }],
+      "2": [{ "pickId": "PHI-2026-R2", "round": 2, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] }],
+      "3": [{ "pickId": "PHI-2026-R3", "round": 3, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] }],
+      "4": [{ "pickId": "PHI-2026-R4", "round": 4, "originalOwner": "philadelphia-flyers", "currentOwner": "anaheim-ducks", "conditions": [], "trade": { "date": "2025-06-23", "tradeId": "2025-06-23-PHI-ANA" } }],
+      "5": [{ "pickId": "PHI-2026-R5", "round": 5, "originalOwner": "philadelphia-flyers", "currentOwner": "colorado-avalanche", "conditions": [], "trade": { "date": "2024-03-06", "tradeId": "2024-03-06-PHI-COL" } }],
+      "6": [
+        { "pickId": "PHI-2026-R6", "round": 6, "originalOwner": "philadelphia-flyers", "currentOwner": "san-jose-sharks", "conditions": [], "trade": { "date": "2025-10-05", "tradeId": "2025-10-05-SJS-PHI" } },
+        { "pickId": "CBJ-2026-R6", "round": 6, "originalOwner": "columbus-blue-jackets", "currentOwner": "philadelphia-flyers", "conditions": [], "trade": { "date": "2025-09-15", "tradeId": "2025-09-15-PHI-CBJ" } }
+      ],
+      "7": [{ "pickId": "PHI-2026-R7", "round": 7, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] }]
+    }
+  },
+  {
+    "year": 2027,
+    "rounds": {
+      "1": [
+        { "pickId": "PHI-2027-R1", "round": 1, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] },
+        { "pickId": "TOR-2027-R1", "round": 1, "originalOwner": "toronto-maple-leafs", "currentOwner": "philadelphia-flyers", "conditions": [{ "type": "PROTECTED", "note": "Top-10 protected" }], "trade": { "date": "2025-03-07", "tradeId": "2025-03-07-TOR-PHI" } }
+      ],
+      "2": [
+        { "pickId": "PHI-2027-R2", "round": 2, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] },
+      ],
+      "3": [
+        { "pickId": "PHI-2027-R3", "round": 3, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] },
+        { "pickId": "LAK-2027-R3", "round": 3, "originalOwner": "los-angeles-kings", "currentOwner": "philadelphia-flyers", "conditions": [], "trade": { "date": "2025-03-07", "tradeId": "2025-03-07-LAK-PHI" } },
+
+      ],
+      "4": [
+        { "pickId": "PHI-2027-R4", "round": 4, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] },
+      ],
+       "5": [
+        { "pickId": "PHI-2027-R2", "round": 5, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] },
+      ],
+      "6": [
+        { "pickId": "PHI-2027-R6", "round": 6, "originalOwner": "philadelphia-flyers", "currentOwner": "toronto-maple-leafs", "conditions": [], "trade": { "date": "2025-03-07", "tradeId": "2025-03-07-TOR-PHI" } }
+      ],
+      "7": [
+        { "pickId": "PHI-2027-R7", "round": 7, "originalOwner": "philadelphia-flyers", "currentOwner": "philadelphia-flyers", "conditions": [] },
+        { "pickId": "CAR-2027-R7", "round": 7, "originalOwner": "carolina-hurricanes", "currentOwner": "philadelphia-flyers", "conditions": [{ "type": "PERFORMANCE", "note": "If Nic Deslaurier plays in a playoff game, Philly recieves a Carolina 7th round pick." }], "trade": { "date": "2026-03-06", "tradeId": "2026-03-06-PHI-CAR" } }
+      ]
+    }
+  }
+],
     "reserves": [
       {
         "name": "Berglund, Jack",

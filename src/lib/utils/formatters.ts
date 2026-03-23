@@ -1,7 +1,9 @@
-export function formatCurrency(price: number) {
+export function formatCurrency(price: number, decimals = 0) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
   }).format(price)
 }
 

@@ -310,7 +310,109 @@ export const freeAgency: ISection = {
     title: "NHL Free Agency",
     description: "",
     subSections: [
-        
+        {
+            type: "rich-list",
+            title: "Types of Expiration Statuses",
+            items: [
+                {
+                    label: "Group 3 Unrestricted Free Agent (UFA)",
+                    subList: [
+                        {
+                           label: "Eligbility Requirements",
+                           description:"In order to become a Group 3 UFA, the player must have 7 accrued seasons OR be 27 years old, on June 30th, of the year the Free Agency occurs."
+                        },
+                        {
+                            label: "Meaning:",
+                            description: "Group 3 UFAs are free to negotiate with any team, and free to be negotiated with by any team. "
+                        }
+                    ]
+                },
+                {
+                    label: "Group 5 Unrestricted Free Agent (UFA G5)",
+                    subList: [
+                        {
+                           label: "Eligbility Requirements",
+                           description:"Has completed 10 or more professional seasons*, did not earn more than the League Average Salary in the final year of his deal, AND the player has not elected to become an UFA persuant to the terms of Section 10.1(b)(ii)"
+                        },
+                        {
+                            label: "Meaning:",
+                            description: "Group 5 UFAs are free to negotiate with any team"
+                        },
+                        {
+                            label: "What is Section 10.1(b)(ii)?",
+                            description: "This section says, any group 5 player may elect to become an unrestricted free agent by notifying the league in writing at the expiration of their Standard Player Contract (SPC)."
+                        }
+                    ]
+                },
+                 {
+                    label: "Group 6 Unrestricted Free Agent (UFA G5)",
+                    subList: [
+                        {
+                           label: "Eligbility Requirements",
+                           description:"Is Age 25 or older, has completed 3 or more professional seasons*, AND has played less than 80 NHL games if they are a skater, or 28 NHL games as a goalie. (Goalies must have played 30 minutes or more, in order to register as a game played)"
+                        },
+                        {
+                            label: "Meaning:",
+                            description: "Group 6 UFAs are free to negotiate with any team, and free to be negotiated with by any team. "
+                        },
+                    ]
+                },
+                {
+                    label: "Draft Related Free Agents",
+                    subList: [
+                        {
+                           label: "Eligbility Requirements",
+                           description: "Not eligible for claim in any future NHL Entry Draft, and not on any NHL teams reserve list OR the Player is eligible for a future entry draft, but has went undrafted in his first time around."
+                        },
+                    ]
+                },
+                {
+                    label: "Group 2 Restricted Free Agent (RFA)",
+                    subList: [
+                        {
+                            label: "Eligibility Requirements",
+                            description: "NOT a Group 1, or 4 FA, not an Unrestricted Free Agent of any sort, AND meets the pro experience requirements based off their first contract signing age."
+                        }
+                        /***
+                         * Figure out a way to put a table here biotch
+                         */
+                    ]
+                },
+                {
+                    label: "10.2(c) Restricted Free Agent (RFA)",
+                    description: "Any player that has fewer than the require professional years of experience to become a G2 RFA, becomes a 10.2(c). This makes it so the team that owns the players rights is the only team allowed to negotiate with the player. If the team does not extend the qualifying offer to the player, then the player becomes an unrestricted free agent.",
+                }
+            ]
+        },
+       {
+        type: "table",
+        title: "RFA Pro Experience Requirements",
+        headers:[ "Sept 15 Signing Age", "Pro Experience Required"],
+        tableData: [
+            ["18-21", "3 yrs"],
+            ["22-23", "3 yrs"],
+            ["24+", "1 yrs"]
+        ]
+       },
+       {
+        type: "rich-list",
+        title: "Offersheets",
+        items: [
+            {
+                label: "Who is eligble to recieve an offersheet?",
+                description: "Non 10.2(c) Restricted Free Agents that have been extended the qualifying offer by their team."
+            },
+            {
+                label: "What is an offersheet?",
+                description: "An offersheet is when team agrees to contract terms with another teams . In these cases, the team offersheeting the RFA is required to give the other team compensation based on scale, unless the rfa original team matches the contract and therefore keeps the player at the offersheet price."
+            },
+            {
+                label: "What is an offersheet?",
+                description: "An offersheet is when team agrees to contract terms with another teams restricted free agent. In these cases, the team offersheeting the RFA is required to give the other team compensation based on scale, unless the rfa original team matches the contract and therefore keeps the player at the offersheet price."
+            },
+        ]
+       }
+       
         /**
          * Expiration Status
          * Arbitration

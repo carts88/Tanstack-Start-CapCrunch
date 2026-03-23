@@ -51,9 +51,10 @@ export function ExpirationBreakdownRow({
                   >
                     {cfg.label}
                   </span>
-                  <div className="flex gap-2">
-                      <p className="text-[12px] font-medium text-foreground leading-none">{e.total} players</p>
-                      <p className="text-[12px]  text-foreground leading-none">{e.onRoster23} on active roster</p>
+                  <div className="flex items-center gap-2">
+                      <p className="text-[12px] font-medium text-foreground leading-none">{e.total} total</p>
+                      |
+                      <p className="text-[12px]  text-foreground leading-none">{e.onRoster23 || 0} on active roster</p>
                       
                     </div>
                   </div>
@@ -66,7 +67,7 @@ export function ExpirationBreakdownRow({
                       {e.caphit > 0 ? (
                                               <p className="text-[10px] text-muted-foreground leading-none mt-0.5">cap hit</p>
                       ) : (
-                        <p className="text-[12px] text-muted-foreground leading-none">—</p>
+                                              <p className="text-[10px] text-muted-foreground leading-none mt-0.5">cap hit</p>
                       )}
                         <p className="text-[12px] font-medium text-foreground leading-none">{fmtM(e.caphit)}</p>
                     </div>
