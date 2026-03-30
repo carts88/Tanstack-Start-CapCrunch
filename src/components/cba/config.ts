@@ -55,44 +55,34 @@ export const contractTypes: ISection = {
     title: "Contract Types",
     description: "There are 3 contract types, Entry Level Contracts, 35+, and Standard Player Contracts.",
     subSections: [
-        {
-            type: "block-grid" as const,
-            cols: 3,
-            blocks: [
-                {
-                    title: "Entry Level Contracts | ELC",
-                    description: "These are the first contracts that most players sign as long as they're under a certain age before signing them. Player can only sign 1 ELC in their career. "
-                },
-                {
-                    title: "35 Plus | 35+",
-                    description: ""
-                },
-                {
-                    title: "Standard Player Contracts | SPC",
-                    description: "Any contract that is not a 35+ or ELC is just a Standard Player Contract, with no extra rules. "
-                },
-            ]
-        },
+        
         {
             type: "description",
             title: "What is a 35+ Contract?",
-            description: "A 35+ contract is a deal signed a player who is 35 years old or older as of June 30th of the y"
+            description: "A 35+ contract is a deal signed a player who is 35 years old or older as of June 30th of the year they sign."
         },
         {
             type: "list",
             title: "Thirty Five Plus Contract Criteria (35+)",
+            // description: "In order for players to reap the benefits of 35+ contracts, the following must be true... ",
             items: [
                 "Total compensation must decrease from year to year",
-                "there are no signing bonuses after Year 1"
+                "There are no signing bonuses after Year 1 of the deal."
             ]
         },
         {
             type: "list",
             title: "Why are 35+ beneficial to players?",
             items: [
-                "35+ contracts that are bought out do not give buyout relief, and the original caphit becomes cap penalty",
-                "Only $100,000 can be buried in the minors, if you send the player down"
+                "35+ contracts that are bought out do not give buyout relief, and the original caphit becomes cap penalty. Therefore there isn't an incentive to buyout the contract.",
+                "If the player is sent dowm, his team will only recieve $100,000 of cap relief.",
+                "1 year 35+ contracts are also eligible for performance bonuses."
             ]
+        },
+        {
+            type: "description",
+            title: "What is a Entry Level Contract (ELC)",
+            description: "ELCs are the first contracts most players sign, depending on your age (see below) you have to sign an ELC. You can only sign 1 ELC in your career, and the term of that contract is pre-determined based off age (see below). "
         },
         {
             type: "table",
@@ -110,6 +100,109 @@ export const contractTypes: ISection = {
             link: "/calculators/elc-length",
             description: "This tool allows you to see what required ELC length is for NHL prospects currently unsigned. "
         },
+        {
+            type: "comparison",
+            leftLabel: "Entry Level Contracts - ELC",
+            rightLabel: "Non Entry Level Contracts",
+            leftItems: [
+                {
+                    text: "All ELCs are 2-way contracts, meaning the salary paid to the player changes depending on whether they're in the NHL/AHL.",
+                },
+                {
+                    text: "All entry level contracts are eligible for performance bonuses, with Schedule 'A' and 'B' bonuses.",
+                },
+                {
+                    text: "Has a much lower max salary threshold.",
+                },
+                {
+                    text: "ELCs can slide up to 2 years, depending on the age they were signed at"
+                }
+            ],
+            rightItems: [
+                {
+                    text: "Can be a either 1-way or 2-way deal",
+                },
+                {
+                    text: "Only eligible for performance bonuses under certain circumstances, such as being a 35+ contract or, coming off major injury the previous year."
+                },
+                
+                {
+                    text: "The max allowed salary for other contracts is 20% of the Salary Cap Upper Limit."
+                },
+            ]
+        },
+        {
+            type: "table",
+            title: "Max Allowed Salary for ELCs (26-27 Season and beyond) (2026 MOU)",
+            description: "As of the 2026 CBA MOU, the maximum allowed salary for any season of an ELC is the league minimum for that year + $175,000.",
+            headers: ["Season", "Max Allowed ELC AAV"],
+            tableData: [
+                ["2026-27", "$1,025,000"],
+                ["2027-28", "$1,075,000"],
+                ["2028-29", "$1,125,000"],
+            ],
+        },
+        {
+            type: "rich-list",
+            title: "Entry Level Slides",
+            items: [
+                {
+                    label: "What are they?",
+                    description: "Entry Level slides are when an ELC regains a year, due to not playing enough NHL games and meeting the age requirement. (More on eligibility below)"
+                },
+                {
+                    label: "Eligibility Requirements: ",
+                    subList: [
+                        {
+                            label: "Players must have a ELC signing age of 18, and 19 and cannot turn 20 before December 31st of that season. "
+                        },
+                        {
+                            label: "Player must not have played 10 or more NHL games in any season. (Once a player plays 10 NHL games in a season, they lose their slide eligiblity, therefore their 3 year contract clock starts)"
+                        },
+                    ]
+                },
+                {
+                    label: "How does it affect the caphit?",
+                    description: "As all signing bonuses are gaurenteed and paid out on July 1st before the season begins, the caphit adjusts when a contract slides.",
+                    subList: [
+                        {
+                            label: "(Total Contract Salary + Bonuses) - (Paid Bonuses : the signing bonuses from the seasons that have passed)  divided by 3 (all slide eligible ELCs are 3 years long) "
+                        }
+                    ]
+                },
+            ]
+        },
+        {
+            type: "link-to-tool",
+            name: "ELC Slide Eligibility Calculator",
+            link: "/calculators/elc-slide-eligibility",
+            description: "This tool allows you see whether current NHL players are eligible for a slide, and tracks the amount of games they have played."
+        },
+        {
+            type: "link-to-tool",
+            name: "ELC Slide Caphit Calculator",
+            link: "/calculators/elc-slide-caphit",
+            description: "This tool allows you see how a ELC slide will affect the caphit of an ELC, using current NHL contracts, or a user input contract."
+        },
+        {
+            type: "description",
+            title: "What is a Standard Player Contract?",
+            description: "Technically all contracts are considered standard player contracts, however for accounting purposes SPC are any contract that is not a ELC or 35+ deal."
+        },
+        {
+            type: "description",
+            title: "League Max Salary",
+            description: "The max salary, is 20% of the league upper limit. Therefore in 25-26 it would be $19,100,000."
+        },
+        {
+            type: "table",
+            title: "Max Salary for Contracts",
+            headers: ["Season", "Salary"],
+            tableData: [
+                ["2025-26", ]
+            ]
+        }
+        
     ]
 }
 
@@ -311,6 +404,27 @@ export const freeAgency: ISection = {
     description: "",
     subSections: [
         {
+            type: "definition",
+            title: "Expiration Status Terms",
+            items: [
+                {
+                    question: "Accrued Season",
+                    answer: "Skaters must be on the active for 40 regular season games, Goalies must be on the roster for 30 regular season games. Games missed due to hockey related injury count toward the required threshold."
+                },
+                {
+                    question: "Professional Seasons",
+                    answer: "18 & 19 year olds accrue a pro season if they play in at least 11 games in any pro league. 20 year olds and above, only have to play 1 game. The player must also be under an NHL contract.",
+                    note: "Pro Leagues: NHL, AHL, ECHL, European Pro leagues"
+
+                },
+                {
+                    question: "Professional Experience",
+                    answer: "For players over the age of 20, 10or more games played in any professional league.",
+                    note: "Pro Leagues: NHL, AHL, ECHL, European Pro leagues"
+                }
+            ]
+        },
+        {
             type: "rich-list",
             title: "Types of Expiration Statuses",
             items: [
@@ -322,7 +436,7 @@ export const freeAgency: ISection = {
                            description:"In order to become a Group 3 UFA, the player must have 7 accrued seasons OR be 27 years old, on June 30th, of the year the Free Agency occurs."
                         },
                         {
-                            label: "Meaning:",
+                            label: "Negotiation Freedom?",
                             description: "Group 3 UFAs are free to negotiate with any team, and free to be negotiated with by any team. "
                         }
                     ]
@@ -335,7 +449,7 @@ export const freeAgency: ISection = {
                            description:"Has completed 10 or more professional seasons*, did not earn more than the League Average Salary in the final year of his deal, AND the player has not elected to become an UFA persuant to the terms of Section 10.1(b)(ii)"
                         },
                         {
-                            label: "Meaning:",
+                            label: "Negotiation Freedom?",
                             description: "Group 5 UFAs are free to negotiate with any team"
                         },
                         {
@@ -352,7 +466,7 @@ export const freeAgency: ISection = {
                            description:"Is Age 25 or older, has completed 3 or more professional seasons*, AND has played less than 80 NHL games if they are a skater, or 28 NHL games as a goalie. (Goalies must have played 30 minutes or more, in order to register as a game played)"
                         },
                         {
-                            label: "Meaning:",
+                            label: "Negotiation Freedom?",
                             description: "Group 6 UFAs are free to negotiate with any team, and free to be negotiated with by any team. "
                         },
                     ]
@@ -379,19 +493,67 @@ export const freeAgency: ISection = {
                     ]
                 },
                 {
+                    label: "10.2(c) Restricted Free Agent",
+                    subList: [
+                        {
+                            label: "Eligibility Requirements",
+                            description: "Has been given a qualifying offer by their team, and does not meet any of the UFA or Group 2 RFA requirements. "
+                        },
+                        {
+                            label: "What is different about 10.2(c) RFAs?",
+                            description: "10.2(c) RFA cannnot be in any negotiations with other teams, other than the team that owns their rights. Meaning they're ineligible for offersheets, and arbitration. If they do not recieve a qualifying offer, then they instantly become a UFA. "
+                        }
+                        /***
+                         * Figure out a way to put a table here biotch
+                         */
+                    ]
+                },
+                {
                     label: "10.2(c) Restricted Free Agent (RFA)",
-                    description: "Any player that has fewer than the require professional years of experience to become a G2 RFA, becomes a 10.2(c). This makes it so the team that owns the players rights is the only team allowed to negotiate with the player. If the team does not extend the qualifying offer to the player, then the player becomes an unrestricted free agent.",
+                    description: "Any player that does not meet the UFA requirements, the Group 2 RFA requirements, ",
                 }
             ]
         },
+        {
+            type: "table",
+            title: "",
+            description: "",
+            headers:["1st SPC Signing Age*", "Pro Experience Required"],
+            tableData: [
+                ["18-20", "4"],
+                ["21", "3"],
+                ["22-23", "2"],
+                ["24+", "1"],
+            ],
+            caption: "*Signing Age is determined by calculating the age of the player on September 15th, of the first year of the contract. For example if the first year of the contract is 24-25 you calculate the players age on September 15th, 2024."
+        },
+        {
+            type: "table",
+            title: "RFA Pro Experience Requirements",
+            headers:[ "Sept 15 Signing Age", "Pro Experience Required"],
+            tableData: [
+                ["18-21", "3 yrs"],
+                ["22-23", "3 yrs"],
+                ["24+", "1 yrs"]
+            ]
+        },
+        
        {
-        type: "table",
-        title: "RFA Pro Experience Requirements",
-        headers:[ "Sept 15 Signing Age", "Pro Experience Required"],
-        tableData: [
-            ["18-21", "3 yrs"],
-            ["22-23", "3 yrs"],
-            ["24+", "1 yrs"]
+        type: "rich-list",
+        title: "Arbitration",
+        items: [
+            {
+                label: "Player Elected",
+                description: "Non 10.2(c) Restricted Free Agents that have been extended the qualifying offer by their team."
+            },
+            {
+                label: "What is an offersheet?",
+                description: "An offersheet is when team agrees to contract terms with another teams . In these cases, the team offersheeting the RFA is required to give the other team compensation based on scale, unless the rfa original team matches the contract and therefore keeps the player at the offersheet price."
+            },
+            {
+                label: "What is an offersheet?",
+                description: "An offersheet is when team agrees to contract terms with another teams restricted free agent. In these cases, the team offersheeting the RFA is required to give the other team compensation based on scale, unless the rfa original team matches the contract and therefore keeps the player at the offersheet price."
+            },
         ]
        },
        {
@@ -452,27 +614,7 @@ export const expirationStatus: ISection = {
             ],
             
         },
-        {
-            type: "definition",
-            title: "Expiration Status Terms",
-            items: [
-                {
-                    question: "Accrued Season",
-                    answer: "Skaters must be on the active for 40 regular season games, Goalies must be on the roster for 30 regular season games. Games missed due to hockey related injury count toward the required threshold."
-                },
-                {
-                    question: "Professional Seasons",
-                    answer: "18 & 19 year olds accrue a pro season if they play in at least 11 games in any pro league. 20 year olds and above, only have to play 1 game. The player must also be under an NHL contract.",
-                    note: "Pro Leagues: NHL, AHL, ECHL, European Pro leagues"
-
-                },
-                {
-                    question: "Professional Experience",
-                    answer: "For players over the age of 20, 10or more games played in any professional league.",
-                    note: "Pro Leagues: NHL, AHL, ECHL, European Pro leagues"
-                }
-            ]
-        },
+        
         {
             type: "rich-list",
             title: "Types of Expiration Status",

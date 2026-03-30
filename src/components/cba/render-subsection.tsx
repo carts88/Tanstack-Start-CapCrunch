@@ -38,6 +38,8 @@ export const RenderSubSection = ({ section }: { section: SubSection }) => {
     case "table":
       return (
         <TableSection
+          title={section.title}
+          description={section.description}
           headers={section.headers}
           tableData={section.tableData}
           footers={section.footers}

@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { X, Check } from "lucide-react";
 
 interface ComparisonItem {
   text: string;
@@ -10,20 +9,27 @@ interface ComparisonBlockProps {
   rightLabel: string;
   leftItems: ComparisonItem[];
   rightItems: ComparisonItem[];
-  /** Optional accent color for the right (positive) column. Defaults to "blue". */
-  rightAccent?: "blue" | "green";
+  rightAccent?: "blue" | "green" | "violet";
 }
 
-const RIGHT_ACCENT = {
+const ACCENTS = {
   blue: {
-    header: "text-blue-700 dark:text-blue-400",
-    col:    "bg-blue-50/70 dark:bg-blue-950/20 border-l border-border/60",
-    icon:   "text-blue-500 dark:text-blue-400",
+    label: "text-primary ",
+    dot: "bg-primary",
+    vs: "text-primary",
+    vsBorder: "border-primary",
   },
   green: {
-    header: "text-green-700 dark:text-green-400",
-    col:    "bg-green-50/70 dark:bg-green-950/20 border-l border-border/60",
-    icon:   "text-green-600 dark:text-green-400",
+    label: "text-emerald-600 dark:text-emerald-400",
+    dot: "bg-emerald-400 dark:bg-emerald-500",
+    vs: "text-emerald-600 dark:text-emerald-400",
+    vsBorder: "border-emerald-200 dark:border-emerald-800",
+  },
+  violet: {
+    label: "text-violet-600 dark:text-violet-400",
+    dot: "bg-violet-400 dark:bg-violet-500",
+    vs: "text-violet-600 dark:text-violet-400",
+    vsBorder: "border-violet-200 dark:border-violet-800",
   },
 };
 
@@ -34,34 +40,52 @@ export const ComparisonBlock = ({
   rightItems,
   rightAccent = "blue",
 }: ComparisonBlockProps) => {
-  const right = RIGHT_ACCENT[rightAccent];
+  const accent = ACCENTS[rightAccent];
 
   return (
-    <div className="grid grid-cols-2 border border-border/60 rounded-xl overflow-hidden">
+    <div className="flex items-start gap-2">
       {/* Left column */}
-      <div className="bg-muted/30 px-4 py-4 flex flex-col gap-3">
-        <span className="text-[10px] font-semibold tracking-[0.12em] uppercase text-muted-foreground">
-          {leftLabel}
-        </span>
-        <ul className="flex flex-col gap-2.5">
+      <div className="flex-1 min-w-0 self-stretch rounded-lg border border-border/60 bg-muted/20 overflow-hidden flex flex-col">
+        <div className="px-3 py-2 border-b border-border/50">
+          <span className="text-[10px] font-semibold tracking-[0.1em] uppercase text-muted-foreground">
+            {leftLabel}
+          </span>
+        </div>
+        <ul className="px-3 py-2.5 flex flex-col gap-1.5">
           {leftItems.map((item, i) => (
-            <li key={i} className="flex gap-2 items-start text-sm text-muted-foreground leading-relaxed">
-              <X className="h-3.5 w-3.5 mt-0.5 shrink-0 text-red-400 dark:text-red-500" />
+            <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-snug">
+              <span className="mt-[6px] h-1.5 w-1.5 rounded-full shrink-0 bg-muted-foreground/30" />
               {item.text}
             </li>
           ))}
         </ul>
       </div>
 
+      {/* VS divider */}
+      <div className={cn(
+        "shrink-0 self-stretch flex flex-col items-center justify-center gap-1 px-1",
+      )}>
+        <div className="flex-1 w-px bg-border/50" />
+        <div className={cn(
+          "rounded-full border px-1.5 py-0.5 text-[10px] font-bold tracking-wider",
+          accent.vs, accent.vsBorder
+        )}>
+          vs
+        </div>
+        <div className="flex-1 w-px bg-border/50" />
+      </div>
+
       {/* Right column */}
-      <div className={cn("px-4 py-4 flex flex-col gap-3", right.col)}>
-        <span className={cn("text-[10px] font-semibold tracking-[0.12em] uppercase", right.header)}>
-          {rightLabel}
-        </span>
-        <ul className="flex flex-col gap-2.5">
+      <div className="flex-1 min-w-0 self-stretch rounded-lg border border-border/60 bg-background overflow-hidden flex flex-col">
+        <div className="px-3 py-2 border-b border-border/50">
+          <span className={cn("text-[10px] font-semibold tracking-[0.1em] uppercase", accent.label)}>
+            {rightLabel}
+          </span>
+        </div>
+        <ul className="px-3 py-2.5 flex flex-col gap-1.5">
           {rightItems.map((item, i) => (
-            <li key={i} className="flex gap-2 items-start text-sm text-foreground leading-relaxed">
-              <Check className={cn("h-3.5 w-3.5 mt-0.5 shrink-0", right.icon)} />
+            <li key={i} className="flex items-start gap-2 text-sm text-foreground leading-snug">
+              <span className={cn("mt-[6px] h-1.5 w-1.5 rounded-full shrink-0", accent.dot)} />
               {item.text}
             </li>
           ))}

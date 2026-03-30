@@ -4,6 +4,7 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 // components
 import { ExpirationBreakdownRow } from './expiration-breakdown-row';
 import { formatCurrency } from '@/lib/utils/formatters';
+import { CirclePercent, type LucideIcon, TrophyIcon, X } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -72,10 +73,10 @@ const GROUP_CONFIG: Record<string, { label: string; color: string; bg: string }>
 
 const RETENTION_COLORS = ['bg-primary/70', 'bg-primary/50', 'bg-primary/30'];
 
-const DEAD_CAP_BADGE: Record<string, { label: string; className: string }> = {
-  RS:             { label: 'RS',     className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300' },
-  BUYOUT:         { label: 'BUYOUT', className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300' },
-  BONUS_OVERAGES: { label: 'BONUS',  className: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300' },
+const DEAD_CAP_BADGE: Record<string, { label: string; className: string, icon: LucideIcon }> = {
+  RS:             { label: 'RS',     className: 'text-destructive/70' , icon: CirclePercent},
+  BUYOUT:         { label: 'BUYOUT', className: 'text-destructive' ,icon: X},
+  BONUS_OVERAGES: { label: 'BONUS',  className: 'text-yellow-600', icon: TrophyIcon },
 };
 
 const EXPIRY_CONFIG: Record<string, { label: string; color: string; textClass: string; bgClass: string }> = {
@@ -302,6 +303,7 @@ function DeadCapList({ deadcap }: { deadcap: DeadCapEntry[] }) {
   );
   const total = all.reduce((a, p) => a + p.caphit, 0);
 
+
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-center">
@@ -316,13 +318,14 @@ function DeadCapList({ deadcap }: { deadcap: DeadCapEntry[] }) {
         <div className="rounded-md border border-border overflow-hidden">
           {all.map((p, i) => {
             const badge = DEAD_CAP_BADGE[p.type];
+            const Icon = badge.icon
             return (
               <HoverCard key={i} openDelay={200} closeDelay={100}>
                 <HoverCardTrigger asChild>
-                  <div className={`flex items-center justify-between px-2 py-[5px] bg-background hover:bg-muted/40 transition-colors cursor-pointer ${i > 0 ? 'border-t border-border' : ''}`}>
+                  <div className={`flex items-center justify-between px-2 py-1 bg-background hover:bg-muted/40 transition-colors cursor-pointer ${i > 0 ? 'border-t border-border' : ''}`}>
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className={`text-[10px] font-medium px-1 py-px rounded shrink-0 ${badge.className}`}>
-                        {badge.label}
+                      <span className={`text-[10px] font-medium px-py-px rounded shrink-0 ${badge.className}`}>
+                        <Icon  className='h-4 w-4'/>
                       </span>
                       <span className="text-[11px] font-medium text-foreground truncate">{p.fullName}</span>
                       {p.termRemaining !== undefined && (

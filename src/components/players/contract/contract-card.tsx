@@ -3,6 +3,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ExpiryStatusPill } from '@/components/ui/misc/expiry-status-pill';
 import type { ExpiryStatus } from "@/lib/types/global-hockey-types";
 
+// icons
+import { ArrowUpDown } from 'lucide-react';
+
 const FARABEE_BDAY = "2000-02-25"
 
 const expiryStyle: Record<string, { bg: string; text: string; border: string }> = {
@@ -209,13 +212,21 @@ export const ContractCard = ({
             </TableHeader>
             <TableBody className="divide-y divide-border">
               {contract.details.map(row => {
-                const isCurrent = row.season === currentSeason;
+                const isCurrent = row.season === "2025-26";
+                const isActive =  row.season === "2027-28"
+                const isTwoWay = row.totalSalary != row.minorsSalary
                 return (
                   <TableRow
                     key={row.season}
-                    className={isCurrent ? "bg-amber-500/10 hover:bg-amber-500/15 transition-colors" : "hover:bg-muted/30 transition-colors"}
+                    className={[
+                      isCurrent && "bg-primary/35",
+                      isActive && "bg-destructive/20",                      
+                    ].join(" ") }
                   >
-                    <TableCell className="px-3 py-2 font-medium text-muted-foreground">{row.season}</TableCell>
+                    <TableCell className="px-3 py-2 flex gap-2 items-center font-medium text-muted-foreground">
+                      {row.season}
+                      {isTwoWay && <ArrowUpDown className='h-3 w-3 text-green-700' />}
+                    </TableCell>
                     {cols.map(c => {
                       const { value, cls } = getCell(row, c.key);
                       return (

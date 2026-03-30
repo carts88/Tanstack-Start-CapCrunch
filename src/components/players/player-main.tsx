@@ -17,7 +17,7 @@ const PlayerMain = () => {
         title={"Transactions"}
         transactions={transactions} 
       />
-      <Tabs defaultValue="stats">
+      <Tabs defaultValue="contracts">
         <TabsList className="p-2">
           <TabsTrigger className="p-3" value="contracts">
             Contracts
@@ -27,11 +27,16 @@ const PlayerMain = () => {
           </TabsTrigger>
           </TabsList>
           <TabsContent className="my-6 space-y-5" value="contracts">
-            <ContractStats projCareerSalary={0} totalContracts={0} totalGTDMoney={0} contractTypeBreakDown={{
-                    elc: 0,
-                    spc: 0,
-                    _35Plus: 0
+            <ContractStats 
+                    projCareerSalary={2444444} 
+                    totalContracts={contracts.length} 
+                    totalGTDMoney={0} 
+                    contractTypeBreakDown={{
+                      elc: contracts.filter((c) => c.type.includes("ELC")).length,
+                      spc: contracts.filter((c) => c.type.includes("SPC")).length,
+                      _35Plus: contracts.filter((c) => c.type.includes("35")).length,
                   }}        
+                  
                   />
                   <ContractHistory 
                   teamPrimary={playerInfo.teamPrimary}

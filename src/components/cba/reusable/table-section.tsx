@@ -22,6 +22,8 @@ interface TableSectionProps {
   tableData: (string | TableCell)[][];
   footers?: string[];
   caption?: string;
+  title?: string;
+  description?: string;
 }
 
 const badgeClasses: Record<BadgeVariant, string> = {
@@ -52,9 +54,25 @@ export const TableSection = ({
   tableData,
   footers,
   caption,
+  title,
+  description,
 }: TableSectionProps) => {
+
   return (
     <div className="border border-border/60 rounded-xl overflow-hidden">
+        <div className="px-4 py-3 border-b border-border/60 bg-background">
+          {title && (
+            <h3 className="text-sm font-semibold text-foreground leading-snug">
+              {title}
+            </h3>
+          )}
+          {description && (
+            <p className={cn("text-xs text-muted-foreground leading-relaxed", title && "mt-0.5")}>
+              {description}
+            </p>
+          )}
+        </div>
+
       <Table>
         <TableHeader>
           <TableRow className="bg-muted/50 hover:bg-muted/50">
