@@ -20,7 +20,7 @@ export const CollapsibleSection = ({
 }: CollapsibleSectionProps) => {
   return (
     <Collapsible className="w-full overflow-hidden ">
-      <CollapsibleTrigger className="w-full rounded-md text-left px-4 py-3.5 flex items-center gap-2.5 bg-muted/40 hover:bg-muted/80 transition-colors duration-150">
+      <CollapsibleTrigger className="w-full  rounded-md text-left px-4 py-3.5 flex items-center gap-2.5 bg-muted/40 hover:bg-muted/80 transition-colors duration-150">
         <span className="w-0.5 h-4 bg-primary rounded-sm shrink-0" />
         <span className="flex-1 text-[14px] font-semibold tracking-[0.18em] uppercase text-muted-foreground">
           {title}

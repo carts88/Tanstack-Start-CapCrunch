@@ -219,6 +219,26 @@ export const navigationConfig = [
       ]
     },
     {
+      trigger: "Tools",
+      width: "w-[300px]",
+      sections: [
+        {
+          layout: "grid",
+          columns: 1,
+          items: [
+            {
+              name: "Custom Draft Lottery Simulator",
+              description: "Set your own draft order, assign traded picks, and run a weighted lottery draw identical to the NHL's.",
+              href: "/tools/custom-draft-lottery",
+              type: "description"
+            },
+            
+          ]
+        }
+        
+      ]
+    },
+    {
       trigger: "Players",
       width: "w-[600px]",
       sections: [
@@ -235,6 +255,7 @@ export const navigationConfig = [
             
           ]
         },
+        
         {
           title: "Calculators",
           layout: "grid",

@@ -7,7 +7,7 @@
 body {
   @apply m-0;
   font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+      Inter, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
     'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -75,7 +75,7 @@ code {
 
 .dark {
   --background: oklch(0.2260 0.0083 264.3947);
-  --foreground: oklch(0.9238 0.0093 232.3718);
+  --foreground: oklch(0.991 0 89.876);
   --card: oklch(0.2640 0.0120 264.3450);
   --card-foreground: oklch(0.9238 0.0093 232.3718);
   --popover: oklch(0.2640 0.0120 264.3450);
@@ -125,7 +125,6 @@ code {
   --shadow-xl: 0 0 0 0 hsl(0 0 0 0 / 0.00), 0 8px 10px -1px hsl(0 0 0 0 / 0.00);
   --shadow-2xl: 0 0 0 0 hsl(0 0 0 0 / 0.00);
 }
-
 
 @theme inline {
   --color-ufa: oklch(0.6015 0.1849 24.6084);

@@ -11,14 +11,18 @@ import {
   CommandList,
   CommandSeparator,
 } from "@/components/ui/command"
-import { fakeSearchData as searchData} from "./fake-search-data"
 import { PlayerSearchItem } from "./search-items/player-search-item"
 import { TeamSearchItem } from "./search-items/team-search-item"
 import { CBASearchItem } from "./search-items/cba-search-item"
+import { useSearch } from "./use-search"
+
 
 
 export default function SearchBar() {
   const [open, setOpen] = React.useState(false)
+  const [query, setQuery] = React.useState("")
+
+  const {players, staff, } = useSearch(query)
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -32,15 +36,10 @@ export default function SearchBar() {
     return () => document.removeEventListener("keydown", down)
   }, [])
 
-    const handleItemClick = () => {
-      setOpen(false)
-    }
-
-
-  const players = searchData.players
-  const staff = searchData.staff
-  const teams = searchData.teams
-  const cba = searchData.cba
+  // const players = searchData.players
+  // const staff = searchData.staff
+  // const teams = searchData.teams
+  // const cba = searchData.cba
   return (
     <>
       <button
@@ -61,7 +60,10 @@ export default function SearchBar() {
         </kbd>
       </button>
       <CommandDialog  open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search players, teams, staff..." />
+        <CommandInput 
+        value={query}
+        onValueChange={setQuery}
+        placeholder="Search players, teams, staff..." />
         <div className="my-2 items-center">
         <ToggleGroup className="w-full" type="multiple">
           <ToggleGroupItem className="rounded-none" value="players">Players</ToggleGroupItem>
@@ -90,7 +92,7 @@ export default function SearchBar() {
             ))}
           </CommandGroup>
           <CommandSeparator />
-          <CommandGroup heading="Teams">
+          {/* <CommandGroup heading="Teams">
             {teams.map((team, idx) => (
                 <TeamSearchItem 
                   key={`${team.teamSlug}-${idx}`}
@@ -115,7 +117,7 @@ export default function SearchBar() {
 
                 />
               ))}
-          </CommandGroup>
+          </CommandGroup> */}
         </CommandList>
       </CommandDialog>
     </>

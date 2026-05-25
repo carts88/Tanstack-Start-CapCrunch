@@ -59,8 +59,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className='bg-background'>
         <ClerkProvider>
-          <TopNavigationLevel />
-          <SiteBanner />
+          <header >
+            <TopNavigationLevel />
+            <SiteBanner />
+          </header>
           {children}
           <TanStackDevtools
             config={{

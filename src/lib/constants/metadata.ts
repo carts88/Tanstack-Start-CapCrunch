@@ -21,28 +21,11 @@ export const seasons = [
   { value: "2006", label: "2006-07" },
   { value: "2005", label: "2005-06" },
   { value: "2004", label: "2004-05" },
-];
+] as const;
 
 
-export interface NHLTeamMetaData {
-  label: string;
-  value: string;
-  division: string;
-  teamSlug: string;
-  primaryColor: string;
-  secondColor: string;
-  established?: number;
-  thirdColor?: string | null 
-  basecolor?: string | null 
-  affiliates?: { 
-      league: string;
-      team: string;
-      slug: string;
-    }[]
-}
 
-
-export const nhlTeams: NHLTeamMetaData[] = [
+export const nhlTeams = [
   {
     label: "Anaheim Ducks",
     value: "ANA",
@@ -393,7 +376,7 @@ export const nhlTeams: NHLTeamMetaData[] = [
     thirdColor: "#004C97",
     affiliates: [],
   }
-];
+] as const;
 
 
 
@@ -426,4 +409,4 @@ export  const contractTypes = [
     label: "35 Plus (extension)",
     value: "35Plus-EXT"
   },
-]
+] as const;

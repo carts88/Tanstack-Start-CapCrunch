@@ -51,6 +51,8 @@ export const contractVariability: ISection = {
 }
 
 
+
+
 export const contractTypes: ISection = {
     title: "Contract Types",
     description: "There are 3 contract types, Entry Level Contracts, 35+, and Standard Player Contracts.",
@@ -802,3 +804,29 @@ export const buyoutCba: ISection = {
 
     ]
 }
+
+
+export const transferAgreements: ISection = {
+    title: "Transfer Agreements",
+    description: "Transfer agreements are agreements between the NHL and other hockey leagues around the world, that govern the transfer of players under contract in those leagues, to the NHL. The NHL has transfer agreements with the following leagues: KHL, SHL, Liiga, NLA, DEL, EIHL, and the Czech Extraliga.",
+    subSections: [
+        {
+            type: "grid-section",
+            title: "CHL -> NHL Transfer Agreement",
+            cols: 1,
+            description: "The CHL is the only league that has a transfer agreement with the NHL, that includes a transfer fee paid by the NHL team to the CHL team, for players under contract in the CHL. The current transfer fee is $150,000 USD, and applies to any player under contract in the CHL, that is signed by an NHL team. The transfer fee is paid by the NHL team to the CHL team, and is not paid by the player.",
+            subSection: [
+                {
+                    type: "description",
+                    title: "How does the transfer fee work?",
+                    description: "The transfer fee is paid by the NHL team to the CHL team, and is not paid by the player. The transfer fee is paid in full, at the time of the signing of the NHL contract. The transfer fee is not a loan, and does not need to be paid back by the CHL team if the player returns to the CHL."
+                }
+            ]
+        }
+    ]
+}
+
+export const contractsCBA = [
+    contractTypes,
+    performanceBonuses
+] as const

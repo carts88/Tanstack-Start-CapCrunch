@@ -84,7 +84,7 @@ export function TeamInfo({ teamInfo, teamStaff }: TeamCardProps) {
       >
         {/* Left accent bar */}
         <div
-          className="absolute left-0 top-0 bottom-0 w-[3px]"
+          className="absolute left-0 top-0 bottom-0 w-0.75"
           style={{ background: teamInfo.primaryColor }}
         />
 
