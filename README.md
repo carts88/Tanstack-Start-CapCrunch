@@ -126,7 +126,6 @@ export const Route = createRootRoute({
         </nav>
       </header>
       <Outlet />
-      <TanStackRouterDevtools />
     </>
   ),
 })
@@ -211,8 +210,6 @@ const rootRoute = createRootRoute({
   component: () => (
     <>
       <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
     </>
   ),
 });

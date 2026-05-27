@@ -1,4 +1,4 @@
-import ManageContract from '@/components/manage-contract/manage-contract'
+import { ContractYearGrid } from '@/components/manage-contract/contract-grid'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute(
@@ -9,10 +9,10 @@ export const Route = createFileRoute(
 
 function RouteComponent() {
   return (
-  <ManageContract 
-    mode='CALCULATOR'
-    age={24}
-    
-  />
+    <div
+      className='w-6xl my-5 m-auto'
+    >
+        <ContractYearGrid />
+    </div>
 )
 }

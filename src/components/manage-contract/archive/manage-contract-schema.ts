@@ -3,7 +3,7 @@ import { CURRENT_SEASON, LEAGUE_MAX_SALARY, LEAGUE_MIN_SALARY } from "@/lib/cons
 import { ClauseTypes, ContractTypes } from "@/lib/types/global-hockey-types";
 import { formOptions } from "@tanstack/react-form";
 import z from "zod";
-import { getMaxAllowedPerformanceBonus, getMaxAllowedTerm } from "./yearly-validations";
+import { getMaxAllowedPerformanceBonus, getMaxAllowedTerm } from "../yearly-validations";
 import { getClauseEligibilty } from "@/lib/utils/player.utils";
 
 

@@ -16,6 +16,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useMemo } from "react"
 
 // Define the shape of each item
 export interface SelectItemWithImage<T>{
@@ -43,7 +44,10 @@ export default function SelectWithSearchImage({
   placeholder,
 }: SelectWithSearchProps) {
 
-  const selectedItem = items.find((item) => item.value === value)
+  const selectedItem = useMemo(
+  () => items.find((item) => item.value === value),
+    [items, value]
+  )
 
   return (
       <Popover >
@@ -58,6 +62,8 @@ export default function SelectWithSearchImage({
               <div className="flex items-center  min-w-0">
                 {selectedItem.imagePath &&
                   <img
+                    loading="lazy"
+                    decoding="async"
                     src={selectedItem.imagePath}
                     width={32}
                     height={32}

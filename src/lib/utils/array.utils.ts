@@ -15,13 +15,17 @@ export function getObjectOfArrayByKey<T, K extends keyof T>(
 // # MATH FUNCTIONS
 
 
-export function sumArrayProperty<T extends Record<keyof T, number>>(
+// ...existing code...
+export function sumArrayProperty<T, K extends keyof T>(
   array: T[],
-  key: keyof T
-) {
-  return array.reduce((sum, item) => sum + item[key], 0);
+  key: K
+): number {
+  return array.reduce((sum, item) => {
+    const val = item[key];
+    return sum + (typeof val === "number" ? val : 0);
+  }, 0);
 }
-
+// ...existing code...
 export function averageArrayProperty<T extends Record<keyof T, number>>(
   array: T[],
   key: keyof T

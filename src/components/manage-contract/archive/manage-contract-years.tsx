@@ -5,9 +5,9 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { X } from 'lucide-react';
 import { useAppForm, withFieldform, withForm } from '@/components/form';
 import { baseContractYear, contractBuilderFormOpts } from './manage-contract-schema';
-import { validateBaseSalaryForYear, validatePerformanceBonusForYear, validateSigningBonusForYear } from './yearly-validations';
+import { validateBaseSalaryForYear, validatePerformanceBonusForYear, validateSigningBonusForYear } from '../yearly-validations';
 import { clauseOptions } from '@/lib/constants/hockey';
-import { useFieldContext, useFormContext } from '../form/form-context';
+import { useFieldContext, useFormContext } from '../../form/form-context';
 
 const contractYearLabels = [
   "Season",

@@ -410,3 +410,12 @@ export  const contractTypes = [
     value: "35Plus-EXT"
   },
 ] as const;
+
+
+
+// 
+export const nhlTeamSelectData = nhlTeams.map((a) => ({
+        value: a.value,
+        label: a.label,
+        imagePath: `/logos/nhl/${a.teamSlug}.svg`,
+      }))

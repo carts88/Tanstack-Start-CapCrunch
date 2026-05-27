@@ -2,9 +2,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { withForm } from '@/components/form';
 import { seasons, nhlTeams, contractTypes } from '@/lib/constants/metadata';
 import { ContractTypes } from '@/lib/types/global-hockey-types';
-import { errorMessage } from '../form/form-utils/form.utils';
+import { errorMessage } from '../../form/form-utils/form.utils';
 import { Button } from '@/components/ui/button';
-import { createInitialContractYears } from './manage-contract-utils';
+import { createInitialContractYears } from '../manage-contract-utils';
 
 export function getMaxTerm (contractType: ContractTypes) {
   if(contractType == "ELC" || contractType == "ELC-FA" )
@@ -44,7 +44,7 @@ export const ManageContractInfoFields = withForm({
                   }}
               </form.AppField>
 
-           
+{/*            
 
             <form.AppField
               name="signingTeam"
@@ -60,7 +60,7 @@ export const ManageContractInfoFields = withForm({
                     />
                   )
                 }}
-            </form.AppField>
+            </form.AppField> */}
             
 
             <form.AppField
