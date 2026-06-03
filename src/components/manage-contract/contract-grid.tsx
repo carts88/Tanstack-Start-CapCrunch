@@ -1,4 +1,5 @@
-﻿import { useCallback, useEffect, useState } from "react";
+﻿import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { ContractInfo } from "./build-contract/contract-info,";
 import {
   QuickFillPanel,
@@ -16,6 +17,7 @@ import {
 } from "./contract-grid.utils";
 import { ContractValidationLog } from "./contract-validation/contract-validation-log";
 import { ValidateContract } from "./variability-calculations";
+import { CURRENT_SEASON } from "@/lib/constants/hockey";
 
 
 interface ContractYearGridProps {
@@ -23,6 +25,9 @@ interface ContractYearGridProps {
   defaultLength?: number;
   onChange?: (values: ContractFormValues) => void;
   onSubmit?: (values: ContractFormValues) => Promise<void> | void;
+  contract?: ContractFormValues
+  setContract: Dispatch<SetStateAction<ContractFormValues>>;
+  mode: "CUSTOM" | "ADMIN"
 }
 
 export function ContractYearGrid({
@@ -30,39 +35,11 @@ export function ContractYearGrid({
   defaultLength = 1,
   onChange,
   onSubmit,
+  contract,
+  setContract,
+  mode = "CUSTOM"
 }: ContractYearGridProps) {
-  const [contract, setContract] = useState<ContractFormValues>({
-    startYear: defaultStartYear,
-    signingDate: new Date("2026-04-04"),
-    signingTeam: "ducks",
-    years: Array.from({ length: defaultLength }, emptyYear),
-  });
-
-    console.log(contract.years)
   const [qf, setQF] = useState<QuickFillState>(emptyQuickFill);
-
-      // useEffect(() => {
-        
-
-      // }, [contract.years]);
-
-
-    // const {errors, meta} = ValidateContract({
-    //       sept15Age: 33,
-    //       june30Age: 32,
-    //       contractType: "SPC-FA",
-    //       contractYears: contract.years
-    //     })
-
-        
-      function handleSetSigningDate(newDate: Date | null) {
-    if (!newDate) return;
-
-    setContract((prev) => ({
-      ...prev,
-      signingDate: newDate,
-    }));
-  }
 
   const updateContract = useCallback(
     (updater: (prev: ContractFormValues) => ContractFormValues) => {
@@ -74,41 +51,6 @@ export function ContractYearGrid({
     },
     [onChange]
   );
-
-  function handleSigningTeamChange(newTeam: string) {
-    setContract((prev) => ({
-      ...prev,
-      signingTeam: newTeam,
-    }));
-  }
-
-  function handleLengthChange(newLen: number) {
-    updateContract((prev) => {
-      const years =
-        newLen > prev.years.length
-          ? [
-              ...prev.years,
-              ...Array.from({ length: newLen - prev.years.length }, emptyYear),
-            ]
-          : prev.years.slice(0, newLen);
-
-      return { ...prev, years };
-    });
-
-    setQF((prev) => {
-      const selections = { ...prev.selections };
-
-      for (const key of Object.keys(selections) as QuickFillKey[]) {
-        const pruned = new Set<number>();
-        for (const index of selections[key]) {
-          if (index < newLen) pruned.add(index);
-        }
-        selections[key] = pruned;
-      }
-
-      return { ...prev, selections };
-    });
-  }
 
   function updateYearField(
     rowIndex: number,
@@ -146,7 +88,7 @@ export function ContractYearGrid({
   }
 
   function toggleAll(key: QuickFillKey) {
-    const length = contract.years.length;
+    const length = contract ? contract.years.length: 1;
     setQF((prev) => {
       const allOn = prev.selections[key].size === length;
       const selection = allOn
@@ -245,26 +187,18 @@ export function ContractYearGrid({
 
 
 
-  const calculatedCapHit = getCalculatedCapHit(contract.years);
+  const calculatedCapHit = contract ? getCalculatedCapHit(contract.years) : 0;
 
   return (
-<div className="flex w-7xl m-auto gap-3">
      
    
 
       <div className="space-y-6 w-fit">
-        <ContractInfo
-          contract={contract}
-          updateContract={updateContract}
-          handleLengthChange={handleLengthChange}
-          handleSigningTeamChange={handleSigningTeamChange}
-          handleSetSigningDate={handleSetSigningDate}
-        />
-
+   
         <QuickFillPanel
           qf={qf}
-          startYear={contract.startYear}
-          yearCount={contract.years.length}
+          startYear={contract ? contract.startYear: CURRENT_SEASON}
+          yearCount={contract ? contract.years.length: 1}
           onUpdateValue={(key, value) =>
             setQF((prev) => ({
               ...prev,
@@ -302,7 +236,7 @@ export function ContractYearGrid({
               </tr>
             </thead>
             <tbody>
-              {contract.years.map((row, index) => {
+              {contract && contract.years.map((row, index) => {
                 const year = contract.startYear + index;
                 const yearLabel = `${year}–${String(year + 1).slice(-2)}`;
                 return (
@@ -322,11 +256,7 @@ export function ContractYearGrid({
         </div>
         
       </div>
-    {/* <ContractValidationLog 
-        logs={errors}
-      /> */}
-    </div>
-  );
+    );
 }
 
 export type { ContractFormValues, ContractYear, ClauseType } from "./contract-grid.types";

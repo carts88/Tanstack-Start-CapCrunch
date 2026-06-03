@@ -1,15 +1,17 @@
 // # GET FUNCTIONS
 
 export function getObjOfArrByKey<T, K extends keyof T>(
-    array: T[],
-    key: K,
-    value: T[K]
+  array: readonly T[],
+  key: K,
+  value: T[K]
 ): T {
-    const result = array.find((item) => item[key] === value);
-    if (!result) {
-        throw new Error(`No item found with ${String(key)} = ${value}`);
-    }
-    return result;
+  const result = array.find((item) => item[key] === value);
+
+  if (!result) {
+    throw new Error(`No item found with ${String(key)} = ${value}`);
+  }
+
+  return result;
 }
 
 // # MATH FUNCTIONS

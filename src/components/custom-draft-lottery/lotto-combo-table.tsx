@@ -1,7 +1,7 @@
 // lotto-combo-table.tsx
 // Displays each team's assigned lottery combinations with odds and expandable combo lists.
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { TeamLotteryCombo } from "./utils";
 
@@ -12,15 +12,8 @@ interface ILottoComboTable {
 export const LottoComboTable = ({ lotteryCombos }: ILottoComboTable) => {
   const [expandedTeam, setExpandedTeam] = useState<string | null>(null);
 
-  const totalCombos = useMemo(
-    () => lotteryCombos.reduce((sum, t) => sum + t.combos.length, 0),
-    [lotteryCombos]
-  );
-
-  const maxCombos = useMemo(
-    () => Math.max(...lotteryCombos.map((t) => t.combos.length)),
-    [lotteryCombos]
-  );
+  const totalCombos = lotteryCombos.reduce((sum, t) => sum + t.combos.length, 0)
+  const maxCombos = Math.max(...lotteryCombos.map((t) => t.combos.length))
 
   return (
     <div className="rounded-xl border bg-card shadow-sm overflow-hidden">

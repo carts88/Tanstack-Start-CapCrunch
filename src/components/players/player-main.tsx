@@ -5,6 +5,9 @@ import { TransactionList } from "./transactions/transaction-list"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { getObjOfArrByKey } from "@/lib/utils/array.utils"
 import { nhlTeams } from "@/lib/constants/metadata"
+import { CreateContract } from "../manage-contract/admin/create-contract"
+import { TeamInfo } from "../team/team-info"
+import { TeamTricodes } from "../custom-draft-lottery/utils"
 
 export default function PlayerMain ({playerInfo, contracts, transactions}) {
 
@@ -31,6 +34,14 @@ const teamMeta = getObjOfArrByKey(nhlTeams , "teamSlug", playerInfo?.team)
           </TabsTrigger>
           </TabsList>
           <TabsContent className="my-6 space-y-5" value="contracts">
+            <CreateContract 
+              playerMeta={{
+                playerId: playerInfo.playerId,
+                fullName: playerInfo.fullName,
+                currentTeam:  teamMeta.value ?? "ANA",
+                birthDate: new Date(playerInfo.birthDate)
+              }}
+            />
             {/* <ContractStats 
                     projCareerSalary={2444444} 
                     totalContracts={contracts.length} 

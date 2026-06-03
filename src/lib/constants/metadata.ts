@@ -375,7 +375,7 @@ export const nhlTeams = [
     thirdColor: "#004C97",
     affiliates: [],
   },
-];
+] as const;
 
 export  const contractTypes = [
   {

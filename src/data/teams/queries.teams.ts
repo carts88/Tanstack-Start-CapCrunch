@@ -1,4 +1,4 @@
-import { Seasons, TeamSlugs } from "@/lib/types/global-hockey-types";
+import { TeamSlugs } from "@/lib/types/global-hockey-types";
 import { sql } from "../db";
 
 
@@ -310,24 +310,32 @@ export async function getActiveTeamStaff(teamSlug: TeamSlugs) {
     WHERE team = ${teamSlug}
     AND end_date IS NULL
   `
-  return rows[0]
+  return rows
 }
 
 
 
 export async function getTeamDraftPicks(
-  teamSlug: TeamSlugs
+  teamSlug: TeamSlugs,
+  startYear: number,
+  endYear: number
 ) {
   const rows = await sql`
-    SELECT 
-      dp.pick_id
-    , dp.draft_year
-    , dp.draft_round
-    , dp.original_owner
-    , dp.current_owner
-  FROM draft_picks dp
-  WHERE draft_year > 2025
-  AND (original_owner = ${teamSlug} OR current_owner = ${teamSlug})
+    SELECT
+      dp.pick_id,
+      dp.draft_year,
+      dp.draft_round,
+      dp.original_owner,
+      dp.current_owner
+    FROM draft_picks dp
+    WHERE
+      dp.draft_year BETWEEN ${startYear} AND ${endYear}
+      AND (
+          dp.original_owner = ${teamSlug}
+          OR dp.current_owner = ${teamSlug}
+      );
   `
   return rows
 }
+
+

@@ -12,6 +12,7 @@ interface IContractInfo {
   handleLengthChange: (newLen: number) => void;
   handleSigningTeamChange: (newTeam: string) => void;
   handleSetSigningDate: (newDate: Date | null) => void;
+  isModalNested: boolean
 }
 
 function FieldWrapper({ label, children }: { label: string; children: React.ReactNode }) {
@@ -31,6 +32,7 @@ export const ContractInfo = ({
   handleLengthChange,
   handleSigningTeamChange,
   handleSetSigningDate,
+  isModalNested
 }: IContractInfo) => {
   return (
     <div className="inline-flex items-end gap-x-4">
@@ -73,6 +75,7 @@ export const ContractInfo = ({
           items={nhlTeamSelectData}
           value={contract.signingTeam}
           onValueChange={handleSigningTeamChange}
+          modal={isModalNested}
         />
       </FieldWrapper>
 

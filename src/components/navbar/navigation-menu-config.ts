@@ -29,191 +29,308 @@ export const navigationConfig = [
           layout: 'grid',
           columns: 4,
           isTeamColumns: true,
-          items: [
+              items: [
+
   [
+
     {
+
       "label": "Pacific",
-      "type": "title"
+"type": "title"
+
     },
+
     {
-      "label": "Ducks",
-      "href": "/ducks",
-      "type": "team"
+
+      "label": "Anaheim Ducks",
+"href": "/ducks",
+"type": "team"
+
     },
+
     {
-      "label": "Flames",
-      "href": "/flames",
-      "type": "team"
+
+      "label": "Calgary Flames",
+"href": "/flames",
+"type": "team"
+
     },
+
     {
-      "label": "Oilers",
-      "href": "/oilers",
-      "type": "team"
+
+      "label": "Edmonton Oilers",
+"href": "/oilers",
+"type": "team"
+
     },
+
     {
-      "label": "Kings",
-      "href": "/kings",
-      "type": "team"
+
+      "label": "Los Angeles Kings",
+"href": "/kings",
+"type": "team"
+
     },
+
     {
-      "label": "Sharks",
-      "href": "/sharks",
-      "type": "team"
+
+      "label": "San Jose Sharks",
+"href": "/sharks",
+"type": "team"
+
     },
+
     {
-      "label": "Kraken",
-      "href": "/kraken",
-      "type": "team"
+
+      "label": "Seattle Kraken",
+"href": "/kraken",
+"type": "team"
+
     },
+
     {
-      "label": "Canucks",
-      "href": "/canucks",
-      "type": "team"
+
+      "label": "Vancouver Canucks",
+"href": "/canucks",
+"type": "team"
+
     },
+
     {
-      "label": "Golden Knights",
-      "href": "/goldenknights",
-      "type": "team"
+
+      "label": "Vegas Golden Knights",
+"href": "/goldenknights",
+"type": "team"
+
     }
+
   ],
+
   [
+
     {
+
       "label": "Central",
-      "type": "title"
+"type": "title"
+
     },
+
     {
-      "label": "Coyotes",
-      "href": "/coyotes",
-      "type": "team"
+
+      "label": "Chicago Blackhawks",
+"href": "/blackhawks",
+"type": "team"
+
     },
+
     {
-      "label": "Blackhawks",
-      "href": "/blackhawks",
-      "type": "team"
+
+      "label": "Colorado Avalanche",
+"href": "/avalanche",
+"type": "team"
+
     },
+
     {
-      "label": "Avalanche",
-      "href": "/avalanche",
-      "type": "team"
+
+      "label": "Dallas Stars",
+"href": "/stars",
+"type": "team"
+
     },
+
     {
-      "label": "Stars",
-      "href": "/stars",
-      "type": "team"
+
+      "label": "Minnesota Wild",
+"href": "/wild",
+"type": "team"
+
     },
+
     {
-      "label": "Wild",
-      "href": "/wild",
-      "type": "team"
+
+      "label": "Nashville Predators",
+"href": "/predators",
+"type": "team"
+
     },
+
     {
-      "label": "Predators",
-      "href": "/predators",
-      "type": "team"
+
+      "label": "St. Louis Blues",
+"href": "/blues",
+"type": "team"
+
     },
+
     {
-      "label": "Blues",
-      "href": "/blues",
-      "type": "team"
+
+      "label": "Utah Mammoth",
+"href": "/mammoth",
+"type": "team"
+
     },
+
     {
-      "label": "Jets",
-      "href": "/jets",
-      "type": "team"
+
+      "label": "Winnipeg Jets",
+"href": "/jets",
+"type": "team"
+
     }
+
   ],
+
   [
+
     {
+
       "label": "Metropolitan",
-      "type": "title"
+"type": "title"
+
     },
+
     {
-      "label": "Hurricanes",
-      "href": "/hurricanes",
+
+      "label": "Carolina Hurricanes",
+"href": "/hurricanes",
+"type": "team"
+
+    },
+
+    {
+
+      "label": "Columbus Blue Jackets",
+"href": "/bluejackets",
+"type": "team"
+
+    },
+
+    {
+
+      "label": "New Jersey Devils",
+"href": "/devils",
+"type": "team"
+
+    },
+
+    {
+
+      "label": "New York Islanders",
+"href": "/islanders",
       "type": "team"
+
     },
+
     {
-      "label": "Blue Jackets",
-      "href": "/bluejackets",
-      "type": "team"
+
+      "label": "New York Rangers",
+"href": "/rangers",
+"type": "team"
+
     },
+
     {
-      "label": "Devils",
-      "href": "/devils",
-      "type": "team"
-    },
-    {
-      "label": "Islanders",
-      "href": "/islanders",
-      "type": "team"
-    },
-    {
-      "label": "Rangers",
-      "href": "/rangers",
-      "type": "team"
-    },
-    {
-      "label": "Flyers",
+
+      "label": "Philadelphia Flyers",
       "href": "/flyers",
       "type": "team"
+
     },
+
     {
-      "label": "Penguins",
-      "href": "/penguins",
-      "type": "team"
+
+      "label": "Pittsburgh Penguins",
+"href": "/penguins",
+"type": "team"
+
     },
+
     {
-      "label": "Capitals",
-      "href": "/capitals",
-      "type": "team"
+
+      "label": "Washington Capitals",
+"href": "/capitals",
+"type": "team"
+
     }
+
   ],
+
   [
+
     {
+
       "label": "Atlantic",
-      "type": "title"
+"type": "title"
+
     },
+
     {
-      "label": "Bruins",
-      "href": "/bruins",
-      "type": "team"
+
+      "label": "Boston Bruins",
+"href": "/bruins",
+"type": "team"
+
     },
+
     {
-      "label": "Sabres",
-      "href": "/sabres",
-      "type": "team"
+
+      "label": "Buffalo Sabres",
+"href": "/sabres",
+"type": "team"
+
     },
+
     {
-      "label": "Red Wings",
-      "href": "/redwings",
-      "type": "team"
+
+      "label": "Detroit Red Wings",
+"href": "/redwings",
+"type": "team"
+
     },
+
     {
-      "label": "Panthers",
-      "href": "/panthers",
-      "type": "team"
+
+      "label": "Florida Panthers",
+"href": "/panthers",
+"type": "team"
+
     },
+
     {
-      "label": "Canadiens",
-      "href": "/canadiens",
-      "type": "team"
+
+      "label": "Montreal Canadiens",
+"href": "/canadiens",
+"type": "team"
+
     },
+
     {
-      "label": "Senators",
-      "href": "/senators",
-      "type": "team"
+
+      "label": "Ottawa Senators",
+"href": "/senators",
+"type": "team"
+
     },
+
     {
-      "label": "Lightning",
-      "href": "/lightning",
-      "type": "team"
+
+      "label": "Tampa Bay Lightning",
+"href": "/lightning",
+"type": "team"
+
     },
+
     {
-      "label": "Maple Leafs",
-      "href": "/mapleleafs",
-      "type": "team"
+
+      "label": "Toronto Maple Leafs",
+"href": "/mapleleafs",
+"type": "team"
+
     }
+
   ]
+
 ]
         }
       ]

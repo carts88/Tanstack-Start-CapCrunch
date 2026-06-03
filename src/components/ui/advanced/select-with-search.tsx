@@ -1,6 +1,5 @@
-import {
-  ChevronDownIcon,
-} from "lucide-react"
+import { useMemo, useState } from "react"
+import { ChevronDownIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,23 +15,21 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useMemo } from "react"
 
-// Define the shape of each item
-export interface SelectItemWithImage<T>{
+export interface SelectItemWithImage<T> {
   value: T
   label: string
-  imagePath?: string // Path to the image (e.g., "/logos/nhl/anaheim-ducks.png")
+  imagePath?: string
 }
 
-// Props for the component
-interface SelectWithSearchProps{
+interface SelectWithSearchProps {
   id: string
   subject: string
   items: SelectItemWithImage<string>[]
   value: string
   onValueChange: (value: string) => void
   placeholder?: string
+  modal: boolean
 }
 
 export default function SelectWithSearchImage({
@@ -42,82 +39,103 @@ export default function SelectWithSearchImage({
   value,
   onValueChange,
   placeholder,
+  modal
 }: SelectWithSearchProps) {
+  const [open, setOpen] = useState(false)
 
-  const selectedItem = useMemo(
-  () => items.find((item) => item.value === value),
-    [items, value]
+  const itemMap = useMemo(
+    () => new Map(items.map((item) => [item.value, item])),
+    [items]
+  )
+
+  const selectedItem = itemMap.get(value)
+
+  const commandItems = useMemo(
+    () =>
+      items.map((item) => (
+        <CommandItem
+          key={item.value}
+          value={item.value}
+          onSelect={(currentValue) => {
+            onValueChange(currentValue === value ? "" : currentValue)
+            setOpen(false)
+          }}
+          className="cursor-pointer"
+        >
+          <div className="flex items-center gap-3">
+            {item.imagePath && (
+              <img
+                src={item.imagePath}
+                width={32}
+                height={32}
+                alt={item.label}
+                loading="lazy"
+                decoding="async"
+                className="rounded-sm object-contain"
+              />
+            )}
+            <span>{item.label}</span>
+          </div>
+        </CommandItem>
+      )),
+    [items, value, onValueChange]
   )
 
   return (
-      <Popover >
-        <PopoverTrigger  asChild>
-          <Button
-            id={id}
-            variant="outline"
-            role="combobox"
-            className="w-full justify-between font-normal hover:bg-accent/50"
-          >
-            {selectedItem ? (
-              <div className="flex items-center  min-w-0">
-                {selectedItem.imagePath &&
-                  <img
-                    loading="lazy"
-                    decoding="async"
-                    src={selectedItem.imagePath}
-                    width={32}
-                    height={32}
-                    alt={selectedItem.label}
-                    className="shrink-0 rounded-sm object-contain"
-                  />
-                }
-                <span className="truncate">{selectedItem.label}</span>
-              </div>
-            ) : (
-              <span className="text-muted-foreground">
-                {placeholder || `Select ${subject}...`}
-              </span>
-            )}
-            <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-          </Button>
-        </PopoverTrigger>
-
-        <PopoverContent
-          className="w-(--radix-popover-trigger-width) max-w-sm p-0"
-          align="start"
+    <Popover open={open} modal={modal} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          id={id}
+          variant="outline"
+          role="combobox"
+          className="w-full justify-between font-normal hover:bg-accent/50"
         >
+          {selectedItem ? (
+            <div className="flex min-w-0 items-center gap-2">
+              {selectedItem.imagePath && (
+                <img
+                  src={selectedItem.imagePath}
+                  width={32}
+                  height={32}
+                  alt={selectedItem.label}
+                  loading="eager"
+                  fetchPriority="high"
+                  className="shrink-0 rounded-sm object-contain"
+                />
+              )}
+              <span className="truncate">{selectedItem.label}</span>
+            </div>
+          ) : (
+            <span className="text-muted-foreground">
+              {placeholder || `Select ${subject}...`}
+            </span>
+          )}
+
+          <ChevronDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent
+        className="w-(--radix-popover-trigger-width) max-w-sm p-0"
+        align="start"
+      >
+        {open && (
           <Command>
-            <CommandInput placeholder={`Search ${subject}...`} className="h-9" />
+            <CommandInput
+              placeholder={`Search ${subject}...`}
+              className="h-9"
+            />
+
             <CommandList>
               <CommandEmpty>No {subject} found.</CommandEmpty>
+
               <CommandGroup>
-                {items.map((item) => (
-                  <CommandItem
-                    key={item.value}
-                    value={item.value}
-                    onSelect={(currentValue) => {
-                      onValueChange(currentValue === value ? "" : currentValue)
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      {item.imagePath &&
-                          <img
-                          src={item.imagePath}
-                          width={32}
-                          height={32}
-                          alt={item.label}
-                          className="rounded-sm object-contain"
-                        />
-                      }
-                      <span>{item.label}</span>
-                    </div>
-                  </CommandItem>
-                ))}
+                {commandItems}
               </CommandGroup>
             </CommandList>
           </Command>
-        </PopoverContent>
-      </Popover>
+        )}
+      </PopoverContent>
+    </Popover>
   )
 }

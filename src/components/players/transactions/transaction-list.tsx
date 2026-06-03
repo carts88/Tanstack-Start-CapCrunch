@@ -46,7 +46,7 @@ export const TransactionList = ({
       {title && (
         <header className="mb-3 flex items-baseline justify-between border-b-2 border-border pb-2">
           <h2
-            className="m-0 text-[13px] font-bold uppercase tracking-[0.1em] text-foreground"
+            className="m-0 text-[13px] font-bold uppercase tracking-widest text-foreground"
             style={{ fontFamily: "'Arial Narrow', 'Helvetica Neue', sans-serif" }}
           >
             {title}
@@ -66,7 +66,7 @@ export const TransactionList = ({
           {visible.map((tx) => (
             <CarouselItem
               key={tx.id}
-              className="basis-[312px] pl-2"
+              className="basis-78 pl-2"
               style={{ height: `${cardHeight}px` }}
             >
               <TransactionCard transaction={tx} />

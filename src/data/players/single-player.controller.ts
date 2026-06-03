@@ -1,7 +1,7 @@
 import { convertKeysToCamelCase } from "@/lib/mapping.utils";
 import { getPlayer } from "./single-player.queries";
 import { transformContracts } from "./utils";
-import { formatDate, formatHeight, formatWeight } from "@/lib/utils/formatters";
+import { formatHeight, formatWeight } from "@/lib/utils/formatters";
 
 interface IGetPlayer {
     player_slug: string;

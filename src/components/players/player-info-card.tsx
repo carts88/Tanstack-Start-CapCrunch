@@ -135,7 +135,7 @@ export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
                   target="_blank" rel="noopener noreferrer"
                   className="ml-auto flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors group"
                 >
-                  <span className="truncate max-w-[150px]">{playerInfo.charity.name}</span>
+                  <span className="truncate max-w-37.5">{playerInfo.charity.name}</span>
                   <ExternalLink className="w-3 h-3 shrink-0 opacity-60 group-hover:opacity-100" />
                 </a>
               )}
@@ -143,7 +143,7 @@ export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
           </div>
 
           {/* Right sliver */}
-          <div className="shrink-0 w-[88px] flex flex-col gap-3 border-l border-border pl-4">
+          <div className="shrink-0 w-22 flex flex-col gap-3 border-l border-border pl-4">
             <SliverStat label="Professional Seasons" value={`${playerInfo.proSeasons ?? "—"}`} />
             <SliverStat label="Accrued Seasons"     value={`${playerInfo.accruedSeasons ?? "—"}`} />
             <SliverStat label="Pro Experience"  value={`${playerInfo.proExperience ?? "—"} yrs`} />

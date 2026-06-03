@@ -2,7 +2,7 @@ import { API_URL, API_VERSION } from "@/lib/constants/site"
 import { useQuery } from "@tanstack/react-query"
 
 
-const fetchPlayerBySlug = async (playerSlug: string) => {
+export const fetchPlayerBySlug = async (playerSlug: string) => {
     const response = await fetch(
         `${API_URL}/${API_VERSION}/players/${playerSlug}`
     )

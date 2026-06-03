@@ -38,7 +38,7 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
 
   return (
     <article
-      className="flex h-full overflow-hidden rounded-lg text-[13px] leading-[1.5]"
+      className="flex h-full overflow-hidden rounded-lg text-[13px] leading-normal"
       style={{
         background: bgTint,
         border: `1px solid ${accentTint}`,

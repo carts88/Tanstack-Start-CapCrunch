@@ -1,9 +1,46 @@
-import { usePlayerBySlug } from '@/components/players/hooks/use-player'
+import { fetchPlayerBySlug, usePlayerBySlug } from '@/components/players/hooks/use-player'
 import PlayerMain from '@/components/players/player-main'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/players/$playerSlug')({
+export const Route = createFileRoute('/players/$playerSlug')( {
+  head: ({}) => (
+    {
+    
+    meta: [
+      // twitter
+      // {
+      //   name: "twitter:card",
+      //   content: "summary_large_image",
+      // },
+      // {
+      //   name: "twitter:title",
+      //   content: loaderData.data.playerInfo.fullName,
+      // },
+      // {
+      //   name: "twitter:description",
+      //   content: "Tyson Foerster is a good player"
+      // },
+      // {
+      //   name: "twitter:image",
+      //   content: loaderData.data.playerInfo.headshotUrl
+      // },
+
+      // Base WEbsite Meta
+      // { title: `CapCrunch - ${loaderData.data.playerInfo.fullName}`},
+      {
+        name: 'description',
+        content: 'Welcome to My App, a platform for...',
+      },
+    ],
+  }),
   component: RouteComponent,
+  loader: async ({ params }) => {
+    const { playerSlug } = params
+    const player = fetchPlayerBySlug(playerSlug)
+    
+    return player
+  },
+
 })
 
 function RouteComponent() {

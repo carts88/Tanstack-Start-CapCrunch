@@ -1,6 +1,7 @@
 import { TeamSlugs } from "@/lib/types/global-hockey-types";
-import { getActiveTeamStaff, getTeamData, getTeamDeadcaps, getTeamStaff } from "./queries.teams";
+import { getActiveTeamStaff, getTeamData, getTeamDeadcaps, getTeamStaff, getTeamDraftPicks } from "./queries.teams";
 import { transformPlayerContracts } from "./utils";
+import { CURRENT_SEASON } from "@/lib/constants/hockey";
 
 
 export async function getTeam(teamSeasonParams: {season: number, teamSlug: TeamSlugs}) {
@@ -9,10 +10,11 @@ export async function getTeam(teamSeasonParams: {season: number, teamSlug: TeamS
     // const rawDeadcaps = getTeamDeadcap(teamSeasonParams)
     // const rawDraftPicks = getTeamDraftPicks({...teamSeasonParams, yearsShown: 4})
 
-    const [rawTeamData, rawTeamDeadcaps] = await Promise.all([
+    const [rawTeamData, rawTeamDeadcaps, rawStaff, rawDraftPicks] = await Promise.all([
         getTeamData(teamSeasonParams),
+        getTeamDeadcaps(teamSeasonParams),
         getActiveTeamStaff(teamSlug),
-        getTeamDeadcaps(teamSeasonParams)
+        getTeamDraftPicks(teamSlug, CURRENT_SEASON, (CURRENT_SEASON + 3))
     ])
 
     const {roster, team_outlook} = rawTeamData
@@ -35,10 +37,11 @@ export async function getTeam(teamSeasonParams: {season: number, teamSlug: TeamS
     return{
         // teamMeta
         "teamOutlook": transformedOutlooks,
+        "staff": rawStaff,
         "roster": transformedRoster,
-        // "staff" : rawStaff,
+        "draftPicks": rawDraftPicks,
         "deadcap": deadcaps,
-        "outlook": outlook
+        "outlook": outlook,
         // staff
         // draftpicks
         // deadcaps

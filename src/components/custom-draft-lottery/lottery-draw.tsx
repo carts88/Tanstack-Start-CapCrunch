@@ -14,9 +14,8 @@ import {
   handleLottery2Winner,
   isComboInvalid,
 } from "./utils";
-import type { DraftOrder } from "./manage-pre-lottery-order";
 import type { TeamLotteryCombo, TeamTricodes } from "./utils";
-import { getTeamMetaData } from "@/lib/utils/meta.utils";
+import { getTeamMetaByTricode } from "@/lib/utils/meta.utils";
 import { takeScreenshot } from '@/lib/utils';
 import { LiveOddsTable } from "./live-odds-display";
 import { InfoTooltip } from "../cba/reusable/info-tooltip";
@@ -116,10 +115,10 @@ export const LotteryDraw = ({ lotteryCombos }: ILotteryDraw) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [selectedCountdown, setSelectedCountdown] = useState(3);
   const [countdown, setCountdown] = useState<number | null>(null);
-  const combosMatch = useMemo(() => {
-    if (lottoCombo1.length !== 4 || lottoCombo2.length !== 4) return false;
-    return combosEqual(lottoCombo1, lottoCombo2);
-  }, [lottoCombo1, lottoCombo2]);
+  const combosMatch =
+    lottoCombo1.length === 4 &&
+    lottoCombo2.length === 4 &&
+    combosEqual(lottoCombo1, lottoCombo2);
 
   const lottery1Invalid = isComboInvalid(lottoCombo1);
   const lottery1Winner = useMemo(
@@ -259,16 +258,12 @@ function restartLottery(lotteryNumber: 1 | 2) {
     (lottoCombo1.length === 4 && lottery2Invalid && lottoCombo2.length === 4) ||
     (lottoCombo1.length === 4 && lottoCombo2.length === 4 && !lottery2Invalid);
 
-  const initialDraftOrder = useMemo<Array<DraftOrder>>(
-    () =>
-      lotteryCombos.map(({ originalOwner, currentOwner, ovr }) => ({
+  const initialDraftOrder = lotteryCombos.map(({ originalOwner, currentOwner, ovr }) => ({
         originalOwner,
         currentOwner,
         ovr,
         note: "",
-      })),
-    [lotteryCombos]
-  );
+      }))
 
   const draftOrderAfterLottery1 = useMemo(() => {
     if (!lottery1Winner || lottery1Invalid) {
@@ -310,8 +305,8 @@ function restartLottery(lotteryNumber: 1 | 2) {
 ]);
 
 
-  const l1WinnerMeta = getTeamMetaData(lottery1Winner?.currentOwner as TeamTricodes)
-  const l2WinnerMeta = getTeamMetaData(lottery2Winner?.currentOwner as TeamTricodes)
+  const l1WinnerMeta = getTeamMetaByTricode(lottery1Winner?.currentOwner as TeamTricodes)
+  const l2WinnerMeta = getTeamMetaByTricode(lottery2Winner?.currentOwner as TeamTricodes)
 
   const takeDraftOrderScreenshot = () => {
     takeScreenshot("draft-order", "custom_draft_order")
@@ -510,8 +505,8 @@ function restartLottery(lotteryNumber: 1 | 2) {
 
   const isTraded = pick.originalOwner !== pick.currentOwner;
 
-  const ogOwnerMeta = getTeamMetaData(pick.originalOwner);
-  const curOwnerMeta = getTeamMetaData(pick.currentOwner);
+  const ogOwnerMeta = getTeamMetaByTricode(pick.originalOwner);
+  const curOwnerMeta = getTeamMetaByTricode(pick.currentOwner);
 
   const originalPick =
     initialDraftOrder.find(
@@ -535,14 +530,14 @@ function restartLottery(lotteryNumber: 1 | 2) {
 
       <div className="relative shrink-0">
         <img
-          src={`/logos/nhl/${curOwnerMeta.teamSlug}.svg`}
+          src={`/logos/nhl/${curOwnerMeta?.teamSlug}.svg`}
           className="h-7 w-7"
           alt=""
         />
 
         {isTraded && (
           <img
-            src={`/logos/nhl/${ogOwnerMeta.teamSlug}.svg`}
+            src={`/logos/nhl/${ogOwnerMeta?.teamSlug}.svg`}
             className="absolute -bottom-0.5 -right-1 h-3.5 w-3.5 rounded-full border border-background bg-background"
             alt={`Originally ${pick.originalOwner}`}
           />
@@ -551,12 +546,13 @@ function restartLottery(lotteryNumber: 1 | 2) {
 
       <div className="min-w-0 flex-1">
         <p className="truncate font-mono text-xs font-medium leading-tight">
-          {curOwnerMeta.label}
+          {curOwnerMeta?.label}
         </p>
 
         {isTraded && (
           <p className="truncate text-[10px] leading-tight text-muted-foreground">
-            via {ogOwnerMeta.label}
+            via {ogOwnerMeta
+            ?.label}
           </p>
         )}
       </div>

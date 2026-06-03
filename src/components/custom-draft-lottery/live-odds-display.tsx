@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Trophy } from "lucide-react";
 import type { TeamLotteryCombo, TeamTricodes } from "./utils";
 import { getBallsNeededToWinLotto, getRemainingValidCombos } from "./utils";
-import { getTeamMetaData } from "@/lib/utils/meta.utils";
+import { getTeamMetaByTricode } from "@/lib/utils/meta.utils";
 
 interface ILiveOddsTable {
   lotteryCombos: Array<TeamLotteryCombo>;
@@ -80,7 +80,7 @@ export const LiveOddsTable = ({
       {/* Rows */}
       <div className="flex-1 overflow-y-auto divide-y divide-border/50">
         {oddsRows.map((row) => {
-          const meta = getTeamMetaData(row.currentOwner as TeamTricodes);
+          const meta = getTeamMetaByTricode(row.currentOwner as TeamTricodes);
           const isWinner = row.isL1Winner || row.isL2Winner;
           const isEliminated = row.isL1Winner && activeLottery === 2;
         
@@ -112,7 +112,7 @@ export const LiveOddsTable = ({
               {/* Team row */}
             <div className="flex items-center gap-1.5">
   <img
-    src={`/logos/nhl/${meta.teamSlug}.svg`}
+    src={`/logos/nhl/${meta?.teamSlug}.svg`}
     className="h-4.5 w-4.5 shrink-0"
     alt=""
   />
@@ -182,7 +182,7 @@ export const LiveOddsTable = ({
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       width: `${row.odds.toFixed(1)}%`,
-                      backgroundColor: meta.primaryColor,
+                      backgroundColor: meta?.primaryColor,
                     }}
                   />
                 </div>
