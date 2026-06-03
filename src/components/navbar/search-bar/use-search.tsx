@@ -1,5 +1,9 @@
-import * as React from "react"
-import { useQuery } from "@tanstack/react-query"
+import * as React from 'react'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { API_URL, API_VERSION } from '@/lib/constants/site'
+
+const MIN_QUERY_LENGTH = 2
+const SEARCH_DEBOUNCE_MS = 300
 
 function useDebounce(value: string, delay: number) {
   const [debounced, setDebounced] = React.useState(value)
@@ -12,38 +16,40 @@ function useDebounce(value: string, delay: number) {
   return debounced
 }
 
-interface SearchResponse {
-  success: boolean
-  data?: {
-    players: any[]
-    staff: any[]
+const fetchSearchMeta = async (searchTerm: string, signal: AbortSignal) => {
+  const response = await fetch(
+    `${API_URL}/${API_VERSION}/search?search=${encodeURIComponent(searchTerm)}`,
+    { signal },
+  )
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch search results')
   }
+
+  const json = await response.json()
+  return json
 }
 
 export function useSearch(query: string) {
-  const debouncedQuery = useDebounce(query, 300)
+  const trimmedQuery = query.trim()
+  const debouncedQuery = useDebounce(trimmedQuery, SEARCH_DEBOUNCE_MS)
+
+  const isEnabled = debouncedQuery.length >= MIN_QUERY_LENGTH
+  const isDebouncing =
+    trimmedQuery.length >= MIN_QUERY_LENGTH && trimmedQuery !== debouncedQuery
 
   const queryResult = useQuery({
-    queryKey: ["search", debouncedQuery],
-    queryFn: async (): Promise<SearchResponse> => {
-      const res = await fetch(
-        `/api/v1/search?search=${encodeURIComponent(debouncedQuery)}`
-      )
-
-      if (!res.ok) {
-        throw new Error("Search request failed")
-      }
-
-      return res.json()
-    },
-    enabled: debouncedQuery.trim().length >= 2,
-    staleTime: 1000 * 60, // 1 min cache
+    queryKey: ['search', debouncedQuery],
+    queryFn: ({ signal }) => fetchSearchMeta(debouncedQuery, signal),
+    placeholderData: keepPreviousData,
+    staleTime: 5 * 1000,
+    enabled: isEnabled,
   })
 
+  // console.log("Query Search", query)
+  // console.log("Query Result", queryResult)
   return {
     ...queryResult,
-    players: queryResult.data?.data?.players ?? [],
-    staff: queryResult.data?.data?.staff ?? [],
-    query: debouncedQuery,
+    isSearching: isDebouncing || queryResult.isFetching,
   }
 }

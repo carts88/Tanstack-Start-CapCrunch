@@ -1,8 +1,5 @@
-import * as React from "react"
-import {
-  SearchIcon,
-} from "lucide-react"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import * as React from 'react'
+import { SearchIcon, Loader2Icon } from 'lucide-react'
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,36 +7,51 @@ import {
   CommandInput,
   CommandList,
   CommandSeparator,
-} from "@/components/ui/command"
-import { PlayerSearchItem } from "./search-items/player-search-item"
-import { TeamSearchItem } from "./search-items/team-search-item"
-import { CBASearchItem } from "./search-items/cba-search-item"
-import { useSearch } from "./use-search"
+} from '@/components/ui/command'
+import { PlayerSearchItem } from './search-items/player-search-item'
+import { StaffSearchItem } from './search-items/staff-search-item'
+import { useSearch } from './use-search'
 
-
+const MIN_QUERY_LENGTH = 2
 
 export default function SearchBar() {
   const [open, setOpen] = React.useState(false)
-  const [query, setQuery] = React.useState("")
+  const [query, setQuery] = React.useState('')
 
-  const {players, staff, } = useSearch(query)
+  const { data, isSearching } = useSearch(query)
+
+  const isBelowMinLength = query.trim().length < MIN_QUERY_LENGTH
+
+  const players = data?.league_players ?? []
+  const staff = data?.league_staff ?? []
+
+  const showPlayers = players.length > 0
+  const showStaff = staff.length > 0
+  const hasResults = showPlayers || showStaff
+
+  const handleOpenChange = (next: boolean) => {
+    setOpen(next)
+
+    if (!next) {
+      setQuery('')
+    }
+  }
 
   React.useEffect(() => {
     const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
-        setOpen((open) => !open)
+        setOpen((prev) => !prev)
       }
     }
 
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
+    document.addEventListener('keydown', down)
+
+    return () => {
+      document.removeEventListener('keydown', down)
+    }
   }, [])
 
-  // const players = searchData.players
-  // const staff = searchData.staff
-  // const teams = searchData.teams
-  // const cba = searchData.cba
   return (
     <>
       <button
@@ -53,71 +65,85 @@ export default function SearchBar() {
             strokeWidth={2}
             aria-hidden="true"
           />
-          <span className="font-normal text-muted-foreground px-1">Search players, staff, cba ...</span>
+          <span className="font-normal text-muted-foreground px-1">
+            Search players, staff, cba ...
+          </span>
         </span>
+
         <kbd className="hidden sm:inline-flex h-5 items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-          ctrl K
+          Ctrl K
         </kbd>
       </button>
-      <CommandDialog  open={open} onOpenChange={setOpen}>
-        <CommandInput 
-        value={query}
-        onValueChange={setQuery}
-        placeholder="Search players, teams, staff..." />
-        <div className="my-2 items-center">
-        <ToggleGroup className="w-full" type="multiple">
-          <ToggleGroupItem className="rounded-none" value="players">Players</ToggleGroupItem>
-          <ToggleGroupItem className="rounded-none" value="teams">Teams</ToggleGroupItem>
-          <ToggleGroupItem className="rounded-none" value="staff">Staff</ToggleGroupItem>
-          <ToggleGroupItem className="rounded-none" value="cba">CBA</ToggleGroupItem>
-        </ToggleGroup>
+
+      <CommandDialog open={open} onOpenChange={handleOpenChange}>
+        <div className="flex items-center border-b px-3">
+          <CommandInput
+            value={query}
+            onValueChange={setQuery}
+            placeholder="Search players, teams, staff..."
+            className="flex-1"
+          />
+
+          {isSearching && (
+            <Loader2Icon
+              size={14}
+              className="text-muted-foreground animate-spin mr-2 shrink-0"
+            />
+          )}
         </div>
+
         <CommandList>
-          <CommandEmpty>
+          {isBelowMinLength && (
             <div className="flex flex-col items-center justify-center py-6 text-center">
               <SearchIcon className="mb-2 h-8 w-8 text-muted-foreground/50" />
-              <p className="text-sm font-medium">No results found</p>
-              <p className="text-xs text-muted-foreground mt-1">Try searching with different keywords</p>
+              <p className="text-xs text-muted-foreground">
+                Type at least 2 characters to search
+              </p>
             </div>
-          </CommandEmpty>
-          <CommandGroup heading="Players">
-            {players.map((player, idx) => (
-              <PlayerSearchItem 
-                key={`${player.playerSlug}-${idx}`}
-                team={player.team}
-                position={player.position}
-                fullName={player.fullName}
-                playerSlug={player.playerSlug}
-              />
-            ))}
-          </CommandGroup>
-          <CommandSeparator />
-          {/* <CommandGroup heading="Teams">
-            {teams.map((team, idx) => (
-                <TeamSearchItem 
-                  key={`${team.teamSlug}-${idx}`}
-                  teamName={team.teamName}
-                  id={team.id}
-                  teamSlug={team.teamSlug}
-                  league={team.league}
+          )}
+
+          {!isBelowMinLength && !isSearching && !hasResults && (
+            <CommandEmpty>
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <SearchIcon className="mb-2 h-8 w-8 text-muted-foreground/50" />
+                <p className="text-sm font-medium">No results found</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Try searching with different keywords
+                </p>
+              </div>
+            </CommandEmpty>
+          )}
+
+          {showPlayers && (
+            <CommandGroup heading="Players">
+              {players.map((player) => (
+                <PlayerSearchItem
+                  key={player.player_id}
+                  team={player.team}
+                  position={player.position}
+                  fullName={player.full_name}
+                  playerSlug={player.player_slug}
                 />
               ))}
-              
-          </CommandGroup>
+            </CommandGroup>
+          )}
 
-          <CommandGroup heading="CBA">
-            {cba.map((item, idx) => (
-                <CBASearchItem 
-                  id={item.id}
-                  key={`${item.id}-${idx}`}
-                  label={item.label}
-                  category={item.category}
-                  url={item.url}
-                  description={item.description}
+          {showPlayers && showStaff && <CommandSeparator />}
 
+          {showStaff && (
+            <CommandGroup heading="Staff">
+              {staff.map((member) => (
+                <StaffSearchItem
+                  key={member.staff_id}
+                  id={member.staff_id}
+                  teamSlug={member.team ?? ''}
+                  role={member.role ?? ''}
+                  fullName={member.full_name}
+                  staffSlug={member.staff_slug}
                 />
               ))}
-          </CommandGroup> */}
+            </CommandGroup>
+          )}
         </CommandList>
       </CommandDialog>
     </>

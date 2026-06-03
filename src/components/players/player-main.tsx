@@ -1,16 +1,20 @@
-import { playerData } from "./mock-player-data"
 import { PlayerInfoCard } from "./player-info-card"
 import { ContractHistory } from "./contract/contract-history"
 import { ContractStats } from "./contract/contract-stats"
 import { TransactionList } from "./transactions/transaction-list"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { getObjOfArrByKey } from "@/lib/utils/array.utils"
+import { nhlTeams } from "@/lib/constants/metadata"
 
-const PlayerMain = () => {
-    const {player, /**goals, projections, teamMates */ } = playerData
-    const {contracts, transactions, deployment, stats, ...playerInfo} = player
+export default function PlayerMain ({playerInfo, contracts, transactions}) {
+
+const teamMeta = getObjOfArrByKey(nhlTeams , "teamSlug", playerInfo?.team)
+
+    // const { deployment, stats, ...playerInfo} = player
   return (
     <div  className=" lg:max-w-7xl m-auto my-12 space-y-6">
       <PlayerInfoCard 
+        teamMeta={teamMeta}
         playerInfo={playerInfo}
       />
       <TransactionList 
@@ -27,7 +31,7 @@ const PlayerMain = () => {
           </TabsTrigger>
           </TabsList>
           <TabsContent className="my-6 space-y-5" value="contracts">
-            <ContractStats 
+            {/* <ContractStats 
                     projCareerSalary={2444444} 
                     totalContracts={contracts.length} 
                     totalGTDMoney={0} 
@@ -37,10 +41,8 @@ const PlayerMain = () => {
                       _35Plus: contracts.filter((c) => c.type.includes("35")).length,
                   }}        
                   
-                  />
+                  /> */}
                   <ContractHistory 
-                  teamPrimary={playerInfo.teamPrimary}
-                  teamSecondary={playerInfo.teamSecondary}
                     contracts={contracts}
                   />
           </TabsContent>
@@ -51,5 +53,3 @@ const PlayerMain = () => {
     </div>
   )
 }
-
-export default PlayerMain

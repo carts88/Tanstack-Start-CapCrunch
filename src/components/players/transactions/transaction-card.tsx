@@ -1,3 +1,4 @@
+import { formatDate } from "@/lib/utils/formatters";
 import { getTeamMetaData } from "@/lib/utils/meta.utils";
 
 interface Transaction {
@@ -5,7 +6,7 @@ interface Transaction {
   type: string;
   date: string;
   team: string;
-  details: string;
+  notes: string;
 }
 
 interface TransactionCardProps {
@@ -26,7 +27,7 @@ const TYPE_LABELS: Record<string, { label: string; icon: string }> = {
 };
 
 export const TransactionCard = ({ transaction }: TransactionCardProps) => {
-  const { type, date, team, details } = transaction;
+  const { type, date, team, notes } = transaction;
   const { primaryColor, secondColor, label, teamSlug } = getTeamMetaData(team);
 
   const typeInfo = TYPE_LABELS[type] ?? { label: type, icon: "•" };
@@ -41,7 +42,7 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
       style={{
         background: bgTint,
         border: `1px solid ${accentTint}`,
-        fontFamily: "'Georgia', serif",
+        fontFamily: "'system-ui', -apple-system, sans-serif",
         color: "var(--color-text, #1a1a1a)",
       }}
     >
@@ -79,28 +80,28 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
             style={{
               background: primaryColor,
               color: secondColor ?? "#fff",
-              fontFamily: "'Arial Narrow', 'Helvetica Neue', sans-serif",
+              fontFamily: "'system-ui', -apple-system, sans-serif",
             }}
           >
-            <span className="text-[11px]">{typeInfo.icon}</span>
+            <span className="text-[11px] ">{typeInfo.icon}</span>
             {typeInfo.label}
           </span>
 
           {/* Date */}
           <time
             dateTime={date}
-            className="shrink-0 text-[11px] font-extrabold tracking-[0.04em] text-foreground/60"
-            style={{ fontFamily: "'Arial Narrow', 'Helvetica Neue', sans-serif" }}
+            className="shrink-0 text-[11px] font-semibold tracking-[0.04em] text-foreground/60"
+            style={{         fontFamily: "'system-ui', -apple-system, sans-serif",}}
           >
-            {date}
+            {formatDate(date)}
           </time>
         </div>
 
         {/* Team label */}
         <div
-          className="mb-1.5 text-[11px] font-bold uppercase tracking-[0.06em]"
+          className="mb-1.5 text-foreground text-[11px] font-bold uppercase tracking-[0.06em]"
           style={{
-            color: primaryColor,
+            // color: primaryColor,
           }}
         >
           {label ?? team}
@@ -109,7 +110,7 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
         {/* Scrollable details */}
         <div className="group min-h-0 flex-1 overflow-y-hidden hover:overflow-y-auto [scrollbar-color:hsl(var(--border))_transparent] [scrollbar-width:thin]">
         <p className="m-0 text-[12px] leading-[1.55] text-foreground">
-            {details}
+            {notes}
         </p>
         </div>
       </div>

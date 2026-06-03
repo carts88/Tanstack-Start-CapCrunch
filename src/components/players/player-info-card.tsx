@@ -1,5 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { capitalize, formatDate } from '@/lib/utils/formatters';
 import { ExternalLink, ArrowLeftRight, UserPlus, ClipboardList, ArrowDownToLine } from 'lucide-react';
 
 const acquisitionIcon: Record<string, React.ReactNode> = {
@@ -22,16 +23,14 @@ const statusColor: Record<string, string> = {
   IR:  "bg-red-500/15 text-red-600 border-red-500/30",
 };
 
-export const PlayerInfoCard = ({ playerInfo }: any) => {
-  const draftLabel = playerInfo?.draft
-    ? `${playerInfo.draft.year} • Rd ${playerInfo.draft.round} • #${playerInfo.draft.overall}`
-    : "Undrafted";
+export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
+  const draftLabel = `${playerInfo.draftYear} • Rd ${playerInfo.draftRound} • #${playerInfo.draftOverall}`
 
-  const acqType = playerInfo.acquisition?.type;
-  const primary = playerInfo.teamPrimary ?? "#888";
-  const secondary = playerInfo.teamSecondary ?? "#ccc";
+  // const acqType = playerInfo.acquisition?.type;
+  const primary = teamMeta.primaryColor ?? "#888";
+  const secondary = teamMeta.secondaryColor ?? "#ccc";
 
-  const draftedby = playerInfo.draft.gm && playerInfo.draft.team ? `${playerInfo.draft?.gm} - ${playerInfo.draft?.team }` : ""
+  // const draftedby = playerInfo.draft.gm && playerInfo.draft.team ? `${playerInfo.draft?.gm} - ${playerInfo.draft?.team }` : ""
 
   return (
     <Card className="bg-card text-card-foreground w-full p-0 mx-auto overflow-hidden">
@@ -47,12 +46,12 @@ export const PlayerInfoCard = ({ playerInfo }: any) => {
         <div className="flex flex-row items-center justify-between px-4 py-2.5 border-b border-border bg-muted/40">
           <div className="flex items-center gap-2">
             <img
-              src={`/logos/nhl/${playerInfo.teamSlug}.svg`}
+              src={`/logos/nhl/${teamMeta.teamSlug ?? "nhl"}.svg`}
               height={32} width={32}
-              alt={playerInfo.teamTricode}
-              className="rounded-full bg-accent p-0.5 h-8 w-8 border border-border"
+              alt={teamMeta.value}
+              className="rounded-full   h-9 w-9 "
             />
-            <span className="text-sm font-semibold text-foreground">{playerInfo.teamName}</span>
+            <span className="text-sm font-semibold text-foreground">{teamMeta.label}</span>
             <span className="text-muted-foreground text-xs">•</span>
             <span className="text-xs text-muted-foreground">#{playerInfo.jerseyNumber}</span>
           </div>
@@ -63,7 +62,7 @@ export const PlayerInfoCard = ({ playerInfo }: any) => {
                 {playerInfo.status}
               </span>
             )}
-            {acqType && (
+            {/* {acqType && (
               <HoverCard>
                 <HoverCardTrigger asChild>
                   <button className={`inline-flex items-center justify-center p-1 rounded border cursor-default ${acquisitionColor[acqType] ?? "bg-muted text-muted-foreground border-border"}`}>
@@ -75,7 +74,7 @@ export const PlayerInfoCard = ({ playerInfo }: any) => {
                   <p className="text-muted-foreground leading-snug">{playerInfo.acquisition.details}</p>
                 </HoverCardContent>
               </HoverCard>
-            )}
+            )} */}
             {playerInfo.isWaiversExempt && (
               <span className="text-xs font-semibold px-2 py-0.5 rounded border bg-muted text-muted-foreground border-border">
                 W-Exempt
@@ -113,15 +112,17 @@ export const PlayerInfoCard = ({ playerInfo }: any) => {
           {/* Middle: 2-col label/value grid */}
           <div className="flex-1 flex flex-col justify-between gap-3">
             <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-              <InfoRow label="Age"         value={`${playerInfo.birthdate} • ${playerInfo.age} y.o`} />
+              <InfoRow label="Age"         value={`${formatDate(playerInfo.birthDate)} • ${playerInfo.age} y.o`} />
               <InfoRow label={playerInfo.position === "G" ? "Catches" : "Shoots"} value={playerInfo.shootsCatches === "L" ? "Left" : "Right"} />
               <InfoRow label="Position"    value={playerInfo.pos ?? playerInfo.position} />
-              <InfoRow label="Birthplace"  value={playerInfo.birthplace} />
+              <InfoRow label="Birthplace"  value={playerInfo.birthStateProvince} />
               <InfoRow label="Nationality" value={playerInfo.nationality} />
               <InfoRow label="Height"      value={`${playerInfo.height?.[0]} (${playerInfo.height?.[1]})`} />
               <InfoRow label="Draft"       value={draftLabel} />
+              <InfoRow label="Drafted By"       value={capitalize(playerInfo.currentOwner)} />
+
               <InfoRow label="Weight"      value={`${playerInfo.weight?.[0]} (${playerInfo.weight?.[1]})`} />
-              <InfoRow label="Drafted By"  value={draftedby ?? "—"} />
+              {/* <InfoRow label="Drafted By"  value={draftedby ?? "—"} /> */}
               <InfoRow label="Expires"  value={`2028 - UFA`} />
             </div>
 

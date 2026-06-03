@@ -5,12 +5,12 @@ import { X, Plus } from 'lucide-react';
 import { CURRENT_SEASON, SEASON_METADATA } from '@/lib/constants/hockey';
 import { withForm } from '@/components/form';
 import { customBuyoutFormOpts } from './buyout.schema';
-import { getObjectOfArrayByKey } from '@/lib/utils/array.utils';
+import { getObjOfArrByKey } from '@/lib/utils/array.utils';
 
 export const SimpleContractYearFields = withForm({
   ...customBuyoutFormOpts,
   render: ({form}) => {
-    const {minSalary} = getObjectOfArrayByKey(SEASON_METADATA,"value", CURRENT_SEASON)
+    const {minSalary} = getObjOfArrByKey(SEASON_METADATA,"value", CURRENT_SEASON)
     return (
       <Card className="border-border bg-card shadow-sm">
         <CardHeader >

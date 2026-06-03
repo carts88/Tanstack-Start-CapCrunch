@@ -1,5 +1,5 @@
 import { Seasons } from "@/lib/types/global-hockey-types";
-import { pool } from "../db";
+import { sql } from "../db";
 
 interface ISetTrainingCampRosters {
     season: Seasons;
@@ -8,7 +8,7 @@ interface ISetTrainingCampRosters {
 export async function setTrainingCampRosters({ 
     season
 }: ISetTrainingCampRosters) {
-    await pool.query(`
+    await sql.query(`
         UPDATE bios b
         SET status = 'NHL'
         FROM contract_years cy
@@ -21,7 +21,7 @@ export async function setTrainingCampRosters({
 
 
 export async function setFreeAgents(season: Seasons) {
-    const query = await pool.query(`
+    const query = await sql.query(`
         UPDATE bios b
         SET 
             status = 'FA',
@@ -35,5 +35,5 @@ export async function setFreeAgents(season: Seasons) {
         )
     `, [season]);
 
-    return query.rowCount;
+    return query;
 }

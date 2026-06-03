@@ -21,12 +21,13 @@ import { Route as StaffStaffSlugRouteImport } from './routes/staff/$staffSlug'
 import { Route as PlayersPlayerSlugRouteImport } from './routes/players/$playerSlug'
 import { Route as CbaPlayersRouteImport } from './routes/cba/players'
 import { Route as CalculatorsContractVariabilityRouteImport } from './routes/calculators/contract-variability'
-import { Route as ApiV1IndexRouteImport } from './routes/api.v1/index'
 import { Route as TeamsTeamSlugDepthChartRouteImport } from './routes/teams/$teamSlug.depth-chart'
 import { Route as TeamsTeamSlugDailyCapRouteImport } from './routes/teams/$teamSlug.daily-cap'
 import { Route as CalculatorsBuyoutCustomRouteImport } from './routes/calculators/buyout.custom'
 import { Route as ApiV1SearchRouteImport } from './routes/api.v1/search'
 import { Route as ApiV1StaffIndexRouteImport } from './routes/api.v1/staff/index'
+import { Route as ApiV1TeamsTeamSlugRouteRouteImport } from './routes/api.v1/teams/$teamSlug/route'
+import { Route as ApiV1PlayersPlayerSlugRouteRouteImport } from './routes/api/v1/players/$playerSlug/route'
 
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
@@ -89,11 +90,6 @@ const CalculatorsContractVariabilityRoute =
     path: '/calculators/contract-variability',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiV1IndexRoute = ApiV1IndexRouteImport.update({
-  id: '/api/v1/',
-  path: '/api/v1/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TeamsTeamSlugDepthChartRoute = TeamsTeamSlugDepthChartRouteImport.update({
   id: '/depth-chart',
   path: '/depth-chart',
@@ -119,6 +115,17 @@ const ApiV1StaffIndexRoute = ApiV1StaffIndexRouteImport.update({
   path: '/api/v1/staff/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiV1TeamsTeamSlugRouteRoute = ApiV1TeamsTeamSlugRouteRouteImport.update({
+  id: '/api/v1/teams/$teamSlug',
+  path: '/api/v1/teams/$teamSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiV1PlayersPlayerSlugRouteRoute =
+  ApiV1PlayersPlayerSlugRouteRouteImport.update({
+    id: '/api/v1/players/$playerSlug',
+    path: '/api/v1/players/$playerSlug',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -137,7 +144,8 @@ export interface FileRoutesByFullPath {
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
-  '/api/v1/': typeof ApiV1IndexRoute
+  '/api/v1/players/$playerSlug': typeof ApiV1PlayersPlayerSlugRouteRoute
+  '/api/v1/teams/$teamSlug': typeof ApiV1TeamsTeamSlugRouteRoute
   '/api/v1/staff/': typeof ApiV1StaffIndexRoute
 }
 export interface FileRoutesByTo {
@@ -156,7 +164,8 @@ export interface FileRoutesByTo {
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
-  '/api/v1': typeof ApiV1IndexRoute
+  '/api/v1/players/$playerSlug': typeof ApiV1PlayersPlayerSlugRouteRoute
+  '/api/v1/teams/$teamSlug': typeof ApiV1TeamsTeamSlugRouteRoute
   '/api/v1/staff': typeof ApiV1StaffIndexRoute
 }
 export interface FileRoutesById {
@@ -177,7 +186,8 @@ export interface FileRoutesById {
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
-  '/api/v1/': typeof ApiV1IndexRoute
+  '/api/v1/players/$playerSlug': typeof ApiV1PlayersPlayerSlugRouteRoute
+  '/api/v1/teams/$teamSlug': typeof ApiV1TeamsTeamSlugRouteRoute
   '/api/v1/staff/': typeof ApiV1StaffIndexRoute
 }
 export interface FileRouteTypes {
@@ -199,7 +209,8 @@ export interface FileRouteTypes {
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
-    | '/api/v1/'
+    | '/api/v1/players/$playerSlug'
+    | '/api/v1/teams/$teamSlug'
     | '/api/v1/staff/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -218,7 +229,8 @@ export interface FileRouteTypes {
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
-    | '/api/v1'
+    | '/api/v1/players/$playerSlug'
+    | '/api/v1/teams/$teamSlug'
     | '/api/v1/staff'
   id:
     | '__root__'
@@ -238,7 +250,8 @@ export interface FileRouteTypes {
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
-    | '/api/v1/'
+    | '/api/v1/players/$playerSlug'
+    | '/api/v1/teams/$teamSlug'
     | '/api/v1/staff/'
   fileRoutesById: FileRoutesById
 }
@@ -255,7 +268,8 @@ export interface RootRouteChildren {
   TestIndexRoute: typeof TestIndexRoute
   ApiV1SearchRoute: typeof ApiV1SearchRoute
   CalculatorsBuyoutCustomRoute: typeof CalculatorsBuyoutCustomRoute
-  ApiV1IndexRoute: typeof ApiV1IndexRoute
+  ApiV1PlayersPlayerSlugRouteRoute: typeof ApiV1PlayersPlayerSlugRouteRoute
+  ApiV1TeamsTeamSlugRouteRoute: typeof ApiV1TeamsTeamSlugRouteRoute
   ApiV1StaffIndexRoute: typeof ApiV1StaffIndexRoute
 }
 
@@ -345,13 +359,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CalculatorsContractVariabilityRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/v1/': {
-      id: '/api/v1/'
-      path: '/api/v1'
-      fullPath: '/api/v1/'
-      preLoaderRoute: typeof ApiV1IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/teams/$teamSlug/depth-chart': {
       id: '/teams/$teamSlug/depth-chart'
       path: '/depth-chart'
@@ -385,6 +392,20 @@ declare module '@tanstack/react-router' {
       path: '/api/v1/staff'
       fullPath: '/api/v1/staff/'
       preLoaderRoute: typeof ApiV1StaffIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/teams/$teamSlug': {
+      id: '/api/v1/teams/$teamSlug'
+      path: '/api/v1/teams/$teamSlug'
+      fullPath: '/api/v1/teams/$teamSlug'
+      preLoaderRoute: typeof ApiV1TeamsTeamSlugRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/v1/players/$playerSlug': {
+      id: '/api/v1/players/$playerSlug'
+      path: '/api/v1/players/$playerSlug'
+      fullPath: '/api/v1/players/$playerSlug'
+      preLoaderRoute: typeof ApiV1PlayersPlayerSlugRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -431,7 +452,8 @@ const rootRouteChildren: RootRouteChildren = {
   TestIndexRoute: TestIndexRoute,
   ApiV1SearchRoute: ApiV1SearchRoute,
   CalculatorsBuyoutCustomRoute: CalculatorsBuyoutCustomRoute,
-  ApiV1IndexRoute: ApiV1IndexRoute,
+  ApiV1PlayersPlayerSlugRouteRoute: ApiV1PlayersPlayerSlugRouteRoute,
+  ApiV1TeamsTeamSlugRouteRoute: ApiV1TeamsTeamSlugRouteRoute,
   ApiV1StaffIndexRoute: ApiV1StaffIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,6 +1,5 @@
 import { Table, TableCell, TableBody, TableHeader, TableHead, TableRow } from "@/components/ui/table"
 import { DraftPick } from "./draft-pick"
-import { getTeamMetaData } from "@/lib/utils/meta.utils"
 
 type Round = 1 | 2 | 3 | 4 | 5 | 6 | 7
 

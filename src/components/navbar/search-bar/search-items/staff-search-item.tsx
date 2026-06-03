@@ -1,6 +1,5 @@
-import { CommandItem } from "@/components/ui/command"
-import { Link } from "@tanstack/react-router"
-
+import { CommandItem } from '@/components/ui/command'
+import { Link } from '@tanstack/react-router'
 
 interface ISearchStaff {
   id: string
@@ -10,18 +9,23 @@ interface ISearchStaff {
   teamSlug: string
 }
 
-export function StaffSearchItem (staff: ISearchStaff) {
-  const {role, fullName, staffSlug, teamSlug} = staff
+export function StaffSearchItem(staff: ISearchStaff) {
+  const { role, fullName, staffSlug, teamSlug } = staff
+
   return (
-    <CommandItem className="cursor-pointer">
+    <CommandItem
+      className="cursor-pointer"
+      value={`${fullName} ${teamSlug} ${role}`}
+    >
       <Link
-        to={`/staff/$staffSlug`}
-        params={{staffSlug: staffSlug}}
+        to="/staff/$staffSlug"
+        params={{ staffSlug: staffSlug }}
         className="flex items-center gap-3 w-full py-1"
       >
         <div className="shrink-0">
-          <img 
+          <img
             src={`/logos/nhl/${teamSlug}.svg`}
+            alt={teamSlug}
             width={32}
             height={32}
             className="rounded"
@@ -31,7 +35,6 @@ export function StaffSearchItem (staff: ISearchStaff) {
           <span className="font-medium text-sm truncate">{fullName}</span>
           <span className="text-xs text-muted-foreground">{role}</span>
         </div>
-        
       </Link>
     </CommandItem>
   )

@@ -6,12 +6,12 @@ interface IBuildContractMain {
 }
 
 
-const player = {
-    fullName: "Milan Lucic"
-}
+// const player = {
+//     fullName: "Milan Lucic"
+// }
 
-export const BuildContractMain = ({
-    player
-} :  IBuildContractMain) => {
+// export const BuildContractMain = ({
+//     player
+// } :  IBuildContractMain) => {
     
-}
+// }

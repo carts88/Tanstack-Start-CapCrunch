@@ -10,7 +10,7 @@ export const Route = createFileRoute(
 function RouteComponent() {
   return (
     <div
-      className='w-6xl my-5 m-auto'
+      className='my-5 m-auto'
     >
         <ContractYearGrid />
     </div>

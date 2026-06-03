@@ -1,7 +1,5 @@
-// routes/hello.ts
-import { getSearchData } from '@/data/search-bar/controllers.search-bar'
+import { getSearchData } from '@/data/search-bar/queries.search-bar'
 import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
 
 export const Route = createFileRoute('/api/v1/search')({
 server: {
@@ -11,7 +9,7 @@ server: {
             const search = url.searchParams.get('search') ?? ''
 
             if (!search.trim()) {
-                return json({
+                return Response.json({
                 success: false,
                 code: 400,
                 message: "Search query is required",
@@ -19,7 +17,9 @@ server: {
             }
 
             const data = await getSearchData({ search })
-            return json(data, { status: data.code })
+
+            
+            return Response.json(data.data, { status: data.code })
             },
     },
   },

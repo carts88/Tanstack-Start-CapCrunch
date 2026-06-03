@@ -1,4 +1,4 @@
-import { getObjectOfArrayByKey } from "../utils/array.utils";
+import { getObjOfArrByKey } from "../utils/array.utils";
 
 export const UPPER_LIMIT_2025 = 95_500_000;
 export const UPPER_LIMIT_2026 = 104_500_000;
@@ -40,18 +40,7 @@ export const SEASON_METADATA = [
     }
  ]
 
-export const CURRENT_SEASON_METADATA = getObjectOfArrayByKey(SEASON_METADATA, "value", 2024)
-
-export const TEAMS_METADATA = [
-    {
-        value: "anaheim-ducks",
-        label: "Anaheim Ducks",
-        city: "Anaheim",
-        name: "Ducks",
-        established: ""
-    }
-]
-
+export const CURRENT_SEASON_METADATA = getObjOfArrByKey(SEASON_METADATA, "value", 2024)
 
 
 export const clauseOptions = [

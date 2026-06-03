@@ -1,50 +1,50 @@
-import { pool } from "../db"
+import { sql } from "../db"
 
 interface ISearchBarParams {
     search: string
 }
 
-export async function getPlayersSearch({ search }: ISearchBarParams) {
-    const searchTerm = `%${search}%`;
-
-    const query = await pool.query(
-        `SELECT 
-            player_id,
-            first_name,
-            last_name,
-            player_slug
+export async function getSearchData({search}: ISearchBarParams) {
+    const searchTerm = `%${search}%`
+    const rows = await sql`
+        WITH league_players AS (
+            SELECT 
+                'player' AS type,
+                player_id,
+                first_name || ' ' || last_name AS full_name,
+                team,
+                position,
+                player_slug
+                FROM players
+                WHERE 
+                first_name ILIKE ${searchTerm}
+                OR last_name ILIKE ${searchTerm}
+                OR full_name ILIKE ${searchTerm}
+                OR team ILIKE ${searchTerm}
+                LIMIT 10
+            ),
             
-        FROM bios 
-        WHERE 
-            first_name ILIKE $1 
-            OR last_name ILIKE $1 
-            OR player_slug ILIKE $1
-        LIMIT 10`,
-        [searchTerm]
-    );
+            league_staff AS (
+                SELECT 
+                'staff' AS type,
+                sb.staff_id,
+                sb.first_name || ' ' || sb.last_name AS full_name,
+                sb.staff_slug,
+                st.team,
+                st.role
+                FROM staff_bios sb
+                LEFT JOIN staff_tenures st 
+                    ON st.staff_id = sb.staff_id AND st.end_date IS NULL
+                WHERE 
+                sb.first_name ILIKE ${searchTerm}
+                OR sb.last_name ILIKE ${searchTerm}
+                LIMIT 10
+            )
 
-    console.log("Player Search Query:", query.rows)
-    return query.rows;
-}
-
-export async function getStaffSearch({ search }: ISearchBarParams) {
-    const searchTerm = `%${search}%`;
-
-    const query = await pool.query(
+            SELECT json_build_object(
+                'league_players', (SELECT json_agg(league_players) FROM league_players),
+                'league_staff', (SELECT json_agg(league_staff) FROM league_staff)
+            ) AS data
         `
-        SELECT 
-            staff_id,
-            staff_slug,
-            first_name,
-            last_name
-        FROM staff_bios
-        WHERE 
-            first_name ILIKE $1 
-            OR last_name ILIKE $1 
-            OR staff_slug ILIKE $1
-        LIMIT 10`,
-        [searchTerm]
-    );
-
-    return query.rows;
+        return rows[0]
 }

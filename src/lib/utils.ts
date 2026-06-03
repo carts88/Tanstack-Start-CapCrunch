@@ -33,3 +33,11 @@ export const takeScreenshot = async (
     console.error("Screenshot failed", e);
   }
 };
+
+
+export const isValidEnumValue = <T extends readonly string[]>(
+  value: string,
+  validValues: T
+): value is T[number] => {
+  return validValues.includes(value as T[number]);
+};

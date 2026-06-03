@@ -1,6 +1,6 @@
 // # GET FUNCTIONS
 
-export function getObjectOfArrayByKey<T, K extends keyof T>(
+export function getObjOfArrByKey<T, K extends keyof T>(
     array: T[],
     key: K,
     value: T[K]
