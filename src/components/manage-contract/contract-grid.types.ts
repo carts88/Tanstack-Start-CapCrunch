@@ -1,13 +1,16 @@
-export type ClauseType = "None" | "NMC" | "NTC" | "M-NTC" | "S-NTC";
+import { ClauseTypes, ContractTypes } from "@/lib/types/global-hockey-types";
+
+// export type ClauseType = "None" | "NMC" | "NTC" | "M-NTC" | "S-NTC";
 
 export interface ContractYear {
-  capHitOverride: number | null;
-  season?: number;
-  baseSalary: number | 0;
-  signingBonus: number | 0;
-  performanceBonus: number | 0;
-  minorsSalary: number | 0;
-  clause: ClauseType;
+  capHit: number;        // always kept in sync with the calculation
+  capHitOverride: number | null;  // user-set escape hatch
+  season: number;
+  baseSalary: number;
+  signingBonus: number;
+  performanceBonus: number;
+  minorsSalary: number;
+  clause: ClauseTypes | null;
   clauseInfo: string | null;
 }
 
@@ -15,6 +18,7 @@ export interface ContractFormValues {
   startYear: number;
   signingDate: Date;
   signingTeam: string;
+  contractType: ContractTypes
   years: ContractYear[];
 }
 

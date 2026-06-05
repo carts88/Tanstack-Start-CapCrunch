@@ -3,19 +3,6 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/h
 import { capitalize, formatDate } from '@/lib/utils/formatters';
 import { ExternalLink, ArrowLeftRight, UserPlus, ClipboardList, ArrowDownToLine } from 'lucide-react';
 
-const acquisitionIcon: Record<string, React.ReactNode> = {
-  Trade:        <ArrowLeftRight className="w-3.5 h-3.5" />,
-  "Free Agent": <UserPlus className="w-3.5 h-3.5" />,
-  Draft:        <ClipboardList className="w-3.5 h-3.5" />,
-  Waivers:      <ArrowDownToLine className="w-3.5 h-3.5" />,
-};
-
-const acquisitionColor: Record<string, string> = {
-  Trade:        "bg-amber-500/15 text-amber-600 border-amber-500/30",
-  "Free Agent": "bg-purple-500/15 text-purple-600 border-purple-500/30",
-  Draft:        "bg-sky-500/15 text-sky-600 border-sky-500/30",
-  Waivers:      "bg-rose-500/15 text-rose-600 border-rose-500/30",
-};
 
 const statusColor: Record<string, string> = {
   NHL: "bg-emerald-500/15 text-emerald-600 border-emerald-500/30",
@@ -24,8 +11,9 @@ const statusColor: Record<string, string> = {
 };
 
 export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
-  const draftLabel = `${playerInfo.draftYear} • Rd ${playerInfo.draftRound} • #${playerInfo.draftOverall}`
-
+  const draftLabel = (playerInfo.draftYear && playerInfo.draftRound && playerInfo.draftOverall)
+    ? `${playerInfo.draftYear} • Rd ${playerInfo.draftRound} • #${playerInfo.draftOverall}`
+    : "Undrafted";
   // const acqType = playerInfo.acquisition?.type;
   const primary = teamMeta.primaryColor ?? "#888";
   const secondary = teamMeta.secondaryColor ?? "#ccc";
@@ -119,7 +107,7 @@ export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
               <InfoRow label="Nationality" value={playerInfo.nationality} />
               <InfoRow label="Height"      value={`${playerInfo.height?.[0]} (${playerInfo.height?.[1]})`} />
               <InfoRow label="Draft"       value={draftLabel} />
-              <InfoRow label="Drafted By"       value={capitalize(playerInfo.currentOwner)} />
+              {playerInfo.currentOwner && <InfoRow label="Drafted By"       value={capitalize(playerInfo.currentOwner ?? "Undrafted")} />}
 
               <InfoRow label="Weight"      value={`${playerInfo.weight?.[0]} (${playerInfo.weight?.[1]})`} />
               {/* <InfoRow label="Drafted By"  value={draftedby ?? "—"} /> */}
@@ -129,7 +117,7 @@ export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
             <div className="pt-2.5 border-t border-border flex items-center gap-5">
               <MiniStat label="Waiver Age"  value={`${playerInfo.waiversAge} y.o`} />
               <MiniStat label="Signing Age" value={`${playerInfo.elcSigningAge} y.o`} />
-              {playerInfo.charity && (
+              {/* {playerInfo.charity && (
                 <a
                   href={playerInfo.charity.link}
                   target="_blank" rel="noopener noreferrer"
@@ -138,7 +126,7 @@ export const PlayerInfoCard = ({ teamMeta, playerInfo }: any) => {
                   <span className="truncate max-w-37.5">{playerInfo.charity.name}</span>
                   <ExternalLink className="w-3 h-3 shrink-0 opacity-60 group-hover:opacity-100" />
                 </a>
-              )}
+              )} */}
             </div>
           </div>
 

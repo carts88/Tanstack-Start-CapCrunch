@@ -1,6 +1,5 @@
 ﻿import { useCallback, useState } from "react";
 import { Dispatch, SetStateAction } from "react";
-import { ContractInfo } from "./build-contract/contract-info,";
 import {
   QuickFillPanel,
   QuickFillKey,
@@ -11,47 +10,49 @@ import {
 import { ContractYearRow } from "./contract-grid.row";
 import { ContractFormValues, ContractYear } from "./contract-grid.types";
 import {
-  emptyYear,
   getCalculatedCapHit,
   parseSalaryInput,
 } from "./contract-grid.utils";
-import { ContractValidationLog } from "./contract-validation/contract-validation-log";
-import { ValidateContract } from "./variability-calculations";
 import { CURRENT_SEASON } from "@/lib/constants/hockey";
-
+export function seasonLabel(season: number): string {
+  return `${season}–${String(season + 1).slice(-2)}`;
+}
 
 interface ContractYearGridProps {
-  defaultStartYear?: number;
-  defaultLength?: number;
-  onChange?: (values: ContractFormValues) => void;
-  onSubmit?: (values: ContractFormValues) => Promise<void> | void;
   contract?: ContractFormValues
   setContract: Dispatch<SetStateAction<ContractFormValues>>;
-  mode: "CUSTOM" | "ADMIN"
+  calculatedCapHit: number
 }
 
 export function ContractYearGrid({
-  defaultStartYear = new Date().getFullYear(),
-  defaultLength = 1,
-  onChange,
-  onSubmit,
   contract,
   setContract,
-  mode = "CUSTOM"
+  calculatedCapHit
 }: ContractYearGridProps) {
   const [qf, setQF] = useState<QuickFillState>(emptyQuickFill);
+        
+
 
   const updateContract = useCallback(
     (updater: (prev: ContractFormValues) => ContractFormValues) => {
       setContract((prev) => {
         const next = updater(prev);
-        onChange?.(next);
-        return next;
+
+        const calculatedCapHit = getCalculatedCapHit(next.years);
+
+        const years = next.years.map((year, index) => ({
+          ...year,
+          season: next.startYear + index,
+          capHit: calculatedCapHit,
+        }));
+
+        return { ...next, years };
       });
     },
-    [onChange]
-  );
+    [setContract]
+  )
 
+  
   function updateYearField(
     rowIndex: number,
     field: keyof ContractYear,
@@ -64,14 +65,16 @@ export function ContractYearGrid({
     });
   }
 
-  function handleSalaryBlur(rowIndex: number, field: keyof ContractYear, raw: string) {
-    const parsed = parseSalaryInput(raw);
-    updateContract((prev) => {
-      const years = [...prev.years];
-      years[rowIndex] = { ...years[rowIndex], [field]: parsed ?? 0 };
-      return { ...prev, years };
-    });
-  }
+    function handleSalaryBlur(rowIndex: number, field: keyof ContractYear, raw: string) {
+      const parsed = parseSalaryInput(raw);
+      if (parsed === null) return; // reject invalid input, don't zero it out
+      updateContract((prev) => {
+        const years = [...prev.years];
+        years[rowIndex] = { ...years[rowIndex], [field]: parsed };
+        return { ...prev, years };
+      });
+    }
+
 
   function toggleChip(key: QuickFillKey, index: number) {
     setQF((prev) => {
@@ -187,7 +190,6 @@ export function ContractYearGrid({
 
 
 
-  const calculatedCapHit = contract ? getCalculatedCapHit(contract.years) : 0;
 
   return (
      
@@ -238,13 +240,12 @@ export function ContractYearGrid({
             <tbody>
               {contract && contract.years.map((row, index) => {
                 const year = contract.startYear + index;
-                const yearLabel = `${year}–${String(year + 1).slice(-2)}`;
                 return (
                   <ContractYearRow
                     key={index}
                     row={row}
                     index={index}
-                    yearLabel={yearLabel}
+                    yearLabel={seasonLabel(year)}   // derived from row.season
                     calculatedCapHit={calculatedCapHit}
                     updateYearField={updateYearField}
                     handleSalaryBlur={handleSalaryBlur}
@@ -259,4 +260,4 @@ export function ContractYearGrid({
     );
 }
 
-export type { ContractFormValues, ContractYear, ClauseType } from "./contract-grid.types";
+export type { ContractFormValues, ContractYear } from "./contract-grid.types";

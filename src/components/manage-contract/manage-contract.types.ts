@@ -1,1 +1,0 @@
-export type ManageContractModes = "BUILD_CONTRACT" | "EDIT_CONTRACT" | "CALCULATOR"

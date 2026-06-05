@@ -66,7 +66,6 @@ export const QUICK_FILL_FIELDS: QuickFillField[] = [
 ];
 
 export const CLAUSE_OPTIONS: ClauseType[] = [
-  "None",
   "NMC",
   "NTC",
   "M-NTC",

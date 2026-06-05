@@ -2,6 +2,9 @@ import { convertKeysToCamelCase } from "@/lib/mapping.utils";
 import { getPlayer } from "./single-player.queries";
 import { transformContracts } from "./utils";
 import { formatHeight, formatWeight } from "@/lib/utils/formatters";
+import { insertContractInfo, insertContractYears, insertTransaction } from "./contracts";
+import { ContractFormValues } from "@/components/manage-contract/contract-grid.types";
+import { sql } from "../db";
 
 interface IGetPlayer {
     player_slug: string;
@@ -38,3 +41,34 @@ export const getPlayerData = async ({
         transactions,
     };
 };
+
+
+interface CreateContractInput extends ContractFormValues {
+  playerId: number;
+  contractId: string;
+}
+export async function createContract(data: CreateContractInput) {
+  // console.log(data.years)
+  await sql.transaction([
+    insertContractYears(
+      data.contractId,
+      data.playerId,
+      data.years
+    ),
+    insertTransaction({
+      transactionId: data.contractId,
+      playerId: data.playerId,
+      team: data.signingTeam,
+      type: data.contractType,
+      date: data.signingDate,
+      notes: ""
+    }),
+    insertContractInfo({
+      contractId: data.contractId,
+      playerId: data.playerId,
+      team: data.signingTeam,
+      type: data.contractType,
+      date: data.signingDate
+    }),
+  ]);
+}

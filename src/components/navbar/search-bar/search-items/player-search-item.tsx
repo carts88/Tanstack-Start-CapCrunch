@@ -22,7 +22,7 @@ export function PlayerSearchItem(player: ISearchPlayer) {
       >
         <div className="shrink-0">
           <img
-            src={`/logos/nhl/${team}.svg`}
+            src={`/logos/nhl/${team || "nhl"}.svg`}
             alt={team}
             width={32}
             height={32}
@@ -31,7 +31,7 @@ export function PlayerSearchItem(player: ISearchPlayer) {
         </div>
         <div className="flex flex-col min-w-0 flex-1">
           <span className="font-medium text-sm truncate">{fullName}</span>
-          <span className="text-xs text-muted-foreground">{team}</span>
+          <span className="text-xs text-muted-foreground">{team || "inactive"}</span>
         </div>
         <span className="shrink-0 px-2 py-0.5 text-xs font-medium bg-secondary rounded-md">
           {position}

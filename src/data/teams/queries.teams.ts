@@ -55,12 +55,13 @@ export async function getTeamData({
         'ACQUIRED',
         'EXPANSION_DRAFT',
         'CLAIMED',
-        'SPC_FA',
+        'SPC-FA',
         'OFFERSHEET',
         'ELC-FA',
         'THIRTY_FIVE_FA'
       )
-      ORDER BY t.player_id, t.team, t.date DESC
+      AND team = ${teamSlug}
+      ORDER BY t.player_id, t.team, t.date ASC
     ),
 
     team_players AS (

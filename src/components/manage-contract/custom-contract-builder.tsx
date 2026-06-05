@@ -9,9 +9,11 @@ export function CustomContractBuilder() {
     startYear: new Date().getFullYear(),
     signingDate: new Date(),
     signingTeam: "ANA",
+    contractType: "SPC",
     years: [emptyYear()],
   });
 
+  
   return (
     <div className="w-7xl m-auto my-5">
         <ContractInfo
@@ -20,6 +22,14 @@ export function CustomContractBuilder() {
         updateContract={(updater) =>
           setContract((prev) => updater(prev))
         }
+        handleContractTypeChange={(newType) =>
+          newType &&
+          setContract((prev) => ({
+            ...prev,
+            contractType: newType,
+          }))
+        }
+
         handleLengthChange={(newLen) => {
           setContract((prev) => {
             const years =
@@ -55,9 +65,8 @@ export function CustomContractBuilder() {
       />
 
       <ContractYearGrid
-        mode="CUSTOM"
+        calculatedCapHit={244424}
         contract={contract}
-        onChange={setContract}
         setContract={setContract}
       />
     </div>    

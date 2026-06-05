@@ -8,18 +8,16 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as CbaRouteRouteImport } from './routes/cba/route'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as TestIndexRouteImport } from './routes/test/index'
 import { Route as PlayersIndexRouteImport } from './routes/players/index'
 import { Route as CbaIndexRouteImport } from './routes/cba/index'
-import { Route as ToolsCustomDraftLotteryRouteImport } from './routes/tools/custom-draft-lottery'
 import { Route as TeamsTeamSlugRouteImport } from './routes/teams/$teamSlug'
 import { Route as StaffStaffSlugRouteImport } from './routes/staff/$staffSlug'
 import { Route as PlayersPlayerSlugRouteImport } from './routes/players/$playerSlug'
 import { Route as CbaPlayersRouteImport } from './routes/cba/players'
+import { Route as CbaCbaRouteImport } from './routes/cba/cba'
 import { Route as CalculatorsContractVariabilityRouteImport } from './routes/calculators/contract-variability'
 import { Route as TeamsTeamSlugDepthChartRouteImport } from './routes/teams/$teamSlug.depth-chart'
 import { Route as TeamsTeamSlugDailyCapRouteImport } from './routes/teams/$teamSlug.daily-cap'
@@ -28,42 +26,42 @@ import { Route as ApiV1SearchRouteImport } from './routes/api.v1/search'
 import { Route as ApiV1StaffIndexRouteImport } from './routes/api.v1/staff/index'
 import { Route as ApiV1TeamsTeamSlugRouteRouteImport } from './routes/api.v1/teams/$teamSlug/route'
 import { Route as ApiV1PlayersPlayerSlugRouteRouteImport } from './routes/api/v1/players/$playerSlug/route'
+import { Route as ApiV1DraftsDraftYearRouteRouteImport } from './routes/api/v1/drafts/$draftYear/route'
 
-const AboutRoute = AboutRouteImport.update({
+const AboutLazyRouteImport = createFileRoute('/about')()
+const IndexLazyRouteImport = createFileRoute('/')()
+const ToolsCustomDraftLotteryLazyRouteImport = createFileRoute(
+  '/tools/custom-draft-lottery',
+)()
+
+const AboutLazyRoute = AboutLazyRouteImport.update({
   id: '/about',
   path: '/about',
   getParentRoute: () => rootRouteImport,
-} as any)
-const CbaRouteRoute = CbaRouteRouteImport.update({
-  id: '/cba',
-  path: '/cba',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+} as any).lazy(() => import('./routes/about.lazy').then((d) => d.Route))
+const IndexLazyRoute = IndexLazyRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const TestIndexRoute = TestIndexRouteImport.update({
-  id: '/test/',
-  path: '/test/',
-  getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 const PlayersIndexRoute = PlayersIndexRouteImport.update({
   id: '/players/',
   path: '/players/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CbaIndexRoute = CbaIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => CbaRouteRoute,
-} as any)
-const ToolsCustomDraftLotteryRoute = ToolsCustomDraftLotteryRouteImport.update({
-  id: '/tools/custom-draft-lottery',
-  path: '/tools/custom-draft-lottery',
+  id: '/cba/',
+  path: '/cba/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsCustomDraftLotteryLazyRoute =
+  ToolsCustomDraftLotteryLazyRouteImport.update({
+    id: '/tools/custom-draft-lottery',
+    path: '/tools/custom-draft-lottery',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/tools/custom-draft-lottery.lazy').then((d) => d.Route),
+  )
 const TeamsTeamSlugRoute = TeamsTeamSlugRouteImport.update({
   id: '/teams/$teamSlug',
   path: '/teams/$teamSlug',
@@ -80,9 +78,14 @@ const PlayersPlayerSlugRoute = PlayersPlayerSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const CbaPlayersRoute = CbaPlayersRouteImport.update({
-  id: '/players',
-  path: '/players',
-  getParentRoute: () => CbaRouteRoute,
+  id: '/cba/players',
+  path: '/cba/players',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CbaCbaRoute = CbaCbaRouteImport.update({
+  id: '/cba/cba',
+  path: '/cba/cba',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CalculatorsContractVariabilityRoute =
   CalculatorsContractVariabilityRouteImport.update({
@@ -126,66 +129,73 @@ const ApiV1PlayersPlayerSlugRouteRoute =
     path: '/api/v1/players/$playerSlug',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiV1DraftsDraftYearRouteRoute =
+  ApiV1DraftsDraftYearRouteRouteImport.update({
+    id: '/api/v1/drafts/$draftYear',
+    path: '/api/v1/drafts/$draftYear',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/cba': typeof CbaRouteRouteWithChildren
-  '/about': typeof AboutRoute
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
   '/calculators/contract-variability': typeof CalculatorsContractVariabilityRoute
+  '/cba/cba': typeof CbaCbaRoute
   '/cba/players': typeof CbaPlayersRoute
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
-  '/tools/custom-draft-lottery': typeof ToolsCustomDraftLotteryRoute
+  '/tools/custom-draft-lottery': typeof ToolsCustomDraftLotteryLazyRoute
   '/cba/': typeof CbaIndexRoute
   '/players/': typeof PlayersIndexRoute
-  '/test/': typeof TestIndexRoute
   '/api/v1/search': typeof ApiV1SearchRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
+  '/api/v1/drafts/$draftYear': typeof ApiV1DraftsDraftYearRouteRoute
   '/api/v1/players/$playerSlug': typeof ApiV1PlayersPlayerSlugRouteRoute
   '/api/v1/teams/$teamSlug': typeof ApiV1TeamsTeamSlugRouteRoute
   '/api/v1/staff/': typeof ApiV1StaffIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
   '/calculators/contract-variability': typeof CalculatorsContractVariabilityRoute
+  '/cba/cba': typeof CbaCbaRoute
   '/cba/players': typeof CbaPlayersRoute
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
-  '/tools/custom-draft-lottery': typeof ToolsCustomDraftLotteryRoute
+  '/tools/custom-draft-lottery': typeof ToolsCustomDraftLotteryLazyRoute
   '/cba': typeof CbaIndexRoute
   '/players': typeof PlayersIndexRoute
-  '/test': typeof TestIndexRoute
   '/api/v1/search': typeof ApiV1SearchRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
+  '/api/v1/drafts/$draftYear': typeof ApiV1DraftsDraftYearRouteRoute
   '/api/v1/players/$playerSlug': typeof ApiV1PlayersPlayerSlugRouteRoute
   '/api/v1/teams/$teamSlug': typeof ApiV1TeamsTeamSlugRouteRoute
   '/api/v1/staff': typeof ApiV1StaffIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/cba': typeof CbaRouteRouteWithChildren
-  '/about': typeof AboutRoute
+  '/': typeof IndexLazyRoute
+  '/about': typeof AboutLazyRoute
   '/calculators/contract-variability': typeof CalculatorsContractVariabilityRoute
+  '/cba/cba': typeof CbaCbaRoute
   '/cba/players': typeof CbaPlayersRoute
   '/players/$playerSlug': typeof PlayersPlayerSlugRoute
   '/staff/$staffSlug': typeof StaffStaffSlugRoute
   '/teams/$teamSlug': typeof TeamsTeamSlugRouteWithChildren
-  '/tools/custom-draft-lottery': typeof ToolsCustomDraftLotteryRoute
+  '/tools/custom-draft-lottery': typeof ToolsCustomDraftLotteryLazyRoute
   '/cba/': typeof CbaIndexRoute
   '/players/': typeof PlayersIndexRoute
-  '/test/': typeof TestIndexRoute
   '/api/v1/search': typeof ApiV1SearchRoute
   '/calculators/buyout/custom': typeof CalculatorsBuyoutCustomRoute
   '/teams/$teamSlug/daily-cap': typeof TeamsTeamSlugDailyCapRoute
   '/teams/$teamSlug/depth-chart': typeof TeamsTeamSlugDepthChartRoute
+  '/api/v1/drafts/$draftYear': typeof ApiV1DraftsDraftYearRouteRoute
   '/api/v1/players/$playerSlug': typeof ApiV1PlayersPlayerSlugRouteRoute
   '/api/v1/teams/$teamSlug': typeof ApiV1TeamsTeamSlugRouteRoute
   '/api/v1/staff/': typeof ApiV1StaffIndexRoute
@@ -194,9 +204,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/cba'
     | '/about'
     | '/calculators/contract-variability'
+    | '/cba/cba'
     | '/cba/players'
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
@@ -204,11 +214,11 @@ export interface FileRouteTypes {
     | '/tools/custom-draft-lottery'
     | '/cba/'
     | '/players/'
-    | '/test/'
     | '/api/v1/search'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
+    | '/api/v1/drafts/$draftYear'
     | '/api/v1/players/$playerSlug'
     | '/api/v1/teams/$teamSlug'
     | '/api/v1/staff/'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/calculators/contract-variability'
+    | '/cba/cba'
     | '/cba/players'
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
@@ -224,20 +235,20 @@ export interface FileRouteTypes {
     | '/tools/custom-draft-lottery'
     | '/cba'
     | '/players'
-    | '/test'
     | '/api/v1/search'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
+    | '/api/v1/drafts/$draftYear'
     | '/api/v1/players/$playerSlug'
     | '/api/v1/teams/$teamSlug'
     | '/api/v1/staff'
   id:
     | '__root__'
     | '/'
-    | '/cba'
     | '/about'
     | '/calculators/contract-variability'
+    | '/cba/cba'
     | '/cba/players'
     | '/players/$playerSlug'
     | '/staff/$staffSlug'
@@ -245,29 +256,31 @@ export interface FileRouteTypes {
     | '/tools/custom-draft-lottery'
     | '/cba/'
     | '/players/'
-    | '/test/'
     | '/api/v1/search'
     | '/calculators/buyout/custom'
     | '/teams/$teamSlug/daily-cap'
     | '/teams/$teamSlug/depth-chart'
+    | '/api/v1/drafts/$draftYear'
     | '/api/v1/players/$playerSlug'
     | '/api/v1/teams/$teamSlug'
     | '/api/v1/staff/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CbaRouteRoute: typeof CbaRouteRouteWithChildren
-  AboutRoute: typeof AboutRoute
+  IndexLazyRoute: typeof IndexLazyRoute
+  AboutLazyRoute: typeof AboutLazyRoute
   CalculatorsContractVariabilityRoute: typeof CalculatorsContractVariabilityRoute
+  CbaCbaRoute: typeof CbaCbaRoute
+  CbaPlayersRoute: typeof CbaPlayersRoute
   PlayersPlayerSlugRoute: typeof PlayersPlayerSlugRoute
   StaffStaffSlugRoute: typeof StaffStaffSlugRoute
   TeamsTeamSlugRoute: typeof TeamsTeamSlugRouteWithChildren
-  ToolsCustomDraftLotteryRoute: typeof ToolsCustomDraftLotteryRoute
+  ToolsCustomDraftLotteryLazyRoute: typeof ToolsCustomDraftLotteryLazyRoute
+  CbaIndexRoute: typeof CbaIndexRoute
   PlayersIndexRoute: typeof PlayersIndexRoute
-  TestIndexRoute: typeof TestIndexRoute
   ApiV1SearchRoute: typeof ApiV1SearchRoute
   CalculatorsBuyoutCustomRoute: typeof CalculatorsBuyoutCustomRoute
+  ApiV1DraftsDraftYearRouteRoute: typeof ApiV1DraftsDraftYearRouteRoute
   ApiV1PlayersPlayerSlugRouteRoute: typeof ApiV1PlayersPlayerSlugRouteRoute
   ApiV1TeamsTeamSlugRouteRoute: typeof ApiV1TeamsTeamSlugRouteRoute
   ApiV1StaffIndexRoute: typeof ApiV1StaffIndexRoute
@@ -279,28 +292,14 @@ declare module '@tanstack/react-router' {
       id: '/about'
       path: '/about'
       fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cba': {
-      id: '/cba'
-      path: '/cba'
-      fullPath: '/cba'
-      preLoaderRoute: typeof CbaRouteRouteImport
+      preLoaderRoute: typeof AboutLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/test/': {
-      id: '/test/'
-      path: '/test'
-      fullPath: '/test/'
-      preLoaderRoute: typeof TestIndexRouteImport
+      preLoaderRoute: typeof IndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/players/': {
@@ -312,16 +311,16 @@ declare module '@tanstack/react-router' {
     }
     '/cba/': {
       id: '/cba/'
-      path: '/'
+      path: '/cba'
       fullPath: '/cba/'
       preLoaderRoute: typeof CbaIndexRouteImport
-      parentRoute: typeof CbaRouteRoute
+      parentRoute: typeof rootRouteImport
     }
     '/tools/custom-draft-lottery': {
       id: '/tools/custom-draft-lottery'
       path: '/tools/custom-draft-lottery'
       fullPath: '/tools/custom-draft-lottery'
-      preLoaderRoute: typeof ToolsCustomDraftLotteryRouteImport
+      preLoaderRoute: typeof ToolsCustomDraftLotteryLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/teams/$teamSlug': {
@@ -347,10 +346,17 @@ declare module '@tanstack/react-router' {
     }
     '/cba/players': {
       id: '/cba/players'
-      path: '/players'
+      path: '/cba/players'
       fullPath: '/cba/players'
       preLoaderRoute: typeof CbaPlayersRouteImport
-      parentRoute: typeof CbaRouteRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/cba/cba': {
+      id: '/cba/cba'
+      path: '/cba/cba'
+      fullPath: '/cba/cba'
+      preLoaderRoute: typeof CbaCbaRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/calculators/contract-variability': {
       id: '/calculators/contract-variability'
@@ -408,22 +414,15 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiV1PlayersPlayerSlugRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/v1/drafts/$draftYear': {
+      id: '/api/v1/drafts/$draftYear'
+      path: '/api/v1/drafts/$draftYear'
+      fullPath: '/api/v1/drafts/$draftYear'
+      preLoaderRoute: typeof ApiV1DraftsDraftYearRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
-
-interface CbaRouteRouteChildren {
-  CbaPlayersRoute: typeof CbaPlayersRoute
-  CbaIndexRoute: typeof CbaIndexRoute
-}
-
-const CbaRouteRouteChildren: CbaRouteRouteChildren = {
-  CbaPlayersRoute: CbaPlayersRoute,
-  CbaIndexRoute: CbaIndexRoute,
-}
-
-const CbaRouteRouteWithChildren = CbaRouteRoute._addFileChildren(
-  CbaRouteRouteChildren,
-)
 
 interface TeamsTeamSlugRouteChildren {
   TeamsTeamSlugDailyCapRoute: typeof TeamsTeamSlugDailyCapRoute
@@ -440,18 +439,20 @@ const TeamsTeamSlugRouteWithChildren = TeamsTeamSlugRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CbaRouteRoute: CbaRouteRouteWithChildren,
-  AboutRoute: AboutRoute,
+  IndexLazyRoute: IndexLazyRoute,
+  AboutLazyRoute: AboutLazyRoute,
   CalculatorsContractVariabilityRoute: CalculatorsContractVariabilityRoute,
+  CbaCbaRoute: CbaCbaRoute,
+  CbaPlayersRoute: CbaPlayersRoute,
   PlayersPlayerSlugRoute: PlayersPlayerSlugRoute,
   StaffStaffSlugRoute: StaffStaffSlugRoute,
   TeamsTeamSlugRoute: TeamsTeamSlugRouteWithChildren,
-  ToolsCustomDraftLotteryRoute: ToolsCustomDraftLotteryRoute,
+  ToolsCustomDraftLotteryLazyRoute: ToolsCustomDraftLotteryLazyRoute,
+  CbaIndexRoute: CbaIndexRoute,
   PlayersIndexRoute: PlayersIndexRoute,
-  TestIndexRoute: TestIndexRoute,
   ApiV1SearchRoute: ApiV1SearchRoute,
   CalculatorsBuyoutCustomRoute: CalculatorsBuyoutCustomRoute,
+  ApiV1DraftsDraftYearRouteRoute: ApiV1DraftsDraftYearRouteRoute,
   ApiV1PlayersPlayerSlugRouteRoute: ApiV1PlayersPlayerSlugRouteRoute,
   ApiV1TeamsTeamSlugRouteRoute: ApiV1TeamsTeamSlugRouteRoute,
   ApiV1StaffIndexRoute: ApiV1StaffIndexRoute,

@@ -1,34 +1,55 @@
-import { ClauseTypes, TeamTricodes } from "@/lib/types/global-hockey-types";
+import { ContractTypes, TeamSlugs } from "@/lib/types/global-hockey-types";
 import { sql } from "../db";
+import { ContractFormValues } from "@/components/manage-contract/contract-grid.types";
 
-interface IInsertContractYears {
-  contract_id: string;
-  player_id: number;
-  season: number;
-  caphit: number;
-  base_salary: number;
-  signing_bonus: number;
-  performance_bonus: number;
-  clause: ClauseTypes;
-  clause_details: string;
-  is_boughtout: boolean;
-  minors_salary: number;
-}
 
-export async function insertContractYears({
-  contract_id,
-  player_id,
-  season,
-  caphit,
-  base_salary,
-  signing_bonus,
-  performance_bonus,
-  clause,
-  clause_details,
-  is_boughtout,
-  minors_salary,
-}: IInsertContractYears) {
-  await sql`
+export function insertContractYears(
+  contractId: string,
+  playerId: number,
+  contractYears: ContractFormValues['years']
+) {
+  if (contractYears.length === 0) {
+    throw new Error(
+      "You're trying to insert contract years, yet contractYears is empty."
+    );
+  }
+
+  const values: unknown[] = [];
+  const placeholders: string[] = [];
+
+  contractYears.forEach((year, index) => {
+    const offset = index * 10;
+
+    placeholders.push(
+      `(
+        $${offset + 1},
+        $${offset + 2},
+        $${offset + 3},
+        $${offset + 4},
+        $${offset + 5},
+        $${offset + 6},
+        $${offset + 7},
+        $${offset + 8},
+        $${offset + 9},
+        $${offset + 10}
+      )`
+    );
+
+    values.push(
+      contractId,
+      playerId,
+      year.season,
+      year.capHit,
+      year.baseSalary,
+      year.signingBonus,
+      year.performanceBonus,
+      year.clause,
+      year.clauseInfo,
+      year.minorsSalary
+    );
+  });
+
+  const query = `
     INSERT INTO contract_years (
       contract_id,
       player_id,
@@ -39,56 +60,82 @@ export async function insertContractYears({
       performance_bonus,
       clause,
       clause_details,
-      is_boughtout,
       minors_salary
     )
-    VALUES (
-      ${contract_id},
-      ${player_id},
-      ${season},
-      ${caphit},
-      ${base_salary},
-      ${signing_bonus},
-      ${performance_bonus},
-      ${clause},
-      ${clause_details},
-      ${is_boughtout},
-      ${minors_salary}
-    )
-  `
+    VALUES
+    ${placeholders.join(",")}
+  `;
+
+  return sql.query(query, values);
 }
+
+
+
 interface IInsertTransaction {
-    transaction_id: string;
-    player_id: number
-    team_tricode: TeamTricodes
+    transactionId: string;
+    playerId: number
+    team: string
     type: string;
     date: Date
     notes: string
 }
-export async function insertTransaction({
-  transaction_id,
-  player_id,
-  team_tricode,
+export function insertTransaction({
+  transactionId,
+  playerId,
+  team,
   type,
   date,
   notes,
 }: IInsertTransaction) {
-  await sql`
+  return sql`
     INSERT INTO transactions (
       transaction_id,
       player_id,
-      tricode,
+      team,
       type,
       date,
       notes
     )
     VALUES (
-      ${transaction_id},
-      ${player_id},
-      ${team_tricode},
+      ${transactionId},
+      ${playerId},
+      ${team},
       ${type},
       ${date},
       ${notes}
+    )
+  `
+}
+
+
+interface IInsertContractInfo {
+    contractId: string;
+    playerId: number
+    team: string
+    type: string;
+    date: Date
+}
+export function insertContractInfo({
+  contractId,
+  playerId,
+  team,
+  type,
+  date,
+}: IInsertContractInfo) {
+  return sql`
+    INSERT INTO contract_terms (
+      contract_id,
+      player_id,
+      signing_team,
+      contract_type,
+      signing_date
+    )
+    VALUES (
+      ${contractId},
+      ${playerId},
+      ${team},
+      ${type},
+      ${date}
     )
   `
 }
@@ -118,25 +165,45 @@ export async function deleteContractYear(
       AND season = ${season}
   `
 }
-/**
- * deletes every year of the respective contract to the contract_id
- * @param contract_id 
- * @returns 
- */
-export async function deleteAllContractYears(contract_id: string) {
-  await sql`
-    DELETE FROM contract_years
-    WHERE contract_id = ${contract_id}
-  `
-}/**
- *  deletes transaction relating to the transaction id
- * @param transaction_id the id relating to the transaction to being deleted, will be used for deleting transaction info like buyouts, draftpicks, trades, contracts, waivers, loans etc. 
- * @returns query object
- */ 
-export async function deleteTransaction(transaction_id: string) {
-  await sql`
-    DELETE FROM transactions
-    WHERE transaction_id = ${transaction_id}
-  `
+export function deleteAllContractYears(contract_id: string) {
+  return sql`DELETE FROM contract_years WHERE contract_id = ${contract_id}`;
 }
 
+export function deleteTransaction(transaction_id: string) {  // renamed for clarity
+  return sql`DELETE FROM transactions WHERE transaction_id = ${transaction_id}`;
+}
+
+export function deleteContractInfo(contractId: string) {
+  return sql`DELETE FROM contract_terms WHERE contract_id = ${contractId}`;
+}
+
+
+// ===========================================================
+// ===========================================================
+// ===========================================================
+interface IUpdateContractInfo {
+  contractId: number;
+  signingDate: Date | string
+  signingTeam: TeamSlugs
+  contractType: ContractTypes
+  note: string
+}
+
+export function updateContractInfo(
+  {
+    contractId,
+    signingDate,
+    signingTeam,
+    contractType,
+    note
+  }: IUpdateContractInfo
+) {
+  return sql`
+    UPDATE contract_terms
+      SET signing_date = ${signingDate}
+      SET signing_team = ${signingTeam}
+      SET contract_type = ${contractType}
+      SET note = ${note}
+    WHERE contract_id ${contractId}
+  `
+}

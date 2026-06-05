@@ -8,9 +8,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { X } from "lucide-react";
-import { ContractYear, ClauseType } from "./contract-grid.types";
+import { ContractYear } from "./contract-grid.types";
 import { formatSalaryDisplay } from "./contract-grid.utils";
 import { CLAUSE_OPTIONS } from "./contract-grid.quick-fill";
+import { ClauseTypes } from "@/lib/types/global-hockey-types";
 
 interface ContractYearRowProps {
   row: ContractYear;
@@ -112,8 +113,8 @@ export function ContractYearRow({
       <td className="px-1 py-1">
         <div className="flex items-center gap-1">
           <Select
-            value={row.clause}
-            onValueChange={(value) => updateYearField(index, "clause", value as ClauseType)}
+            value={row.clause ?? ""}
+            onValueChange={(value) => updateYearField(index, "clause", value as ClauseTypes)}
           >
             <SelectTrigger className="h-8 text-xs w-24 border-transparent shadow-none bg-transparent focus:ring-1 focus:border-violet-500">
               <SelectValue />
@@ -130,7 +131,7 @@ export function ContractYearRow({
       </td>
 
       <td className="px-1 py-1">
-        {row.clause !== "None" && (
+        {row.clause && (
           <Input
             value={row.clauseInfo ?? ""}
             onChange={(e) => updateYearField(index, "clauseInfo", e.target.value)}

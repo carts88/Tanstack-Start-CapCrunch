@@ -7,7 +7,7 @@ import { DraftPicksTable } from "./draftpicks/draft-picks-table"
 import {TeamStaff} from "./team-staff"
 
 const TeamMain = () => {
-    const teamInfo = getTeamMetaData("PHI")
+    const teamInfo = getTeamMetaData("flyers")
     const {
       teamCaptains,
       teamStaff,
@@ -19,9 +19,9 @@ const TeamMain = () => {
 
           <div className="flex gap-6 w-full my-12">
               <TeamInfo 
-              teamInfo={teamInfo}
-              teamStaff={teamStaff}
-          />
+                teamInfo={teamInfo}
+                teamStaff={teamStaff}
+              />
           {/* <TeamStaff teamStaff={teamData.pageProps.teamStaff}        /> */}
           <CapOutlookCarousel 
             capOutlook={teamData.pageProps.capOutlook}

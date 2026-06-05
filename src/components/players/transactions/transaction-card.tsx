@@ -30,6 +30,8 @@ export const TransactionCard = ({ transaction }: TransactionCardProps) => {
   const { type, date, team, notes } = transaction;
   const { primaryColor, secondColor, label, teamSlug } = getTeamMetaData(team);
 
+  console.log("getTeamMetaData(team), getTeamMetaData(team)")
+
   const typeInfo = TYPE_LABELS[type] ?? { label: type, icon: "•" };
   const logoPath = `/logos/nhl/${teamSlug}.svg`;
 

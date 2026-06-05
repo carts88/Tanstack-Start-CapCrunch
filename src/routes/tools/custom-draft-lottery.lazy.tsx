@@ -1,7 +1,7 @@
 import { CustomDraftLotteryMain } from '@/components/custom-draft-lottery/main'
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/tools/custom-draft-lottery')({
+export const Route = createLazyFileRoute('/tools/custom-draft-lottery')({
   component: RouteComponent,
 })
 

@@ -1,12 +1,12 @@
-import { ClauseType, ContractYear, ContractStats } from "./contract-grid.types";
+import { CURRENT_SEASON } from "@/lib/constants/hockey";
+import { ContractYear, ContractStats, ContractFormValues } from "./contract-grid.types";
 
 export function parseSalaryInput(raw: string): number | null {
   const s = raw.trim().replace(/[$,\s]/g, "");
-
   if (!s) return 0;
 
   const match = s.match(/^([\d.]+)\s*([MmKk]?)$/);
-  if (!match) return null;
+  if (!match) return null; // caller should handle null explicitly
 
   const num = parseFloat(match[1]);
   if (isNaN(num)) return null;
@@ -14,10 +14,22 @@ export function parseSalaryInput(raw: string): number | null {
   const suffix = match[2].toUpperCase();
   if (suffix === "M") return Math.round(num * 1_000_000);
   if (suffix === "K") return Math.round(num * 1_000);
-
   return Math.round(num);
 }
 
+export function emptyYear(): ContractYear {
+  return {
+    capHit: 0,
+    season: CURRENT_SEASON,
+    capHitOverride: null,  // removed duplicate `caphit`
+    baseSalary: 0,
+    signingBonus: 0,
+    performanceBonus: 0,
+    minorsSalary: 0,
+    clause: null,
+    clauseInfo: null,
+  };
+}
 export function formatSalaryDisplay(value: number | null): string {
   if (value === null || value === 0) return "";
   return value.toLocaleString("en-US");
@@ -78,14 +90,43 @@ export function deriveContractStats(years: ContractYear[]): ContractStats {
   };
 }
 
-export function emptyYear(): ContractYear {
+
+
+// const ONE_YEAR_ELC_TEMPLATE: ContractFormValues = {
+//   // startYear: 0,
+//   // signingDate: null,
+//   // signingTeam: "",
+//   contractType: "ELC",
+//   years: [
+//     {
+//       capHit: 775000,   // always kept in sync with the calculation
+//       capHitOverride: null, // user-set escape hatch
+//       season: 2024,
+//       baseSalary: null,
+//       signingBonus: null,
+//       performanceBonus: null,
+//       minorsSalary: null,
+//       clause: null,
+//       clauseInfo: null,
+//     }
+//   ]
+// }
+
+export function generateELCTemplate(prev: ContractFormValues, term: number): ContractFormValues {
   return {
-    capHitOverride: null,
-    baseSalary: 0,
-    signingBonus: 0,
-    performanceBonus: 0,
-    minorsSalary: 0,
-    clause: "None",
-    clauseInfo: null,
-  };
+    ...prev,
+    years: [
+      {
+        capHit: 0,
+        capHitOverride: null,
+        season: 0,
+        baseSalary: 775,
+        signingBonus: 0,
+        performanceBonus: 0,
+        minorsSalary: 0,
+        clause: null,
+        clauseInfo: null
+      }
+    ]
+  }
 }

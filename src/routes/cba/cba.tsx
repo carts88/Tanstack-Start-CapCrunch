@@ -3,7 +3,7 @@ import CbaMain from '@/components/cba/cba-main'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { CBASidebar } from '@/components/cba/navigation/cba-sidebar'
 
-export const Route = createFileRoute('/cba')({
+export const Route = createFileRoute('/cba/cba')({
   component: RouteComponent,  
 })
 

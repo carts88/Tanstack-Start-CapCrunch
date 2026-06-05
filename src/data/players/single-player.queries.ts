@@ -1,4 +1,5 @@
 import { sql } from "../db"
+import { PlayerStatusTypes, TeamSlugs } from "@/lib/types/global-hockey-types";
 
 interface IgetPlayer {
     player_slug: string
@@ -89,3 +90,25 @@ export async function getPlayer({
 
     return result[0].data
 }
+
+
+
+export const updatePlayerStatus = async ({
+  newStatus,
+  playerId
+}: { newStatus: PlayerStatusTypes | null; playerId: number }) => {
+  const result = await sql`
+    UPDATE players SET status = ${newStatus} WHERE player_id = ${playerId}
+  `;
+  return result[0];
+};
+
+export const updatePlayerTeam = async ({
+  newTeam,
+  playerId
+}: { newTeam: TeamSlugs | null; playerId: number }) => {
+  const result = await sql`
+    UPDATE players SET team = ${newTeam} WHERE player_id = ${playerId}
+  `;
+  return result[0];
+};

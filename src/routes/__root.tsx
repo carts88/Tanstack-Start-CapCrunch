@@ -6,6 +6,7 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import { ThemeProvider } from '@/components/navbar/global-context-controls/theme/theme-provider'
+import { Toaster } from "@/components/ui/sonner"
 
 import ClerkProvider from '../integrations/clerk/provider'
 
@@ -64,8 +65,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             <SiteBanner />
           </header>
           {children}
+          <Toaster toastOptions={{ duration: 1000 }} />
           <TanStackDevtools
-          
             config={{
               position: 'bottom-right',
             }}

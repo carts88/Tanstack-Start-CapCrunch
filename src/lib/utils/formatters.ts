@@ -83,7 +83,23 @@ export function formatDate(
 ): string {
     if (!date) return "-";
 
-    return new Intl.DateTimeFormat(locale, options).format(
-        new Date(date)
-    );
+    let d: Date;
+
+    if (typeof date === "string") {
+        // Handle YYYY-MM-DD format safely (most common case)
+        if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            const [year, month, day] = date.split("-").map(Number);
+            d = new Date(year, month - 1, day);           // Local date constructor
+        } else {
+            d = new Date(date);
+        }
+    } else {
+        d = new Date(date);
+    }
+
+    if (isNaN(d.getTime())) {
+        return "-"; // invalid date
+    }
+
+    return new Intl.DateTimeFormat(locale, options).format(d);
 }

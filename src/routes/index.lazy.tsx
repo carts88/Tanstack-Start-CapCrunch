@@ -1,6 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createLazyFileRoute } from '@tanstack/react-router'
 import { FeatureCard, FeatureCardInterface } from '@/components/ui/misc/feature-card'
-import { NHLDraftLottery } from '@/components/custom-draft-lottery/pick-selection'
 
 const features: FeatureCardInterface[] = [
     {
@@ -13,20 +12,20 @@ const features: FeatureCardInterface[] = [
     },
   ]
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createLazyFileRoute('/')({ component: App })
 
 function App() {
 
   return (
     <div className='m-auto w-7xl gap-3 grid grid-cols-3 my-6'>
-      {/* {features.map((item, index) => (
+      {features.map((item, index) => (
         <FeatureCard
           key={index}  // Unique key required
           icon={item.icon}
           title={item.title}
           description={item.description}
         />
-      ))} */}
+      ))}
     </div>
   )
 }

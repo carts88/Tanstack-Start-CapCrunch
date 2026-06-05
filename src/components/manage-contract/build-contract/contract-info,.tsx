@@ -2,9 +2,10 @@ import { Input } from "../../ui/input"
 import { Label } from "../../ui/label"
 import { Select, SelectItem, SelectTrigger, SelectValue, SelectContent } from "../../ui/select"
 import SelectWithSearchImage from "../../ui/advanced/select-with-search"
-import { nhlTeamSelectData } from "@/lib/constants/metadata"
+import { CONTRACT_TYPES, nhlTeamSelectData } from "@/lib/constants/metadata"
 import { DateField, DateFieldDays, DateFieldMonths, DateFieldSeparator, DateFieldYears } from "../../ui/date-field"
 import { ContractFormValues } from "../contract-grid"
+import { ContractTypes } from "@/lib/types/global-hockey-types"
 
 interface IContractInfo {
   contract: ContractFormValues;
@@ -12,6 +13,7 @@ interface IContractInfo {
   handleLengthChange: (newLen: number) => void;
   handleSigningTeamChange: (newTeam: string) => void;
   handleSetSigningDate: (newDate: Date | null) => void;
+  handleContractTypeChange: (newType: ContractTypes) => void;
   isModalNested: boolean
 }
 
@@ -32,6 +34,7 @@ export const ContractInfo = ({
   handleLengthChange,
   handleSigningTeamChange,
   handleSetSigningDate,
+  handleContractTypeChange,
   isModalNested
 }: IContractInfo) => {
   return (
@@ -78,6 +81,28 @@ export const ContractInfo = ({
           modal={isModalNested}
         />
       </FieldWrapper>
+
+
+      <FieldWrapper label="Contract Type">
+        <Select
+          value={contract.contractType}
+          onValueChange={(v: ContractTypes) => handleContractTypeChange(v)}
+        >
+          <SelectTrigger className="w-50 h-7 text-xs bg-muted/50">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {CONTRACT_TYPES.map((type, idx) => {
+              return (
+                <SelectItem key={idx} value={type.value}>
+                  {type.label}
+                </SelectItem>
+              )
+            })}
+           </SelectContent>
+        </Select>
+      </FieldWrapper>
+
 
       <FieldWrapper label="Signing date">
         <DateField

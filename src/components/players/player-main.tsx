@@ -5,15 +5,32 @@ import { TransactionList } from "./transactions/transaction-list"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { getObjOfArrByKey } from "@/lib/utils/array.utils"
 import { nhlTeams } from "@/lib/constants/metadata"
-import { CreateContract } from "../manage-contract/admin/create-contract"
-import { TeamInfo } from "../team/team-info"
-import { TeamTricodes } from "../custom-draft-lottery/utils"
+import { AdminFloatingBar } from "./admin/admin-floating-controls"
+import { IPlayerMeta } from "./transactions/add-transaction-form"
+
 
 export default function PlayerMain ({playerInfo, contracts, transactions}) {
 
-const teamMeta = getObjOfArrByKey(nhlTeams , "teamSlug", playerInfo?.team)
+const teamMeta = playerInfo?.team ? getObjOfArrByKey(nhlTeams , "teamSlug", playerInfo?.team) : {
+  label: "Unsigned",
+  value: "NHL",
+  division: "",
+  teamSlug: "nhl",
+  primaryColor: "#000000",
+  secondColor: "#E4E5E6",
+  thirdColor: "#89734C",
+  affiliates: [],
+
+}
 
     // const { deployment, stats, ...playerInfo} = player
+
+    const playerMeta: IPlayerMeta= {
+        playerId: playerInfo.playerId,
+        fullName: playerInfo.fullName,
+        currentTeam:  teamMeta.teamSlug ?? "ducks",
+        birthDate: new Date(playerInfo.birthDate)
+      }
   return (
     <div  className=" lg:max-w-7xl m-auto my-12 space-y-6">
       <PlayerInfoCard 
@@ -34,14 +51,7 @@ const teamMeta = getObjOfArrByKey(nhlTeams , "teamSlug", playerInfo?.team)
           </TabsTrigger>
           </TabsList>
           <TabsContent className="my-6 space-y-5" value="contracts">
-            <CreateContract 
-              playerMeta={{
-                playerId: playerInfo.playerId,
-                fullName: playerInfo.fullName,
-                currentTeam:  teamMeta.value ?? "ANA",
-                birthDate: new Date(playerInfo.birthDate)
-              }}
-            />
+           
             {/* <ContractStats 
                     projCareerSalary={2444444} 
                     totalContracts={contracts.length} 
@@ -55,6 +65,12 @@ const teamMeta = getObjOfArrByKey(nhlTeams , "teamSlug", playerInfo?.team)
                   /> */}
                   <ContractHistory 
                     contracts={contracts}
+                  />
+                  
+
+                  <AdminFloatingBar 
+                    
+                    playerMeta={playerMeta}
                   />
           </TabsContent>
           <TabsContent value="stats">

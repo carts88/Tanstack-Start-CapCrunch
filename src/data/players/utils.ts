@@ -51,7 +51,8 @@ export interface IContract {
 export const transformContracts = ({
     rawContracts,
 }: ITransformContracts): IContract[] => {
-    if (rawContracts.length == 0) return []
+
+    if (!rawContracts) return []
 
     // First group by contract_id
     const groupedByContract = groupMap(
